@@ -11,7 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        //
+        Schema::create('inventaris_alat', function (Blueprint $table) {
+            $table->bigIncrements('inventaris_id');
+            $table->string('nama_barang');
+            $table->integer('stok')->default(0);
+            $table->string('kondisi')->default('baik');
+        });
     }
 
     /**
@@ -19,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        //
+        Schema::dropIfExists('inventaris_alat');
     }
 };

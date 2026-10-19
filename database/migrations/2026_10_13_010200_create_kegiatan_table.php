@@ -11,9 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('transaksi', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
+        Schema::create('kegiatan', function (Blueprint $table) {
+            $table->bigIncrements('kegiatan_id');
+            $table->string('nama_kegiatan');
+            $table->text('deskripsi_kegiatan');
+            $table->date('tanggal_pelaksanaan');
+            $table->string('status_kegiatan')->default('rencana');
         });
     }
 
@@ -22,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('transaksi');
+        Schema::dropIfExists('kegiatan');
     }
 };
