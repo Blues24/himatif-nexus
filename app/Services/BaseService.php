@@ -7,27 +7,21 @@ use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
 
 /**
- * BaseService — provides shared CRUD operations that concrete services can
- * extend. Enforces SRP by keeping controllers thin while giving services a
- * reusable foundation.
+ * BaseService — shared CRUD operations for concrete services. Keeps controllers thin.
  */
 abstract class BaseService
 {
-    /** @var string The Eloquent model class */
+    /** @var string The Eloquent model class. */
     abstract protected string $model { get; }
 
-    /** @var array Columns safe for mass assignment / listing */
+    /** @var array Columns safe for mass assignment / listing. */
     protected array $fillableColumns = [];
 
-    /** @var array Default eager-load relationships */
+    /** @var array Default eager-load relationships. */
     protected array $withRelations = [];
 
-    // ------------------------------------------------------------------
-    // C — CREATE
-    // ------------------------------------------------------------------
-
     /**
-     * Create a new record with validation-ready fillable columns.
+     * Create wrapped in a transaction. Only fills from allowed columns.
      */
     public function create(array $data): object
     {
@@ -41,33 +35,20 @@ abstract class BaseService
     }
 
     /**
-     * Hook for subclasses to run post-create logic (e.g. audit logs).
+     * Subclass hook for post-create side effects (notifications, audit logs, etc.).
      */
     protected function afterCreate(object $record, array $data): void {}
 
-    // ------------------------------------------------------------------
-    // R — READ
-    // ------------------------------------------------------------------
-
     /**
-     * Find by primary key or fail.
+     * Resolve a record using the model's actual primary key (supports uuid, snake_case, etc.).
      */
     public function findOrFail(int|string $id): object
     {
-        $builder = app($this->model)->with($this->withRelations);
-
-        // Detect custom primary key (e.g. uuid, snake_case)
         $primaryKey = app($this->model)->getKeyName();
 
-        return $builder->where($primaryKey, $id)->firstOrFail();
+        return app($this->model)->with($this->withRelations)->where($primaryKey, $id)->firstOrFail();
     }
 
-    /**
-     * List all records with optional scope filter and pagination.
-     *
-     * @param  callable|null  $scope  Accepts an Eloquent\Builder for filtering
-     * @param  int  $perPage  Pages per request
-     */
     public function paginate(?callable $scope = null, int $perPage = 15): LengthAwarePaginator
     {
         $query = app($this->model)->with($this->withRelations)->latest();
@@ -80,7 +61,7 @@ abstract class BaseService
     }
 
     /**
-     * Get an unpaginated collection (for dropdowns, exports).
+     * Unpaginated collection — for dropdowns, exports, etc.
      */
     public function all(?callable $scope = null): Collection
     {
@@ -93,13 +74,6 @@ abstract class BaseService
         return $query->get();
     }
 
-    // ------------------------------------------------------------------
-    // U — UPDATE
-    // ------------------------------------------------------------------
-
-    /**
-     * Update a record identified by its primary key.
-     */
     public function update(int|string $id, array $data): bool
     {
         $primaryKey = app($this->model)->getKeyName();
@@ -116,16 +90,12 @@ abstract class BaseService
     }
 
     /**
-     * Hook for post-update logic.
+     * Subclass hook for post-update side effects.
      */
     protected function afterUpdate(object $record, array $data): void {}
 
-    // ------------------------------------------------------------------
-    // D — DELETE
-    // ------------------------------------------------------------------
-
     /**
-     * Soft-delete (if available) or permanently delete.
+     * Delete via soft-delete if the trait is present, otherwise hard delete.
      */
     public function delete(int|string $id): bool
     {
@@ -133,10 +103,24 @@ abstract class BaseService
 
         $record = app($this->model)->where($primaryKey, $id)->firstOrFail();
 
-        if (method_exists($record, 'delete')) {
-            return $record->delete();
+        return method_exists($record, 'delete') ? $record->delete() : $record->forceDelete();
+    }
+
+    // ------------------------------------------------------------------
+    // MISC HELPERS
+    // ------------------------------------------------------------------
+
+    /**
+     * Count matching records with an optional scope.
+     */
+    public function count(?callable $scope = null): int
+    {
+        $query = app($this->model);
+
+        if ($scope !== null) {
+            $query = $scope($query);
         }
 
-        return $record->forceDelete();
+        return $query->count();
     }
 }
