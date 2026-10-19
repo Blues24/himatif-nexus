@@ -129,7 +129,104 @@ To avoid *merge conflicts* during team collaboration:
 
 ---
 
-## 7. Directory Structure (`himatif-nexus`)
+## 7. SOLID Principles & Layered Architecture
+
+Controllers must stay thin — they are HTTP gateways, not business logic engines. The application enforces five SOLID principles at the architectural level.
+
+### 7.1 Single Responsibility Principle (SRP)
+
+| Layer | Sole Responsibility | Example |
+|---|---|---|
+| **Controller** | Validate input → call service → return response | `ProdukController@store` receives request, calls `ProdukService::create`, redirects |
+| **Model** | Data definition + relationships | `Produk::$fillable`, `User::role()` |
+| **Service** | Business rules & cross-model operations | `ProdukService::adjustStock()`, `PenyewaanAlatService::handleRequest()` |
+| **Form Request** | Validation only | `ProfileUpdateRequest`, custom domain Requests |
+| **Helper** | Pure, stateless utilities | `CurrencyHelper::format()`, `AutoSlugHelper::generate()` |
+
+```text
+Client → Controller → Service → Model ← Helper
+         (HTTP)       (rules)    (data)   (utilities)
+```
+
+### 7.2 Open/Closed Principle (OCP)
+
+New features extend behavior without modifying existing code:
+
+- **Services** inherit from `BaseService` and override hooks (`afterCreate`, `afterUpdate`) instead of rewriting CRUD
+- **Event subscribers** add side-effects without touching controllers
+- **Middleware pipelines** compose new gates without editing route definitions
+
+### 7.3 Liskov Substitution Principle (LSP)
+
+All services implement a common interface implicitly through `BaseService`. Any concrete service can be swapped for another with identical caller signatures:
+
+```php
+// Caller never knows if ProdukService or MockProdukService is used
+public function __construct(public ProdukService $produkService) {}
+public function index(): Response { /* works with any BaseService subclass */ }
+```
+
+### 7.4 Interface Segregation Principle (ISP)
+
+Small, focused responsibilities per class:
+
+- Controllers do **not** inject massive multi-module services — each gets exactly one domain service
+- Models define **only** the relations they actually own (no god-model anti-pattern)
+- Form Requests validate **only** their specific form — no shared validation classes
+
+### 7.5 Dependency Inversion Principle (DIP)
+
+High-level modules depend on abstractions, not concretions:
+
+```php
+class ProdukController extends Controller
+{
+    // Depends on ProductService abstraction (implicitly via BaseService contract)
+    public function __construct(private readonly Product $service) {}
+}
+```
+
+This allows swapping implementations (e.g., mocking for tests, different DB drivers) without touching controller code.
+
+### 7.6 New Directory Layout
+
+The SOLID split adds two directories under `app/`:
+
+```text
+app/
+├── Http/
+│   └── Controllers/           # Thin HTTP handlers — just gateways
+├── Services/                  # Business logic — the real "brain"
+│   ├── BaseService.php        # Shared CRUD base (extends nothing external)
+│   ├── ProdukService.php      # Danus Shop domain rules
+│   ├── KegiatanService.php    # Activity management
+│   ├── FormatifService.php    # Content publishing
+│   ├── InventarisService.php  # Inventory tracking
+│   ├── PenyewaanAlatService.php  # Rental workflow
+│   ├── TransaksiService.php   # Transaction recording
+│   └── UserService.php        # User management & RBAC assignment
+├── Helpers/                   # Pure utilities — no framework coupling
+│   ├── CurrencyHelper.php     # IDR formatting & parsing
+│   └── AutoSlugHelper.php     # Unique slug generation
+├── Models/                    # Eloquent entities — data + relations
+└── ...
+```
+
+#### Controller Responsibilities (What They Should Do)
+
+| Method | What It Does |
+|---|---|
+| `index()` | Calls `$service->paginate($filter)` → returns Inertia response |
+| `store(Request $request)` | Validates → `$service->create($validated)` → redirects |
+| `show($id)` | Calls `$service->findOrFail($id)` → returns Inertia response |
+| `update(Request $request, $id)` | Validates → `$service->update($id, $validated)` → redirects |
+| `destroy($id)` | Calls `$service->delete($id)` → redirects |
+
+**What NOT to put in controllers:** stock checks, price calculations, relationship traversals, notifications, audit logging, complex conditional queries — all go to Services.
+
+---
+
+## 8. Directory Structure (`himatif-nexus`)
 
 Generated from the actual working tree (vendor/, node_modules/, and storage/ internals omitted). Folders marked **(planned)** do not exist yet.
 
@@ -138,9 +235,8 @@ himatif-nexus/
 ├── app/
 │   ├── Http/
 │   │   ├── Controllers/
-│   │   │   ├── Controller.php              # Base controller
+│   │   │   ├── Controller.php              # Base controller (abstract)
 │   │   │   ├── ProfileController.php       # Root-level (Breeze profile flow)
-│   │   │   ├── TransaksiController.php     # TODO: move into a domain folder (Portal?)
 │   │   │   ├── Admin/                      # BPH management
 │   │   │   │   └── UserController.php
 │   │   │   ├── Auth/                       # Breeze auth controllers (login, register,
@@ -158,6 +254,18 @@ himatif-nexus/
 │   │   └── Requests/                       # Form Request validation
 │   │       ├── Auth/LoginRequest.php
 │   │       └── ProfileUpdateRequest.php
+│   ├── Services/                           # Business logic layer (SRP, OCP)
+│   │   ├── BaseService.php                 # Shared CRUD skeleton
+│   │   ├── ProdukService.php               # Danus Shop domain rules
+│   │   ├── KegiatanService.php             # Activity management
+│   │   ├── FormatifService.php             # Content publishing
+│   │   ├── InventarisService.php           # Inventory tracking
+│   │   ├── PenyewaanAlatService.php        # Rental workflow
+│   │   ├── TransaksiService.php            # Transaction recording
+│   │   └── UserService.php                 # User management & RBAC assignment
+│   ├── Helpers/                            # Pure utilities — no framework coupling
+│   │   ├── CurrencyHelper.php              # IDR formatting & parsing
+│   │   └── AutoSlugHelper.php              # Unique slug generation
 │   ├── Models/                             # Eloquent entities
 │   │   ├── User.php          Role.php      # Accounts & RBAC
 │   │   ├── Formatif.php      Kegiatan.php  # Content modules

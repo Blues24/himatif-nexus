@@ -129,7 +129,104 @@ Untuk menghindari terjadinya *merge conflict* pada saat kolaborasi tim:
 
 ---
 
-## 7. Struktur Direktori (`himatif-nexus`)
+## 7. Prinsip SOLID & Arsitektur Berlapis
+
+Kontroler harus tetap tipis — mereka hanyalah gerbang HTTP, bukan mesin logika bisnis. Aplikasi ini menjunjung lima prinsip SOLID di level arsitektur.
+
+### 7.1 Single Responsibility Principle (SRP)
+
+| Layer | Tanggung Jawab Tunggal | Contoh |
+|---|---|---|
+| **Controller** | Validasi input → panggil service → kembalikan respons | `ProdukController@store` menerima request, memanggil `ProdukService::create`, redirect |
+| **Model** | Definisi data + relasi | `Produk::$fillable`, `User::role()` |
+| **Service** | Aturan bisnis & operasi lintas-model | `ProdukService::adjustStock()`, `PenyewaanAlatService::handleRequest()` |
+| **Form Request** | Hanya validasi | `ProfileUpdateRequest`, custom domain Requests |
+| **Helper** | Utilitas murni, stateless | `CurrencyHelper::format()`, `AutoSlugHelper::generate()` |
+
+```text
+Client → Controller → Service → Model ← Helper
+         (HTTP)       (rules)    (data)   (utilities)
+```
+
+### 7.2 Open/Closed Principle (OCP)
+
+Fitur baru memperluas perilaku tanpa mengubah kode yang ada:
+
+- **Services** mewarisi dari `BaseService` dan menimpa hook (`afterCreate`, `afterUpdate`) daripada menulis ulang CRUD
+- **Event subscriber** menambahkan efek samping tanpa menyentuh kontroler
+- **Middleware pipeline** menyusun gerbang baru tanpa mengedit definisi rute
+
+### 7.3 Liskov Substitution Principle (LSP)
+
+Semua service menerapkan kontrak bersama secara implisit melalui `BaseService`. Setiap service konkret dapat ditukar dengan parameter penelur (caller) yang sama:
+
+```php
+// Pemanggil tidak tahu apakah ProdukService atau MockProdukService digunakan
+public function __construct(public Product $service) {}
+public function index(): Response { /* bekerja dengan subclass BaseService apapun */ }
+```
+
+### 7.4 Interface Segregation Principle (ISP)
+
+Tanggung jawab kecil dan terfokus per kelas:
+
+- Controller **tidak** menyuntikkan service multi-modul yang besar — masing-masing hanya mendapat satu domain service
+- Model mendefinisikan **hanya** relasi yang benar-benar dimilikinya (anti-pattern god-model)
+- Form Request memvalidasi **hanya** formulir spesifiknya — tidak ada kelas validasi bersama
+
+### 7.5 Dependency Inversion Principle (DIP)
+
+Modul tingkat tinggi bergantung pada abstraksi, bukan implementasi konkret:
+
+```php
+class ProdukController extends Controller
+{
+    // Bergantung pada abstraction ProductService (implisit via kontrak BaseService)
+    public function __construct(private readonly Product $service) {}
+}
+```
+
+Hal ini memungkinkan penukaran implementasi (misalnya mocking untuk tes, driver DB berbeda) tanpa menyentuh kode kontroler.
+
+### 7.6 Tata Letak Direktori Baru
+
+Pemisahan SOLID menambahkan dua direktori di bawah `app/`:
+
+```text
+app/
+├── Http/
+│   └── Controllers/           # Penggerak HTTP tipis — hanya gerbang
+├── Services/                  # Logika bisnis — otak sesungguhnya
+│   ├── BaseService.php        # Kerangka CRUD bersama
+│   ├── ProdukService.php      # Aturan domain Danus Shop
+│   ├── KegiatanService.php    # Manajemen kegiatan
+│   ├── FormatifService.php    # Penerbitan konten
+│   ├── InventarisService.php  # Pelacakan inventaris
+│   ├── PenyewaanAlatService.php  # Alur peminjaman
+│   ├── TransaksiService.php   # Pencatatan transaksi
+│   └── UserService.php        # Manajemen pengguna & penugasan RBAC
+├── Helpers/                   # Utilitas murni — tanpa kopling framework
+│   ├── CurrencyHelper.php     # Format & parsing IDR
+│   └── AutoSlugHelper.php     # Pembuatan slug unik
+├── Models/                    # Entitas Eloquent — data + relasi
+└── ...
+```
+
+#### Tanggung Jawab Controller (Yang Harus Dilakukan)
+
+| Metode | Apa Yang Dilakukan |
+|---|---|
+| `index()` | Memanggil `$service->paginate($filter)` → kembalikan respons Inertia |
+| `store(Request $request)` | Validasi → `$service->create($validated)` → redirect |
+| `show($id)` | Memanggil `$service->findOrFail($id)` → kembalikan respons Inertia |
+| `update(Request $request, $id)` | Validasi → `$service->update($id, $validated)` → redirect |
+| `destroy($id)` | Memanggil `$service->delete($id)` → redirect |
+
+**Apa JANGAN diletakkan di controller:** pengecekan stok, perhitungan harga, traversal relasi, notifikasi, pencatatan audit, query kondisional kompleks — semuanya masuk ke Services.
+
+---
+
+## 8. Struktur Direktori (`himatif-nexus`)
 
 Dibangkitkan dari working tree yang sebenarnya (vendor/, node_modules/, dan isi storage/ disederhanakan). Folder bertanda **(rencana)** belum ada.
 
@@ -138,9 +235,8 @@ himatif-nexus/
 ├── app/
 │   ├── Http/
 │   │   ├── Controllers/
-│   │   │   ├── Controller.php              # Base controller
+│   │   │   ├── Controller.php              # Base controller (abstract)
 │   │   │   ├── ProfileController.php       # Root-level (scaffolding Breeze profile)
-│   │   │   ├── TransaksiController.php     # TODO: pindahkan ke folder domain (Portal?)
 │   │   │   ├── Admin/                      # Manajemen BPH
 │   │   │   │   └── UserController.php
 │   │   │   ├── Auth/                       # Controller auth Breeze (login, register,
@@ -158,6 +254,18 @@ himatif-nexus/
 │   │   └── Requests/                       # Validasi Form Request
 │   │       ├── Auth/LoginRequest.php
 │   │       └── ProfileUpdateRequest.php
+│   ├── Services/                           # Layer logika bisnis (SRP, OCP)
+│   │   ├── BaseService.php                 # Kerangka CRUD bersama
+│   │   ├── ProdukService.php               # Aturan domain Danus Shop
+│   │   ├── KegiatanService.php             # Manajemen kegiatan
+│   │   ├── FormatifService.php             # Penerbitan konten
+│   │   ├── InventarisService.php           # Pelacakan inventaris
+│   │   ├── PenyewaanAlatService.php        # Alur peminjaman
+│   │   ├── TransaksiService.php            # Pencatatan transaksi
+│   │   └── UserService.php                 # Manajemen pengguna & penugasan RBAC
+│   ├── Helpers/                            # Utilitas murni — tanpa kopling framework
+│   │   ├── CurrencyHelper.php              # Format & parsing IDR
+│   │   └── AutoSlugHelper.php              # Pembuatan slug unik
 │   ├── Models/                             # Entitas Eloquent
 │   │   ├── User.php          Role.php      # Akun & RBAC
 │   │   ├── Formatif.php      Kegiatan.php  # Modul konten
