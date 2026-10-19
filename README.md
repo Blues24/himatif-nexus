@@ -1,6 +1,6 @@
 # HIMATIF Nexus
 
-> The unified management platform for **Himpunan Mahasiswa Teknik Informatika (HimaTI F)**.
+> The unified management platform for **Himpunan Mahasiswa Teknik Informatika (HIMATIF)**.
 
 **HIMATIF Nexus** is a monolith-SPA that consolidates the organization's four core operations — content publishing, event management, merchandise, and asset management — into a single application.
 
