@@ -3,7 +3,9 @@
 namespace App\Services;
 
 use App\Models\Produk;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
 
 class ProdukService extends BaseService
@@ -18,15 +20,24 @@ class ProdukService extends BaseService
         'gambar_produk',
     ];
 
-    protected array $withRelations = ['shopDetails'];
+    /**
+     * produk has no foreign keys in its migration, so there is nothing to
+     * eager-load. ShopDetail::class and Produk::shopDetails() reference a
+     * `shop_detail` table no migration creates; do not eager-load it here
+     * until that schema lands.
+     *
+     * @var array<string>
+     */
+    protected array $withRelations = [];
 
     /**
-     * Search products by name using LIKE. Case-insensitive.
+     * Case-insensitive name search. LOWER() keeps the SQL portable across
+     * Postgres and MySQL, where LIKE differs in case sensitivity.
      */
-    public function search(string $keyword, int $perPage = 15)
+    public function search(string $keyword, int $perPage = 15): LengthAwarePaginator
     {
         return $this->paginate(
-            fn (Produk $q) => $q->where('nama_produk', 'like', "%{$keyword}%"),
+            fn (Builder $query) => $query->whereRaw('LOWER(nama_produk) LIKE ?', ['%'.mb_strtolower($keyword).'%']),
             $perPage
         );
     }
