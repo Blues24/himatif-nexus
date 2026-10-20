@@ -15,12 +15,14 @@ class CurrencyHelper
     }
 
     /**
-     * Parse a currency string back to a decimal value (removes Rp, dots, commas).
+     * Reverse of format(). Indonesian numbering uses dots for thousands
+     * and a comma for decimals, so dots are stripped first to avoid
+     * creating a second decimal point.
      */
     public static function parse(string $input): float
     {
         $cleaned = preg_replace('/[^\d.,-]/', '', $input);
-        // Replace comma thousand separators then normalize decimal point
+        $cleaned = str_replace('.', '', $cleaned);
         $cleaned = str_replace(',', '.', $cleaned);
 
         return (float) $cleaned;
