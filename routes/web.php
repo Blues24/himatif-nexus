@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\DanusSHop\ProdukController;
+use App\Http\Controllers\Infokom\FormatifController;
 use App\Http\Controllers\Portal\InventarisController;
 use App\Http\Controllers\Portal\PenyewaanAlatController;
 use App\Http\Controllers\ProfileController;
@@ -29,6 +30,21 @@ Route::controller(ProdukController::class)->group(function () {
     });
     // Declared last so the literal /produk/create segments win against {id}
     Route::get('/produk/{id}', 'show')->whereNumber('id')->name('produk.show');
+});
+
+// Formatif (Blog): public browse, auth-restricted writes
+Route::controller(FormatifController::class)->group(function () {
+    Route::get('/formatif', 'index')->name('formatif.index');
+    Route::get('/formatif/published', 'published')->name('formatif.published');
+    Route::middleware('auth')->group(function () {
+        Route::get('/formatif/create', 'create')->name('formatif.create');
+        Route::post('/formatif', 'store')->name('formatif.store');
+        Route::get('/formatif/{id}/edit', 'edit')->name('formatif.edit');
+        Route::patch('/formatif/{id}', 'update')->name('formatif.update');
+        Route::delete('/formatif/{id}', 'destroy')->name('formatif.destroy');
+    });
+    // Declared last so the literal /formatif/create segments win against {id}
+    Route::get('/formatif/{id}', 'show')->whereNumber('id')->name('formatif.show');
 });
 
 Route::get('/dashboard', function () {
