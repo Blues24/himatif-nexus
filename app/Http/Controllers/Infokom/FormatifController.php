@@ -13,7 +13,7 @@ use Inertia\Response;
 
 class FormatifController extends Controller
 {
-    public function __construct(protected FormatifService $service) {}
+    public function __construct(private readonly FormatifService $service) {}
 
     public function index(Request $request): Response
     {
