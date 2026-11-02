@@ -39,9 +39,10 @@ class ProdukController extends Controller
         $product = $this->service->findOrFail($id);
 
         return Inertia::render('Shop/Show', [
-            'product' => array_merge($product->toArray(), [
+            'product' => [
+                'produk_id' => $product->produk_id,
                 'harga_formatted' => CurrencyHelper::format($product->harga_produk),
-            ]),
+            ],
         ]);
     }
 

@@ -18,7 +18,10 @@ class KegiatanFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'nama_kegiatan' => $this->faker->sentence(),
+            'deskripsi_kegiatan' => $this->faker->paragraph(),
+            'tanggal_pelaksanaan' => $this->faker->dateTimeBetween('now', '+1 year'),
+            'status_kegiatan' => $this->faker->randomElement(['rencana', 'berjalan', 'selesai']),
         ];
     }
 }

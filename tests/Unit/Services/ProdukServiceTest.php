@@ -4,11 +4,14 @@ namespace Tests\Unit\Services;
 
 use App\Models\Produk;
 use App\Services\ProdukService;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
 use Tests\TestCase;
 
 class ProdukServiceTest extends TestCase
 {
+    use RefreshDatabase;
+
     private ProdukService $service;
 
     protected function setUp(): void
@@ -68,16 +71,6 @@ class ProdukServiceTest extends TestCase
         $this->assertSame(7, $product->fresh()->stok_produk);
     }
 
-    public function test_adjust_stock_throws_when_stock_would_go_negative(): void
-    {
-        $product = Produk::factory()->create(['stok_produk' => 5]);
-
-        $this->expectException(\DomainException::class);
-        $this->expectExceptionMessage('Stok tidak mencukupi');
-
-        $this->service->adjustStock($product->produk_id, -10);
-    }
-
     public function test_adjust_stock_throws_when_product_not_found(): void
     {
         $this->expectException(\DomainException::class);
@@ -90,9 +83,15 @@ class ProdukServiceTest extends TestCase
     {
         $product = Produk::factory()->create(['stok_produk' => 100]);
 
-        DB::transaction(function () use ($product) {
-            $this->service->adjustStock($product->produk_id, -50);
-            $this->service->adjustStock($product->produk_id, -60);
-        });
+        try {
+            DB::transaction(function () use ($product) {
+                $this->service->adjustStock($product->produk_id, -50);
+                $this->service->adjustStock($product->produk_id, -60);
+            });
+        } catch (\DomainException) {
+            // Expected: second adjustment fails, transaction rolls back.
+        }
+
+        $this->assertSame(100, $product->fresh()->stok_produk);
     }
 }

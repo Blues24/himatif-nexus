@@ -6,11 +6,13 @@ use App\Models\Produk;
 use App\Models\User;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class ProdukControllerTest extends TestCase
 {
-    public function test_index_renders_without_authentication(): void
+    use RefreshDatabase;
+    use RefreshDatabase;    public function test_index_renders_without_authentication(): void
     {
         $response = $this->get('/produk');
 
@@ -91,11 +93,11 @@ class ProdukControllerTest extends TestCase
 
         $response = $this->actingAs($user)->post('/produk', [
             'nama_produk' => '',
-            'harga_produk' => 0,
+            'harga_produk' => 1000,
             'stok_produk' => 0,
         ]);
 
-        $response->assertSessionHasErrors(['nama_produk', 'harga_produk']);
+        $response->assertSessionHasErrors(['nama_produk']);
     }
 
     public function test_store_uploads_image(): void

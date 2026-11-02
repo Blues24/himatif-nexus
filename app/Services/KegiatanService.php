@@ -29,6 +29,17 @@ class KegiatanService extends BaseService
     }
 
     /**
+     * Search kegiatan by name or description.
+     */
+    public function search(string $keyword)
+    {
+        return $this->paginate(
+            fn (Kegiatan $q) => $q->where('nama_kegiatan', 'like', "%{$keyword}%")
+                ->orWhere('deskripsi_kegiatan', 'like', "%{$keyword}%")
+        );
+    }
+
+    /**
      * Get upcoming activities sorted by date.
      */
     public function upcoming(): Collection
