@@ -335,3 +335,5 @@ himatif-nexus/
 ├── phpunit.xml  .env.example  artisan
 └── AGENTS.md  CLAUDE.md  README.md  ARCHITECTURE.id-ID.md
 ```
+| Missing empty/loading/error state documentation for data views | 🟡 Medium | **Planned** |
+| **Accessibility (antislop-human)**: Full checklist in §9.R of antislop-human skill | 🟡 Medium | **Planned** >>
