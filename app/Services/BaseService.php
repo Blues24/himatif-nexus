@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use Illuminate\Support\Arr;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
@@ -26,7 +27,7 @@ abstract class BaseService
     public function create(array $data): object
     {
         return DB::transaction(function () use ($data) {
-            $record = app($this->model)->create(array_only($data, $this->fillableColumns));
+            $record = app($this->model)->create(Arr::only($data, $this->fillableColumns));
 
             $this->afterCreate($record, $data);
 
@@ -81,7 +82,7 @@ abstract class BaseService
         $record = app($this->model)->where($primaryKey, $id)->firstOrFail();
 
         return DB::transaction(function () use ($record, $data) {
-            $record->update(array_only($data, $this->fillableColumns));
+            $record->update(Arr::only($data, $this->fillableColumns));
 
             $this->afterUpdate($record, $data);
 
