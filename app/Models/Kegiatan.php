@@ -14,6 +14,8 @@ class Kegiatan extends Model
 
     protected $keyType = 'int';
 
+
+
     /** @var array<string> */
     protected $fillable = [
         'nama_kegiatan',

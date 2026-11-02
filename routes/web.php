@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\DanusSHop\ProdukController;
 use App\Http\Controllers\Infokom\FormatifController;
+use App\Http\Controllers\Infokom\KegiatanController;
 use App\Http\Controllers\Portal\InventarisController;
 use App\Http\Controllers\Portal\PenyewaanAlatController;
 use App\Http\Controllers\ProfileController;
@@ -45,6 +46,19 @@ Route::controller(FormatifController::class)->group(function () {
     });
     // Declared last so the literal /formatif/create segments win against {id}
     Route::get('/formatif/{id}', 'show')->whereNumber('id')->name('formatif.show');
+});
+
+// Kegiatan: public browse, auth-restricted writes
+Route::controller(KegiatanController::class)->group(function () {
+    Route::get('/kegiatan', 'index')->name('kegiatan.index');
+    Route::get('/kegiatan/{id}', 'show')->whereNumber('id')->name('kegiatan.show');
+    Route::middleware('auth')->group(function () {
+        Route::get('/kegiatan/create', 'create')->name('kegiatan.create');
+        Route::post('/kegiatan', 'store')->name('kegiatan.store');
+        Route::get('/kegiatan/{id}/edit', 'edit')->name('kegiatan.edit');
+        Route::patch('/kegiatan/{id}', 'update')->name('kegiatan.update');
+        Route::delete('/kegiatan/{id}', 'destroy')->name('kegiatan.destroy');
+    });
 });
 
 Route::get('/dashboard', function () {
