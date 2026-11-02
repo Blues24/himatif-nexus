@@ -415,8 +415,11 @@ public function create(array $data): object
 | No Policies for model authorization | 🔴 High | **Planned** |
 | `KegiatanController`, `TransaksiController`, `UserController` are stubs | 🟡 Medium | **Needs implementation** |
 | `TransaksiService` exists but not used | 🟡 Medium | **Needs integration** |
-| No API Resources (future mobile/webhook support) | 🟢 Low | **Planned** |
-| No caching strategy documented | 🟢 Low | **Planned** |
+| Missing empty/loading/error state documentation for data views | 🟡 Medium | **Planned** |
+| **Accessibility (antislop-human)**: Full checklist in §9.R of antislop-human skill | 🟡 Medium | **Planned** |
+
+---
+## 11. Directory Structure (Actual)
 
 ---
 

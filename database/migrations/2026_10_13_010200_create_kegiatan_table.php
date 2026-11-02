@@ -17,6 +17,7 @@ return new class extends Migration
             $table->text('deskripsi_kegiatan');
             $table->date('tanggal_pelaksanaan');
             $table->string('status_kegiatan')->default('rencana');
+            $table->timestamps();
         });
     }
 
