@@ -6,17 +6,15 @@ use App\Http\Controllers\Infokom\KegiatanController;
 use App\Http\Controllers\Portal\InventarisController;
 use App\Http\Controllers\Portal\PenyewaanAlatController;
 use App\Http\Controllers\ProfileController;
-use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
+    return Inertia::render('Dashboard');
+})->name('beranda');
+
+Route::get('/beranda', function () {
+    return Inertia::render('Dashboard');
 });
 
 // Danus Shop: public browse, auth-restricted writes
@@ -63,7 +61,7 @@ Route::controller(KegiatanController::class)->group(function () {
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+})->name('dashboard');
 
 // Portal: Inventory management (auth required)
 Route::middleware('auth')->group(function () {
