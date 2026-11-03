@@ -1,6 +1,10 @@
 <?php
 
-use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\DanusSHop\ProdukController;
+use App\Http\Controllers\Infokom\FormatifController;
+use App\Http\Controllers\Infokom\KegiatanController;
+use App\Http\Controllers\Portal\InventarisController;
+use App\Http\Controllers\Portal\PenyewaanAlatController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -15,9 +19,72 @@ Route::get('/', function () {
     ]);
 });
 
+// Danus Shop: public browse, auth-restricted writes
+Route::controller(ProdukController::class)->group(function () {
+    Route::get('/produk', 'index')->name('produk.index');
+    Route::middleware('auth')->group(function () {
+        Route::get('/produk/create', 'create')->name('produk.create');
+        Route::post('/produk', 'store')->name('produk.store');
+        Route::get('/produk/{id}/edit', 'edit')->name('produk.edit');
+        Route::patch('/produk/{id}', 'update')->name('produk.update');
+        Route::delete('/produk/{id}', 'destroy')->name('produk.destroy');
+    });
+    // Declared last so the literal /produk/create segments win against {id}
+    Route::get('/produk/{id}', 'show')->whereNumber('id')->name('produk.show');
+});
+
+// Formatif (Blog): public browse, auth-restricted writes
+Route::controller(FormatifController::class)->group(function () {
+    Route::get('/formatif', 'index')->name('formatif.index');
+    Route::get('/formatif/published', 'published')->name('formatif.published');
+    Route::middleware('auth')->group(function () {
+        Route::get('/formatif/create', 'create')->name('formatif.create');
+        Route::post('/formatif', 'store')->name('formatif.store');
+        Route::get('/formatif/{id}/edit', 'edit')->name('formatif.edit');
+        Route::patch('/formatif/{id}', 'update')->name('formatif.update');
+        Route::delete('/formatif/{id}', 'destroy')->name('formatif.destroy');
+    });
+    // Declared last so the literal /formatif/create segments win against {id}
+    Route::get('/formatif/{id}', 'show')->whereNumber('id')->name('formatif.show');
+});
+
+// Kegiatan: public browse, auth-restricted writes
+Route::controller(KegiatanController::class)->group(function () {
+    Route::get('/kegiatan', 'index')->name('kegiatan.index');
+    Route::get('/kegiatan/{id}', 'show')->whereNumber('id')->name('kegiatan.show');
+    Route::middleware('auth')->group(function () {
+        Route::get('/kegiatan/create', 'create')->name('kegiatan.create');
+        Route::post('/kegiatan', 'store')->name('kegiatan.store');
+        Route::get('/kegiatan/{id}/edit', 'edit')->name('kegiatan.edit');
+        Route::patch('/kegiatan/{id}', 'update')->name('kegiatan.update');
+        Route::delete('/kegiatan/{id}', 'destroy')->name('kegiatan.destroy');
+    });
+});
+
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
+
+// Portal: Inventory management (auth required)
+Route::middleware('auth')->group(function () {
+    Route::controller(InventarisController::class)->prefix('inventaris')->name('inventaris.')->group(function () {
+        Route::get('/', 'index')->name('index');
+        Route::get('/create', 'create')->name('create');
+        Route::post('/', 'store')->name('store');
+        Route::get('/{id}/edit', 'edit')->name('edit');
+        Route::patch('/{id}', 'update')->name('update');
+        Route::delete('/{id}', 'destroy')->name('destroy');
+    });
+
+    Route::controller(PenyewaanAlatController::class)->prefix('penyewaan')->name('penyewaan.')->group(function () {
+        Route::get('/', 'index')->name('index');
+        Route::get('/create', 'create')->name('create');
+        Route::post('/', 'store')->name('store');
+        Route::post('/{id}/approve', 'approve')->name('approve');
+        Route::post('/{id}/reject', 'reject')->name('reject');
+        Route::post('/{id}/return', 'markReturned')->name('return');
+    });
+});
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
