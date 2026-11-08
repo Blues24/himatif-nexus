@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\DanusSHop\ProdukController;
 use App\Http\Controllers\Infokom\FormatifController;
 use App\Http\Controllers\Infokom\KegiatanController;
@@ -16,6 +17,10 @@ Route::get('/', function () {
 Route::get('/beranda', function () {
     return Inertia::render('Dashboard');
 });
+
+Route::get('/informasi', function () {
+    return Inertia::render('Informasi');
+})->name('informasi');
 
 // Danus Shop: public browse, auth-restricted writes
 Route::controller(ProdukController::class)->group(function () {
@@ -88,6 +93,23 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
+
+/*
+|--------------------------------------------------------------------------
+| Admin Routes
+|--------------------------------------------------------------------------
+*/
+
+Route::prefix('admin')->name('admin.')->group(function () {
+    Route::get('/', DashboardController::class)->name('dashboard');
+    Route::get('/dashboard', DashboardController::class)->name('dashboard.index');
+    Route::get('/shop', fn () => Inertia::render('Admin/DanusShop'))->name('shop.index');
+    Route::get('/formatif', fn () => Inertia::render('Admin/Formatif'))->name('formatif.index');
+    Route::get('/informasi', fn () => Inertia::render('Admin/Dashboard'))->name('informasi.index');
+    Route::get('/inventaris', fn () => Inertia::render('Admin/Inventaris'))->name('inventaris.index');
+    Route::get('/kegiatan', fn () => Inertia::render('Admin/Kegiatan'))->name('kegiatan.index');
+    Route::get('/hak-akses', fn () => Inertia::render('Admin/HakAkses'))->name('hak-akses.index');
 });
 
 require __DIR__.'/auth.php';

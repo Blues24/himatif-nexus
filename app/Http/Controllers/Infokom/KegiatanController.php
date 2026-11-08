@@ -19,7 +19,7 @@ class KegiatanController extends Controller
     {
         $status = $request->query('status');
 
-        return Inertia::render('Infokom/Kegiatan/Index', [
+        return Inertia::render('Kegiatan', [
             'kegiatans' => fn () => filled($status)
                 ? $this->service->byStatus($status)->items()
                 : $this->service->paginate()->items(),

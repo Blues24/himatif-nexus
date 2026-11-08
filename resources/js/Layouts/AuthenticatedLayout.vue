@@ -49,63 +49,32 @@ const showingNavigationDropdown = ref(false);
                         <nav
                             class="hidden md:flex flex-1 items-center justify-center space-x-6 lg:space-x-8"
                         >
-                            <!-- 1. Beranda (Aktif - Oranye) -->
+                            <!-- 1. Beranda -->
                             <Link
                                 :href="route('dashboard')"
-                                class="inline-flex items-center px-1 pt-1 text-sm font-bold text-orange-600 transition"
+                                class="inline-flex items-center px-1 pt-1 text-sm font-semibold transition"
+                                :class="route().current('dashboard') || route().current('beranda') ? 'font-bold text-orange-600' : 'text-slate-700 hover:text-orange-600'"
                             >
                                 Beranda
                             </Link>
 
-                            <!-- 2. Informasi Dropdown -->
-                            <div class="relative">
-                                <Dropdown align="left" width="48">
-                                    <template #trigger>
-                                        <button
-                                            type="button"
-                                            class="inline-flex items-center gap-1 px-1 pt-1 text-sm font-semibold text-slate-700 hover:text-orange-600 transition focus:outline-none"
-                                        >
-                                            <span>Informasi</span>
-                                            <svg class="h-4 w-4 text-slate-400" viewBox="0 0 20 20" fill="currentColor">
-                                                <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
-                                            </svg>
-                                        </button>
-                                    </template>
-                                    <template #content>
-                                        <DropdownLink :href="route('dashboard') + '#informasi'">
-                                            Formatif & Artikel
-                                        </DropdownLink>
-                                        <DropdownLink :href="route('dashboard') + '#layanan'">
-                                            Materi & Bank Soal
-                                        </DropdownLink>
-                                    </template>
-                                </Dropdown>
-                            </div>
+                            <!-- 2. Informasi (Direct Link, bukan Dropdown) -->
+                            <Link
+                                :href="route('informasi')"
+                                class="inline-flex items-center px-1 pt-1 text-sm font-semibold transition"
+                                :class="route().current('informasi') ? 'font-bold text-orange-600' : 'text-slate-700 hover:text-orange-600'"
+                            >
+                                Informasi
+                            </Link>
 
-                            <!-- 3. Kegiatan Dropdown -->
-                            <div class="relative">
-                                <Dropdown align="left" width="48">
-                                    <template #trigger>
-                                        <button
-                                            type="button"
-                                            class="inline-flex items-center gap-1 px-1 pt-1 text-sm font-semibold text-slate-700 hover:text-orange-600 transition focus:outline-none"
-                                        >
-                                            <span>Kegiatan</span>
-                                            <svg class="h-4 w-4 text-slate-400" viewBox="0 0 20 20" fill="currentColor">
-                                                <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
-                                            </svg>
-                                        </button>
-                                    </template>
-                                    <template #content>
-                                        <DropdownLink :href="route('dashboard') + '#agenda'">
-                                            Agenda Terdekat
-                                        </DropdownLink>
-                                        <DropdownLink :href="route('dashboard') + '#agenda'">
-                                            Workshop & Pelatihan
-                                        </DropdownLink>
-                                    </template>
-                                </Dropdown>
-                            </div>
+                            <!-- 3. Kegiatan (Direct Link, bukan Dropdown) -->
+                            <Link
+                                :href="route('kegiatan.index')"
+                                class="inline-flex items-center px-1 pt-1 text-sm font-semibold transition"
+                                :class="route().current('kegiatan*') ? 'font-bold text-orange-600' : 'text-slate-700 hover:text-orange-600'"
+                            >
+                                Kegiatan
+                            </Link>
 
                             <!-- 4. Lainnya Dropdown -->
                             <div class="relative">
@@ -127,9 +96,6 @@ const showingNavigationDropdown = ref(false);
                                         </DropdownLink>
                                         <DropdownLink :href="route('dashboard') + '#layanan'">
                                             Merch Shop
-                                        </DropdownLink>
-                                        <DropdownLink :href="route('dashboard') + '#layanan'">
-                                            Iuran Kas
                                         </DropdownLink>
                                     </template>
                                 </Dropdown>
@@ -250,11 +216,14 @@ const showingNavigationDropdown = ref(false);
                     <div class="space-y-1 pb-3 pt-2">
                         <ResponsiveNavLink
                             :href="route('dashboard')"
-                            :active="route().current('dashboard')"
+                            :active="route().current('dashboard') || route().current('beranda')"
                         >
                             Beranda
                         </ResponsiveNavLink>
-                        <ResponsiveNavLink :href="route('dashboard') + '#informasi'">
+                        <ResponsiveNavLink
+                            :href="route('informasi')"
+                            :active="route().current('informasi')"
+                        >
                             Informasi
                         </ResponsiveNavLink>
                         <ResponsiveNavLink :href="route('dashboard') + '#agenda'">

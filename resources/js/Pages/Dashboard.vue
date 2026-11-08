@@ -121,69 +121,76 @@ onUnmounted(() => {
     stopAutoScroll();
 });
 
-// Data Layanan HIMATIF (Fitur Yang Tersedia)
+// Data Layanan HIMATIF (Fitur Yang Tersedia - Sesuai Mockup Referensi)
 const himatifServices = [
     {
-        category: 'INVENTARIS HIMPUNAN',
-        title: 'Peminjaman Inventaris',
-        desc: 'Ajukan permohonan peminjaman HT, Kamera dan Inventaris HIMATIF lainnya.',
-        btnText: 'Booking Sekarang',
-        href: '#inventaris',
-        iconType: 'inventory',
+        category: 'MANAJEMEN SEKRETARIAT',
+        title: 'Penyewaan Inventaris',
+        desc: 'Layanan penyewaan proyektor, sound system, kamera, hingga perlengkapan kepanitiaan kampus.',
+        btnText: 'Ajukan Penyewaan',
+        href: route('penyewaan.index'),
+        iconType: 'box',
     },
     {
-        category: 'OFFICIAL MERCHANDISE',
+        category: 'DANA USAHA (DANUS)',
         title: 'HIMATIF – Merch Shop',
-        desc: 'Pesan PDH resmi jurusan, hoodie angkatan, lanyard eksklusif HIMA, tech stickers, dan kaos edisi khusus Techfest.',
+        desc: 'Katalog kemeja PDH resmi, lanyard, kaos, stiker, dan aksesoris identitas mahasiswa Teknik Informatika.',
         btnText: 'Kunjungi Katalog',
-        href: '#shop',
-        iconType: 'shop',
+        href: route('produk.index'),
+        iconType: 'bag',
     },
     {
-        category: 'PRESTASI & DELEGASI',
+        category: 'KOMPETISI & PRESTASI',
         title: 'Info Seputar Lomba',
-        desc: 'Pusat informasi lomba yang bisa diikuti oleh Mahasiswa Teknik Informatika.',
-        btnText: 'Lihat Kompetisi',
-        href: '#lomba',
-        iconType: 'trophy',
+        desc: 'Kurasi informasi lomba Hackathon, UI/UX, Competitive Programming, dan pendampingan delegasi tim mahasiswa.',
+        btnText: 'Lihat Info Lomba',
+        href: route('informasi'),
+        iconType: 'sparkles',
     },
     {
-        category: 'ARSIP AKADEMIK',
-        title: 'Materi dan Bank Soal Study Club',
-        desc: 'Akses modul praktikum Algoritma, Basis Data, Jaringan Komputer, hingga arsip soal UTS/UAS 5 tahun terakhir.',
-        btnText: 'Lihat Materi',
-        href: '#materi',
-        iconType: 'academic',
+        category: 'EDUKASI & LITERASI',
+        title: 'Materi & Bank Soal Study Club',
+        desc: 'Akses gratis modul pembelajaran pemrograman, arsip soal UTS/UAS, dan rekaman materi Study Club HIMATIF.',
+        btnText: 'Buka Modul Belajar',
+        href: route('informasi'),
+        iconType: 'book',
     },
 ];
 
-// Data Aktivitas / Program Kerja Terkini
+// Data Aktivitas / Program Kerja Terkini (4 Kolom Sesuai Mockup)
 const activities = [
     {
-        title: 'Workshop Laravel 13: Laravel 13 Integrated with AI',
-        desc: 'Pelatihan intensif terkait Laravel 13 yang digabungkan dengan fitur AI',
-        date: '20 Oktober 2026',
-        location: 'GSC Polindra',
-        status: 'Selesai Terlaksana',
-        image: '/images/aktivitas-workshop.png',
-    },
-    {
-        title: 'ICONFEST 2026: Hackathon & UI/UX',
-        desc: 'Ajang adu kreasi solusi software berskala nasional dengan total hadiah 45 Juta..',
-        date: '15 Nov 2026',
-        location: 'Politeknik Negeri Indramayu',
-        status: 'Sisa 8 Hari',
+        title: 'Seminar Teknologi: The Rise of AI & Modern Software Engineering',
+        desc: 'Seminar nasional mengupas tren AI, cloud architecture, dan strategi karir tech.',
+        date: '15 Des 2026',
+        location: 'Auditorium POLINDRA',
+        status: 'Akan Datang',
         image: '/images/aktivitas-iconfest.png',
     },
     {
-        title: 'Informatics Care: Donor Darah & Donasi Laptop...',
-        desc: 'Kolaborasi HIMATIF bersama Kampus',
-        date: '02 Des 2026',
-        location: 'Pleno POLINDRA',
+        title: 'Workshop Hands-On: Web Development & Cloud Deployment',
+        desc: 'Pelatihan intensif live-coding web modern dan deployment praktis server cloud.',
+        date: '22 Des 2026',
+        location: 'Lab Komputer 2',
         status: 'Akan Datang',
+        image: '/images/aktivitas-workshop.png',
+    },
+    {
+        title: 'IT Cast: Podcast & Tech Talk Series Mahasiswa',
+        desc: 'Bincang santai inspiratif seputar tips magang industri software dan tech career.',
+        date: '12 Okt 2026',
+        location: 'YouTube HIMATIF',
+        status: 'Selesai Terlaksana',
         image: '/images/aktivitas-itcast.png',
     },
-    
+    {
+        title: 'LKMM-D: Latihan Kepemimpinan Mahasiswa Dasar 2026',
+        desc: 'Kaderisasi kepemimpinan formal, manajemen organisasi, dan perancangan proker.',
+        date: '18 - 20 Okt 2026',
+        location: 'Kampus POLINDRA',
+        status: 'Selesai Terlaksana',
+        image: '/images/galeri-3.png',
+    },
 ];
 </script>
 
@@ -251,12 +258,12 @@ const activities = [
                                     <span>Jelajahi Program</span>
                                     <span>→</span>
                                 </a>
-                                <a
-                                    href="#agenda"
+                                <Link
+                                    :href="route('kegiatan.index')"
                                     class="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-xs sm:text-sm text-slate-800 bg-white hover:bg-slate-50 border border-slate-200/90 shadow-xs hover:shadow transition transform active:scale-95"
                                 >
                                     <span>📅 Daftar Kegiatan</span>
-                                </a>
+                                </Link>
                             </div>
                         </div>
 
@@ -487,13 +494,13 @@ const activities = [
                                 Program Kerja & Informasi Terkini
                             </h2>
                         </div>
-                        <a
-                            href="#agenda"
+                        <Link
+                            :href="route('kegiatan.index')"
                             class="inline-flex items-center gap-1.5 text-xs sm:text-sm font-bold text-[#F95700] hover:text-orange-700 transition group"
                         >
                             <span>Lihat Semua Agenda</span>
                             <span class="group-hover:translate-x-1 transition-transform">→</span>
-                        </a>
+                        </Link>
                     </div>
 
                     <!-- 4 Cards Grid -->
@@ -557,8 +564,8 @@ const activities = [
                         </h2>
                     </div>
 
-                    <!-- 3 Kolom Grid untuk Layanan HIMATIF -->
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- 4 Kolom Grid untuk Layanan HIMATIF (Sesuai Mockup Referensi) -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                         <div
                             v-for="service in himatifServices"
                             :key="service.title"
@@ -567,78 +574,75 @@ const activities = [
                             <div>
                                 <!-- Kotak Ikon Peach/Oranye -->
                                 <div class="w-12 h-12 rounded-2xl bg-orange-100/70 border border-orange-200/50 flex items-center justify-center mb-5 group-hover:scale-110 transition duration-300">
-                                    <!-- Icon 1: Inventaris (Device / Console) -->
+                                    <!-- Icon 1: Manajemen Sekretariat (Isometric Box / Cube) -->
                                     <svg
-                                        v-if="service.iconType === 'inventory'"
+                                        v-if="service.iconType === 'box'"
                                         class="w-6 h-6 text-[#F95700]"
                                         fill="none"
                                         viewBox="0 0 24 24"
                                         stroke="currentColor"
                                     >
-                                        <rect x="3" y="6" width="18" height="12" rx="2" stroke-width="2"/>
-                                        <circle cx="15.5" cy="12" r="2" stroke-width="2"/>
-                                        <line x1="9" y1="9" x2="9" y2="15" stroke-width="2"/>
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
                                     </svg>
 
-                                    <!-- Icon 2: Official Merchandise (Shop) -->
+                                    <!-- Icon 2: Dana Usaha (Shopping Bag) -->
                                     <svg
-                                        v-else-if="service.iconType === 'shop'"
+                                        v-else-if="service.iconType === 'bag'"
                                         class="w-6 h-6 text-[#F95700]"
                                         fill="none"
                                         viewBox="0 0 24 24"
                                         stroke="currentColor"
                                     >
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9l1-5h16l1 5M3 9a3 3 0 006 0 3 3 0 006 0 3 3 0 006 0M3 9v11a1 1 0 001 1h16a1 1 0 001-1V9m-7 11v-6h-4v6"/>
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
                                     </svg>
 
-                                    <!-- Icon 3: Prestasi & Delegasi (Trophy) -->
+                                    <!-- Icon 3: Kompetisi & Prestasi (Sparkles) -->
                                     <svg
-                                        v-else-if="service.iconType === 'trophy'"
+                                        v-else-if="service.iconType === 'sparkles'"
                                         class="w-6 h-6 text-[#F95700]"
                                         fill="none"
                                         viewBox="0 0 24 24"
                                         stroke="currentColor"
                                     >
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3h14v3a7 7 0 01-14 0V3zM5 5H2v2a4 4 0 004 4h1M19 5h3v2a4 4 0 01-4 4h-1M12 14v4m-4 3h8"/>
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
                                     </svg>
 
-                                    <!-- Icon 4: Arsip Akademik (Folder with Star) -->
+                                    <!-- Icon 4: Edukasi & Literasi (Open Book) -->
                                     <svg
-                                        v-else-if="service.iconType === 'academic'"
+                                        v-else-if="service.iconType === 'book'"
                                         class="w-6 h-6 text-[#F95700]"
                                         fill="none"
                                         viewBox="0 0 24 24"
                                         stroke="currentColor"
                                     >
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/>
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 11l.9 1.8 2 .3-1.5 1.4.3 2-1.7-.9-1.7.9.3-2-1.5-1.4 2-.3.9-1.8z"/>
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
                                     </svg>
                                 </div>
 
                                 <!-- Kategori Tag Kecil Oranye -->
-                                <span class="text-[11px] font-bold tracking-wider text-[#F95700] uppercase block">
+                                <span class="text-[11px] font-black tracking-wider text-[#F95700] uppercase block">
                                     {{ service.category }}
                                 </span>
 
                                 <!-- Judul Layanan -->
-                                <h3 class="text-base sm:text-lg font-black text-slate-900 group-hover:text-[#F95700] transition mt-1.5">
+                                <h3 class="text-base sm:text-lg font-black text-slate-900 group-hover:text-[#F95700] transition mt-1.5 leading-snug">
                                     {{ service.title }}
                                 </h3>
 
                                 <!-- Deskripsi Layanan -->
-                                <p class="text-xs sm:text-sm text-slate-600 mt-2 leading-relaxed">
+                                <p class="text-xs sm:text-[13px] text-slate-600 mt-2 leading-relaxed">
                                     {{ service.desc }}
                                 </p>
                             </div>
 
                             <!-- Tombol / Tautan Aksi Bawah -->
-                            <a
+                            <Link
                                 :href="service.href"
-                                class="mt-6 inline-flex items-center gap-2 text-xs sm:text-sm font-bold text-slate-900 group-hover:text-[#F95700] transition select-none"
+                                class="mt-6 inline-flex items-center gap-1.5 text-xs sm:text-sm font-bold text-slate-900 group-hover:text-[#F95700] transition select-none"
                             >
                                 <span>{{ service.btnText }}</span>
                                 <span class="group-hover:translate-x-1 transition-transform">→</span>
-                            </a>
+                            </Link>
                         </div>
                     </div>
                 </div>
