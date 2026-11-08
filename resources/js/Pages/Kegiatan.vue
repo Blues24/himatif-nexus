@@ -347,17 +347,17 @@ const downloadCalendarICS = () => {
                         </button>
                     </div>
 
-                    <!-- 3. Grid Kartu Program Kerja (Responsive 4 Kolom) -->
-                    <div v-if="filteredActivities.length > 0" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <!-- 3. Grid Kartu Program Kerja (Ukuran Presisi Selaras dengan Halaman Informasi) -->
+                    <div v-if="filteredActivities.length > 0" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 sm:gap-6">
                         <div
                             v-for="item in filteredActivities"
                             :key="item.id"
-                            class="bg-white rounded-3xl border border-slate-200/90 shadow-xs hover:shadow-xl hover:border-orange-300 transition-all duration-300 overflow-hidden flex flex-col justify-between group"
+                            class="bg-white rounded-2xl border border-slate-200/90 shadow-xs hover:shadow-xl hover:border-orange-300 transition-all duration-300 overflow-hidden flex flex-col justify-between group"
                         >
                             <div>
                                 <!-- Thumbnail Gambar dengan Badge Status & Kategori -->
                                 <div class="p-3 pb-0">
-                                    <div class="relative overflow-hidden rounded-2xl aspect-[16/10] bg-gradient-to-br from-slate-800 to-slate-900 flex items-center justify-center">
+                                    <div class="relative overflow-hidden rounded-xl aspect-[16/10] bg-gradient-to-br from-slate-800 to-slate-900 flex items-center justify-center">
                                         <img
                                             v-if="item.image"
                                             :src="item.image"
@@ -374,7 +374,7 @@ const downloadCalendarICS = () => {
                                         <!-- Badge Status di Atas Kiri -->
                                         <div class="absolute top-2.5 left-2.5">
                                             <span
-                                                class="inline-block px-2.5 py-1 rounded-full text-[10px] font-black uppercase tracking-wider shadow-sm"
+                                                class="inline-block px-2.5 py-1 rounded-full text-[10px] sm:text-[11px] font-black uppercase tracking-wider shadow-sm"
                                                 :class="item.status === 'akan_datang' ? 'bg-[#F95700] text-white' : 'bg-emerald-600 text-white'"
                                             >
                                                 {{ item.statusLabel }}
@@ -383,7 +383,7 @@ const downloadCalendarICS = () => {
 
                                         <!-- Badge Kategori di Atas Kanan -->
                                         <div class="absolute top-2.5 right-2.5">
-                                            <span class="inline-block px-2.5 py-1 rounded-full text-[10px] font-bold bg-slate-900/80 backdrop-blur-xs text-white border border-white/20">
+                                            <span class="inline-block px-2.5 py-1 rounded-full text-[10px] sm:text-[11px] font-bold bg-slate-900/80 backdrop-blur-xs text-white border border-white/20">
                                                 {{ item.category }}
                                             </span>
                                         </div>
@@ -391,9 +391,9 @@ const downloadCalendarICS = () => {
                                 </div>
 
                                 <!-- Konten Teks -->
-                                <div class="p-5 space-y-2.5 text-left">
+                                <div class="p-4 sm:p-5 space-y-2">
                                     <!-- Tanggal & Lokasi -->
-                                    <div class="space-y-1 text-[11px] font-semibold text-slate-500">
+                                    <div class="space-y-0.5 text-[11px] font-semibold text-slate-500">
                                         <div class="flex items-center gap-1.5 text-orange-600">
                                             <span>📅</span>
                                             <span>{{ item.date }}</span>
@@ -405,7 +405,7 @@ const downloadCalendarICS = () => {
                                     </div>
 
                                     <!-- Judul Kegiatan -->
-                                    <h3 class="text-base font-black text-slate-900 group-hover:text-[#F95700] transition line-clamp-2 leading-snug">
+                                    <h3 class="text-sm sm:text-base font-bold text-slate-900 group-hover:text-[#F95700] transition line-clamp-2 leading-snug">
                                         {{ item.title }}
                                     </h3>
 
@@ -415,8 +415,8 @@ const downloadCalendarICS = () => {
                                     </p>
 
                                     <!-- Sasaran Target -->
-                                    <div class="pt-1">
-                                        <span class="text-[10px] font-bold px-2 py-0.5 rounded-md bg-slate-100 text-slate-600 inline-block">
+                                    <div class="pt-0.5">
+                                        <span class="text-[10px] font-bold px-2 py-0.5 rounded-md bg-slate-100 text-slate-600 inline-block truncate max-w-full">
                                             🎯 {{ item.target }}
                                         </span>
                                     </div>
@@ -424,7 +424,7 @@ const downloadCalendarICS = () => {
                             </div>
 
                             <!-- Footer Aksi Kartu -->
-                            <div class="px-5 pb-5 pt-2 flex items-center justify-between border-t border-slate-100">
+                            <div class="px-4 sm:px-5 pb-4 sm:pb-5 pt-1 flex items-center justify-between border-t border-slate-100">
                                 <button
                                     type="button"
                                     @click="openDetailModal(item)"

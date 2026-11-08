@@ -3,6 +3,15 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+    a,
+    a:hover,
+    a:focus,
+    a:active {
+        text-decoration: none !important;
+    }
+}
+
 @layer utilities {
     /* Sembunyikan scrollbar untuk Chrome, Safari, Edge, dan Opera */
     .no-scrollbar::-webkit-scrollbar {
