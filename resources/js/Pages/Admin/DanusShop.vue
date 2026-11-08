@@ -143,10 +143,10 @@ const verifyOrder = (order) => {
 </script>
 
 <template>
-  <Head title="Danus / Shop - Panel Admin" />
+  <Head title="Shop - Panel Admin" />
 
   <AdminLayout
-    title="Danus / Shop"
+    title="Shop"
     subtitle="Kelola produk merchandise resmi HIMATIF dan verifikasi pesanan."
   >
     <!-- Tombol Kanan Atas Header -->
