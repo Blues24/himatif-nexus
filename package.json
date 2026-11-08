@@ -23,8 +23,12 @@
         "@laravel/multiplex": "^0.4.1"
     },
     "overrides": {
-	"braces": "^3.0.3",
-  	"postcss-selector-parser": "^7.1.6",
-  	"shell-quote": "^1.8.2"
+        "braces": "^3.0.3",
+        "postcss-selector-parser": "^7.1.6",
+        "shell-quote": "^1.8.2"
+    },
+    "dependencies": {
+        "bootstrap": "^5.3.8",
+        "bootstrap-icons": "^1.13.2"
     }
 }
