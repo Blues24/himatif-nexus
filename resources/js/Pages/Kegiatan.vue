@@ -57,23 +57,6 @@ const masterActivities = [
         rundown: '08:30 Registrasi Peserta • 09:00 Keynote Session AI & Cloud • 11:00 Panel Talk Karir Tech • 12:30 Sesi Tanya Jawab & Doorprize',
         actionText: 'Daftar Seminar',
     },
-    {
-        id: 2,
-        title: 'Workshop Hands-On: Fullstack Web Development & Cloud Deployment',
-        category: 'Workshop & Pelatihan',
-        status: 'akan_datang',
-        statusLabel: 'Akan Datang',
-        statusBadgeClass: 'bg-amber-500 text-white',
-        date: '22 Desember 2026',
-        time: '09:00 - 15:30 WIB',
-        location: 'Laboratorium Komputer 2 POLINDRA',
-        image: '/images/aktivitas-workshop.png',
-        target: 'Mahasiswa Teknik Informatika',
-        desc: 'Pelatihan intensif praktik langsung (hands-on) membangun aplikasi web modern, merancang RESTful API, integrasi basis data, dan konfigurasi otomatisasi deployment ke server cloud berbasis staging.',
-        pic: 'Departemen Pendidikan & Pelatihan (0877-6543-2109)',
-        rundown: '09:00 Fundamental Modern Web Stack • 10:30 Sesi Live Coding Hands-On • 13:30 Cloud Deployment & CI/CD • 15:00 Evaluasi & Sertifikat',
-        actionText: 'Daftar Workshop',
-    },
 
     // 2. Program Kerja yang Sudah Terlaksana (Selesai Terlaksana)
     {
@@ -176,16 +159,6 @@ const downloadCalendarICS = () => {
         'LOCATION:Auditorium Utama POLINDRA',
         'STATUS:CONFIRMED',
         'END:VEVENT',
-        'BEGIN:VEVENT',
-        'UID:workshop-hands-on-2026@himatif.polindra.ac.id',
-        'DTSTAMP:20261109T000000Z',
-        'DTSTART:20261222T020000Z',
-        'DTEND:20261222T083000Z',
-        'SUMMARY:Workshop Hands-On Web Development & Cloud HIMATIF 2026',
-        'DESCRIPTION:Pelatihan praktis live-coding web modern & cloud deployment.',
-        'LOCATION:Laboratorium Komputer 2 POLINDRA',
-        'STATUS:CONFIRMED',
-        'END:VEVENT',
         'END:VCALENDAR'
     ].join('\r\n');
 
@@ -231,7 +204,7 @@ const downloadCalendarICS = () => {
 
                             <!-- Deskripsi Singkat -->
                             <p class="text-xs sm:text-sm text-slate-300 font-normal leading-relaxed max-w-xl">
-                                Ikuti berbagai rangkaian seminar teknologi, pelatihan praktis workshop, kaderisasi LKMM-D, pengenalan PKPS, hingga bincang inspiratif IT Cast yang diselenggarakan oleh HIMATIF POLINDRA.
+                                Ikuti berbagai rangkaian seminar teknologi nasional, kaderisasi LKMM-D, pengenalan PKPS, hingga bincang inspiratif IT Cast yang diselenggarakan oleh HIMATIF POLINDRA.
                             </p>
 
                             <!-- Tombol CTA & Status Terdekat -->
@@ -255,22 +228,29 @@ const downloadCalendarICS = () => {
                             <div class="bg-[#212430]/90 backdrop-blur-md border border-slate-700/60 rounded-2xl p-5 sm:p-6 shadow-xl text-left space-y-3">
                                 <div>
                                     <span class="text-[11px] font-black tracking-widest text-[#F95700] uppercase block">
-                                        SOROTAN BULAN INI
+                                        SOROTAN KEGIATAN TERDEKAT
                                     </span>
                                     <h3 class="text-lg font-black text-white mt-0.5">
-                                        SEMINAR & WORKSHOP 2026
+                                        SEMINAR TEKNOLOGI 2026
                                     </h3>
                                 </div>
 
                                 <!-- Baris Sorotan -->
                                 <div class="divide-y divide-white/10 text-xs sm:text-[13px] pt-1">
                                     <div class="py-2.5 flex items-center justify-between text-slate-200">
-                                        <span class="font-medium">Seminar Teknologi</span>
+                                        <span class="font-medium">Jadwal Acara</span>
                                         <span class="font-bold text-orange-400">15 Des 2026</span>
                                     </div>
                                     <div class="py-2.5 flex items-center justify-between text-slate-200">
-                                        <span class="font-medium">Workshop Fullstack Web</span>
-                                        <span class="font-bold text-orange-400">22 Des 2026</span>
+                                        <span class="font-medium">Lokasi</span>
+                                        <span class="font-bold text-slate-300">Auditorium POLINDRA</span>
+                                    </div>
+                                    <div class="py-2.5 flex items-center justify-between text-slate-200">
+                                        <span class="font-medium">Status Pendaftaran</span>
+                                        <span class="inline-flex items-center gap-1.5 font-bold text-emerald-400">
+                                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                                            Segera Dibuka
+                                        </span>
                                     </div>
                                 </div>
 
