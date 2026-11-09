@@ -113,11 +113,13 @@ Route::prefix('admin')->name('admin.')->group(function () {
 Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('/', DashboardController::class)->name('dashboard');
 
-    // Placeholder routes for sidebar navigation
-    Route::get('/shop', fn () => Inertia::render('Admin/Dashboard'))->name('shop.index');
-    Route::get('/informasi', fn () => Inertia::render('Admin/Dashboard'))->name('informasi.index');
-    Route::get('/inventaris', fn () => Inertia::render('Admin/Dashboard'))->name('inventaris.index');
-    Route::get('/kegiatan', fn () => Inertia::render('Admin/Dashboard'))->name('kegiatan.index');
+Route::prefix('admin')->name('admin.')->group(function () {
+    Route::get('/dashboard', fn () => Inertia::render('Admin/Dashboard'))->name('dashboard.index');
+    Route::get('/shop', fn () => Inertia::render('Admin/DanusShop'))->name('shop.index');
+    Route::get('/formatif', fn () => Inertia::render('Admin/Formatif'))->name('formatif.index');
+    Route::get('/inventaris', fn () => Inertia::render('Admin/Inventaris'))->name('inventaris.index');
+    Route::get('/kegiatan', fn () => Inertia::render('Admin/Kegiatan'))->name('kegiatan.index');
+    Route::get('/hak-akses', fn () => Inertia::render('Admin/HakAkses'))->name('hak-akses.index');
 });
 
 require __DIR__.'/auth.php';

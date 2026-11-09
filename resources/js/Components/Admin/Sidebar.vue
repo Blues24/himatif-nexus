@@ -8,7 +8,7 @@ const user = computed(() => page.props.auth.user);
 const menuItems = [
     {
         label: 'Dashboard',
-        routeName: 'admin.dashboard',
+        routeName: 'admin.dashboard.index',
         icon: 'dashboard',
     },
     {
@@ -21,7 +21,7 @@ const menuItems = [
     },
     {
         label: 'Informasi',
-        routeName: 'admin.informasi.index',
+        routeName: 'admin.formatif.index',
         icon: 'informasi',
     },
     {
@@ -43,7 +43,7 @@ function isActive(routeName) {
 </script>
 
 <template>
-    <aside class="fixed inset-y-0 left-0 z-30 flex w-64 flex-col bg-gray-900">
+    <aside class="relative z-30 flex w-full flex-col bg-gray-900 md:fixed md:inset-y-0 md:left-0 md:w-64">
         <!-- Logo -->
         <div class="flex items-center gap-3 px-6 py-5">
             <div class="flex h-10 w-10 items-center justify-center rounded-full bg-teal-500/20">
