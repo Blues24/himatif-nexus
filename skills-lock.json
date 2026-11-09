@@ -37,6 +37,12 @@
       "skillPath": "skills/antislop-ui/SKILL.md",
       "computedHash": "4cb1cb91997ca9849438d1bb1a5194626e1255a1eaec59301fef174a3dee9c90"
     },
+    "code-review-skill": {
+      "source": "awesome-skills/code-review-skill",
+      "sourceType": "github",
+      "skillPath": "SKILL.md",
+      "computedHash": "b4d7f9ac724de8b6df3ffbbc584a69f4af20db001d1e0b5960c5b672333372b2"
+    },
     "frontend-design": {
       "source": "anthropics/skills",
       "sourceType": "github",

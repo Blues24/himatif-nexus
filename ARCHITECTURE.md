@@ -28,6 +28,7 @@ Versions below reflect what is actually declared in `composer.json` and `package
 | **Styling & UI** | `tailwindcss` + `@tailwindcss/forms` | ^3.2 (v3 directives in `resources/css/app.css`) | Installed | Utility-first CSS styling |
 | **Build Tool** | `vite` + `laravel-vite-plugin` | ^8.0 / ^3.1 | Installed | Asset bundling & HMR |
 | **RBAC Engine** | **Custom** (tabel `roles` + relasi `User::role()`) | — | **Implemented** | Role & permission management via `hasRole()`, `isBph()` methods |
+| **Notification Engine** | **SSE (Server-Sent Events)** — `StreamedResponse` + Cache/Redis pub-sub | — | **Planned (T6)** | One-way push to browser: `kegiatan_created`, `kegiatan_updated`, `informasi_published` |
 | **Database Engine** | **PostgreSQL** | 18.x / 17.x | **Target** | Relational database engine |
 
 ---
@@ -531,6 +532,88 @@ himatif-nexus/
 
 ---
 
+## 12. SSE Notification System (Server-Sent Events)
+
+### 12.1 Architecture Decision
+
+One-way, backend-pushed notification channel scoped exclusively to **Kegiatan** (Activities) and **Informasi/Formatif** (Articles). Triggered only when new content or status changes occur.
+
+| Property | Value |
+| :--- | :--- |
+| Protocol | HTTP long-lived stream (`text/event-stream`) |
+| Direction | **Server → Client only** (no client push back) |
+| Transport | `Symfony\Component\HttpFoundation\StreamedResponse` (Laravel native) |
+| External Dep | **None** — zero additional composer/npm packages |
+| Fallback store | Redis Pub/Sub (`REDIS_HOST=127.0.0.1` up) or Cache array fallback |
+| Heartbeat | 2s comment line (`: keep-alive`) to prevent proxy timeout |
+
+### 12.2 Endpoint
+
+`GET /notifications/stream` (auth-protected)
+
+Headers:
+```
+Content-Type: text/event-stream
+Cache-Control: no-cache
+Connection: keep-alive
+X-Accel-Buffering: no   # bypass Nginx buffering
+```
+
+### 12.3 Event Types (Scope)
+
+| Event | Trigger | Source |
+| :--- | :--- | :--- |
+| `kegiatan_created` | New activity created | `KegiatanService::afterCreate()` |
+| `kegiatan_updated` | Activity `status_kegiatan` changed | `KegiatanService::afterUpdate()` |
+| `informasi_published` | New article published | `FormatifService::afterCreate()` |
+
+### 12.4 Service Hook Integration
+
+`BaseService` already provides `afterCreate()` / `afterUpdate()` hooks — notification logic stays inside Services (SRP §7.1), **not** controllers.
+
+```php
+// app/Services/KegiatanService.php
+protected function afterCreate(object $record, array $data): void
+{
+    SseNotificationService::publish(
+        type: 'kegiatan_created',
+        title: 'Kegiatan Baru',
+        payload: ['id' => $record->kegiatan_id, 'nama' => $record->nama_kegiatan]
+    );
+}
+
+protected function afterUpdate(object $record, array $data): void
+{
+    if (isset($data['status_kegiatan']) && $record->getOriginal('status_kegiatan') !== $data['status_kegiatan']) {
+        SseNotificationService::publish(
+            type: 'kegiatan_updated',
+            title: 'Status Kegiatan Diperbarui',
+            payload: ['id' => $record->kegiatan_id, 'status' => $data['status_kegiatan']]
+        );
+    }
+}
+```
+
+### 12.5 Client
+
+```js
+// resources/js/Composables/useNotifications.js
+const es = new EventSource('/notifications/stream');
+es.addEventListener('kegiatan_created',       (e) => push(JSON.parse(e.data)));
+es.addEventListener('kegiatan_updated',       (e) => push(JSON.parse(e.data)));
+es.addEventListener('informasi_published',  (e) => push(JSON.parse(e.data)));
+```
+
+### 12.6 File Plan
+
+| File | Purpose |
+| :--- | :--- |
+| `app/Http/Controllers/NotificationStreamController.php` | StreamedResponse SSE endpoint |
+| `app/Services/SseNotificationService.php` | `publish(type, title, payload)` — Redis pub-sub / Cache fallback |
+| `app/Http/Middleware/EnsureSseAuth.php` | Guard the stream route |
+
+---
+
 ## 13. Role Development Triggers
 
 Trigger keywords untuk memfokuskan AI agent ke context tertentu. Gunakan trigger ini di awal prompt untuk memberitahu AI role mana yang sedang dikerjakan.
@@ -587,6 +670,7 @@ AI agent akan auto-detect context dari:
 
 | Version | Date | Changes |
 | :--- | :--- | :--- |
+| 1.3 | 2026-11-09 | Added §12 SSE Notification System (Server-Sent Events) for Kegiatan & Informasi — one-way, zero external dep, `StreamedResponse` + Redis pub-sub/Cache fallback |
 | 1.2 | 2026-10-21 | Added §13 Role Development Triggers (@shop, @infokom, @portal, @admin, @frontend, @backend) |
 | 1.1 | 2026-10-21 | Fixed: PHP version (8.5), RBAC (custom not Spatie), migration status (all present), table names (singular), controller status (implemented vs stub) |
 | 1.0 | 2026-10-12 | Initial architecture documentation |
