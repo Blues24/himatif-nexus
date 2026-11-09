@@ -7,6 +7,7 @@ use App\Http\Controllers\Infokom\KegiatanController;
 use App\Http\Controllers\Portal\InventarisController;
 use App\Http\Controllers\Portal\PenyewaanAlatController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Middleware\EnsureAdminRole;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -93,7 +94,7 @@ Route::middleware('auth')->group(function () {
 
 /*
  |--------------------------------------------------------------------------
-| Admin Routes
+ | Admin Routes
  |--------------------------------------------------------------------------
 */
 
