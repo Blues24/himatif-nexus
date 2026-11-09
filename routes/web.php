@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controller\Admin\DashboardController;
+use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\DanusSHop\ProdukController;
 use App\Http\Controllers\Infokom\FormatifController;
 use App\Http\Controllers\Infokom\KegiatanController;
@@ -49,14 +49,14 @@ Route::controller(FormatifController::class)->group(function () {
 
 // Kegiatan: public browse, auth-restricted writes
 Route::controller(KegiatanController::class)->group(function () {
-    Route::get('/kegiatan', 'index')->name('kegiatan.index');
-    Route::get('/kegiatan/{id}', 'show')->whereNumber('id')->name('kegiatan.show');
+    Route::get('/kegain', 'index')->name('kegain.index');
+    Route::get('/kegain/{id}', 'show')->whereNumber('id')->name('kegain.show');
     Route::middleware('auth')->group(function () {
-        Route::get('/kegiatan/create', 'create')->name('kegiatan.create');
-        Route::post('/kegiatan', 'store')->name('kegiatan.store');
-        Route::get('/kegiatan/{id}/edit', 'edit')->name('kegiatan.edit');
-        Route::patch('/kegiatan/{id}', 'update')->name('kegiatan.update');
-        Route::delete('/kegiatan/{id}', 'destroy')->name('kegiatan.destroy');
+        Route::get('/kegain/create', 'create')->name('kegain.create');
+        Route::post('/kegain', 'store')->name('kegain.store');
+        Route::get('/kegain/{id}/edit', 'edit')->name('kegain.edit');
+        Route::patch('/kegain/{id}', 'update')->name('kegain.update');
+        Route::delete('/kegain/{id}', 'destroy')->name('kegain.destroy');
     });
 });
 
@@ -92,35 +92,18 @@ Route::middleware('auth')->group(function () {
 });
 
 /*
-|--------------------------------------------------------------------------
+ |--------------------------------------------------------------------------
 | Admin Routes
-|--------------------------------------------------------------------------
+ |--------------------------------------------------------------------------
 */
 
-Route::prefix('admin')->name('admin.')->group(function () {
-    Route::get('/dashboard', fn () => Inertia::render('Admin/Dashboard'))->name('dashboard.index');
-    Route::get('/shop', fn () => Inertia::render('Admin/DanusShop'))->name('shop.index');
-    Route::get('/formatif', fn () => Inertia::render('Admin/Formatif'))->name('formatif.index');
-    Route::get('/inventaris', fn () => Inertia::render('Admin/Inventaris'))->name('inventaris.index');
-    Route::get('/kegiatan', fn () => Inertia::render('Admin/Kegiatan'))->name('kegiatan.index');
-    Route::get('/hak-akses', fn () => Inertia::render('Admin/HakAkses'))->name('hak-akses.index');
-});
-
-
-/*
-|--------------------------------------------------------------------------
-| Admin Routes
-|--------------------------------------------------------------------------
-*/
 Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('/', DashboardController::class)->name('dashboard');
-
-Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', fn () => Inertia::render('Admin/Dashboard'))->name('dashboard.index');
     Route::get('/shop', fn () => Inertia::render('Admin/DanusShop'))->name('shop.index');
     Route::get('/formatif', fn () => Inertia::render('Admin/Formatif'))->name('formatif.index');
     Route::get('/inventaris', fn () => Inertia::render('Admin/Inventaris'))->name('inventaris.index');
-    Route::get('/kegiatan', fn () => Inertia::render('Admin/Kegiatan'))->name('kegiatan.index');
+    Route::get('/kegain', fn () => Inertia::render('Admin/Kegiatan'))->name('kegain.index');
     Route::get('/hak-akses', fn () => Inertia::render('Admin/HakAkses'))->name('hak-akses.index');
 });
 
