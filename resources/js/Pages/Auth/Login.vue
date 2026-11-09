@@ -47,7 +47,10 @@ const submit = () => {
                     
                     <!-- Header Card -->
                     <div>
-                        <h2 class="text-2xl sm:text-[28px] font-black text-slate-900 tracking-tight">
+                        <h2
+                            class="text-2xl sm:text-[28px] font-merriweather font-extrabold text-slate-900 tracking-tight"
+                            style="font-family: 'Merriweather Sans', sans-serif;"
+                        >
                             Halo!
                         </h2>
                         <p class="text-xs sm:text-[13.5px] text-slate-500 font-medium mt-1">
@@ -153,7 +156,10 @@ const submit = () => {
 
             <!-- Kolom Kanan: Teks Selamat Datang (Sesuai Mockup) -->
             <div class="flex-1 w-full text-left space-y-4 lg:pl-6 select-none">
-                <h1 class="text-5xl sm:text-6xl lg:text-[76px] font-black text-white tracking-tight leading-[1.04] drop-shadow-sm">
+                <h1
+                    class="text-5xl sm:text-6xl lg:text-[76px] font-merriweather font-extrabold text-white tracking-tight leading-[1.04] drop-shadow-sm"
+                    style="font-family: 'Merriweather Sans', sans-serif;"
+                >
                     Selamat<br />
                     datang di<br />
                     HIMATIF
