@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controller\Admin\DashboardController;
 use App\Http\Controllers\DanusSHop\ProdukController;
 use App\Http\Controllers\Infokom\FormatifController;
 use App\Http\Controllers\Infokom\KegiatanController;
@@ -99,12 +99,11 @@ Route::middleware('auth')->group(function () {
 */
 
 Route::prefix('admin')->name('admin.')->group(function () {
-    Route::get('/', DashboardController::class)->name('dashboard');
     Route::get('/dashboard', fn () => Inertia::render('Admin/Dashboard'))->name('dashboard.index');
     Route::get('/shop', fn () => Inertia::render('Admin/DanusShop'))->name('shop.index');
     Route::get('/formatif', fn () => Inertia::render('Admin/Formatif'))->name('formatif.index');
     Route::get('/inventaris', fn () => Inertia::render('Admin/Inventaris'))->name('inventaris.index');
-    Route::get('/kegain', fn () => Inertia::render('Admin/Kegiatan'))->name('kegain.index');
+    Route::get('/kegiatan', fn () => Inertia::render('Admin/Kegiatan'))->name('kegiatan.index');
     Route::get('/hak-akses', fn () => Inertia::render('Admin/HakAkses'))->name('hak-akses.index');
 });
 
