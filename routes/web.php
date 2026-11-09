@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controller\Admin\DashboardController;
 use App\Http\Controllers\DanusSHop\ProdukController;
 use App\Http\Controllers\Infokom\FormatifController;
 use App\Http\Controllers\Infokom\KegiatanController;
@@ -104,6 +105,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('/kegiatan', fn () => Inertia::render('Admin/Kegiatan'))->name('kegiatan.index');
     Route::get('/hak-akses', fn () => Inertia::render('Admin/HakAkses'))->name('hak-akses.index');
 });
+
 
 /*
 |--------------------------------------------------------------------------
