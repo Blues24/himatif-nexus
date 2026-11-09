@@ -1,7 +1,7 @@
 /* resources/css/admin-custom.css */
 :root {
   --sidebar-bg: #101C24;
-  --sidebar-width: 16rem;
+  --sidebar-width: 245px;
   --primary-green: #0F765E;
   --primary-green-hover: #0B5E4B;
   --bg-canvas: #F4F6F8;
@@ -15,7 +15,6 @@ body {
 
 .admin-wrapper {
   display: flex;
-  flex-direction: column;
   min-height: 100vh;
   background-color: var(--bg-canvas);
 }
@@ -35,20 +34,8 @@ body {
 
 .admin-main {
   flex-grow: 1;
-  min-width: 0;
   padding: 28px 32px;
   overflow-x: hidden;
-}
-
-@media (min-width: 768px) {
-  .admin-wrapper {
-    flex-direction: row;
-  }
-
-  .admin-main {
-    width: calc(100% - var(--sidebar-width));
-    margin-left: var(--sidebar-width);
-  }
 }
 
 .btn-himatif {

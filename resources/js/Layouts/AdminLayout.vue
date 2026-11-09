@@ -1,22 +1,19 @@
 <script setup>
 import Sidebar from '@/Components/Admin/Sidebar.vue';
+import { Head } from '@inertiajs/vue3';
 
 defineProps({
-  title: {
-    type: String,
-    default: 'Dashboard'
-  },
-  subtitle: {
-    type: String,
-    default: ''
-  }
+    title: {
+        type: String,
+        default: '',
+    },
+
 });
 </script>
 
 <template>
-  <div class="admin-wrapper">
-    <!-- Sidebar Kiri -->
-    <Sidebar />
+    <div>
+        <Head :title="title" />
 
     <!-- Area Konten Utama Kanan -->
     <main class="admin-main">
@@ -37,8 +34,4 @@ defineProps({
         </div>
       </header>
 
-      <!-- Isi Konten Halaman -->
-      <slot />
-    </main>
-  </div>
-</template>
+
