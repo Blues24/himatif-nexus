@@ -24,7 +24,53 @@ Route::get('/', function () {
 
 Route::get('/beranda', function () {
     return Inertia::render('Dashboard');
-})->name('beranda.alt');
+});
+
+// Danus Shop: public browse, auth-restricted writes
+Route::controller(ProdukController::class)->group(function () {
+    Route::get('/produk', 'index')->name('produk.index');
+    Route::middleware('auth')->group(function () {
+        Route::get('/produk/create', 'create')->name('produk.create');
+        Route::post('/produk', 'store')->name('produk.store');
+        Route::get('/produk/{id}/edit', 'edit')->name('produk.edit');
+        Route::patch('/produk/{id}', 'update')->name('produk.update');
+        Route::delete('/produk/{id}', 'destroy')->name('produk.destroy');
+    });
+    // Declared last so the literal /produk/create segments win against {id}
+    Route::get('/produk/{id}', 'show')->whereNumber('id')->name('produk.show');
+});
+
+// Formatif (Blog): public browse, auth-restricted writes
+Route::controller(FormatifController::class)->group(function () {
+    Route::get('/formatif', 'index')->name('formatif.index');
+    Route::get('/formatif/published', 'published')->name('formatif.published');
+    Route::middleware('auth')->group(function () {
+        Route::get('/formatif/create', 'create')->name('formatif.create');
+        Route::post('/formatif', 'store')->name('formatif.store');
+        Route::get('/formatif/{id}/edit', 'edit')->name('formatif.edit');
+        Route::patch('/formatif/{id}', 'update')->name('formatif.update');
+        Route::delete('/formatif/{id}', 'destroy')->name('formatif.destroy');
+    });
+    // Declared last so the literal /formatif/create segments win against {id}
+    Route::get('/formatif/{id}', 'show')->whereNumber('id')->name('formatif.show');
+});
+
+// Kegiatan: public browse, auth-restricted writes
+Route::controller(KegiatanController::class)->group(function () {
+    Route::get('/kegain', 'index')->name('kegain.index');
+    Route::get('/kegain/{id}', 'show')->whereNumber('id')->name('kegain.show');
+    Route::middleware('auth')->group(function () {
+        Route::get('/kegain/create', 'create')->name('kegain.create');
+        Route::post('/kegain', 'store')->name('kegain.store');
+        Route::get('/kegain/{id}/edit', 'edit')->name('kegain.edit');
+        Route::patch('/kegain/{id}', 'update')->name('kegain.update');
+        Route::delete('/kegain/{id}', 'destroy')->name('kegain.destroy');
+    });
+});
+
+Route::get('/dashboard', function () {
+    return Inertia::render('Dashboard');
+})->name('dashboard');
 
 /*
 |--------------------------------------------------------------------------
@@ -74,9 +120,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
 });
 
 /*
-|--------------------------------------------------------------------------
-| Admin Routes
-|--------------------------------------------------------------------------
+ |--------------------------------------------------------------------------
+ | Admin Routes
+ |--------------------------------------------------------------------------
 */
 
 Route::prefix('admin')->name('admin.')->middleware([EnsureAdminRole::class])->group(function () {
@@ -96,18 +142,6 @@ Route::prefix('admin')->name('admin.')->middleware([EnsureAdminRole::class])->gr
         ])
         ->parameters(['hak-akses' => 'user'])
         ->only(['index', 'store', 'update', 'destroy']);
-});
-
-/*
-|--------------------------------------------------------------------------
-| Profile Routes
-|--------------------------------------------------------------------------
-*/
-
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
 require __DIR__.'/auth.php';

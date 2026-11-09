@@ -4,23 +4,20 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use Symfony\Component\HttpFoundation\Response;
 
 class EnsureAdminRole
 {
     /**
      * Handle an incoming request.
      *
-     * Roles permitted access to `/admin/*` panel: BPH, Infokom.
-     *
-     * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
+     * Roles permitted to access the `/admin/*` panel: BPH and Infokom.
      */
-    public function handle(Request $request, Closure $next): Response
+    public function handle(Request $request, Closure $next)
     {
         $user = $request->user();
 
-        if ($user === null || !$user->isBph() && !$user->hasRole('Infokom')) {
-            abort(403, 'Akses ditolak. Hanya BPH dan Infokom yang dapat mengakses panel admin.');
+        if ($user === null || (! $user->isBph() && ! $user->hasRole('Infokom'))) {
+            abort(403);
         }
 
         return $next($request);
