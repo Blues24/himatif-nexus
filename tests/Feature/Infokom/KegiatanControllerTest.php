@@ -28,7 +28,7 @@ class KegiatanControllerTest extends TestCase
 
     public function test_store_creates_kegiatan_when_authenticated(): void
     {
-        $user = User::factory()->create();
+        $user = User::factory()->bph()->create();
         $data = [
             'nama_kegiatan' => 'Lomba Coding HMIF',
             'deskripsi_kegiatan' => 'Lomba tahunan tingkat prodi.',
@@ -44,7 +44,7 @@ class KegiatanControllerTest extends TestCase
 
     public function test_update_modifies_kegiatan(): void
     {
-        $user = User::factory()->create();
+        $user = User::factory()->bph()->create();
         $kegiatan = Kegiatan::factory()->create(['nama_kegiatan' => 'Old Name']);
         $data = [
             'nama_kegiatan' => 'New Name',
@@ -64,7 +64,7 @@ class KegiatanControllerTest extends TestCase
 
     public function test_destroy_deletes_kegiatan(): void
     {
-        $user = User::factory()->create();
+        $user = User::factory()->bph()->create();
         $kegiatan = Kegiatan::factory()->create();
 
         $response = $this->actingAs($user)->delete('/kegain/' . $kegiatan->kegiatan_id);
