@@ -12,7 +12,7 @@ class KegiatanControllerTest extends TestCase
     use RefreshDatabase;
     public function test_index_renders_without_authentication(): void
     {
-        $response = $this->get('/kegiatan');
+        $response = $this->get('/kegain');
 
         $response->assertOk();
     }
@@ -21,7 +21,7 @@ class KegiatanControllerTest extends TestCase
     {
         $kegiatan = Kegiatan::factory()->create();
 
-        $response = $this->get('/kegiatan/' . $kegiatan->kegiatan_id);
+        $response = $this->get('/kegain/' . $kegiatan->kegiatan_id);
 
         $response->assertOk();
     }
@@ -36,9 +36,9 @@ class KegiatanControllerTest extends TestCase
             'status_kegiatan' => 'rencana',
         ];
 
-        $response = $this->actingAs($user)->post('/kegiatan', $data);
+        $response = $this->actingAs($user)->post('/kegain', $data);
 
-        $response->assertRedirect(route('kegiatan.index'));
+        $response->assertRedirect(route('kegain.index'));
         $this->assertDatabaseHas('kegiatan', ['nama_kegiatan' => 'Lomba Coding HMIF']);
     }
 
@@ -53,9 +53,9 @@ class KegiatanControllerTest extends TestCase
             'status_kegiatan' => 'berjalan',
         ];
 
-        $response = $this->actingAs($user)->patch('/kegiatan/' . $kegiatan->kegiatan_id, $data);
+        $response = $this->actingAs($user)->patch('/kegain/' . $kegiatan->kegiatan_id, $data);
 
-        $response->assertRedirect(route('kegiatan.index'));
+        $response->assertRedirect(route('kegain.index'));
         $this->assertDatabaseHas('kegiatan', [
             'kegiatan_id' => $kegiatan->kegiatan_id,
             'nama_kegiatan' => 'New Name'
@@ -67,9 +67,9 @@ class KegiatanControllerTest extends TestCase
         $user = User::factory()->create();
         $kegiatan = Kegiatan::factory()->create();
 
-        $response = $this->actingAs($user)->delete('/kegiatan/' . $kegiatan->kegiatan_id);
+        $response = $this->actingAs($user)->delete('/kegain/' . $kegiatan->kegiatan_id);
 
-        $response->assertRedirect(route('kegiatan.index'));
+        $response->assertRedirect(route('kegain.index'));
         $this->assertDatabaseMissing('kegiatan', ['kegiatan_id' => $kegiatan->kegiatan_id]);
     }
 }
