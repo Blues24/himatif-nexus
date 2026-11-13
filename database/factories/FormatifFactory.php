@@ -17,7 +17,6 @@ class FormatifFactory extends Factory
      * @return array<string, mixed>
      */
     public function definition(): array
-    : array
     {
         return [
             'user_id' => User::factory(),

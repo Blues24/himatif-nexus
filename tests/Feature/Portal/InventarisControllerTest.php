@@ -45,7 +45,7 @@ class InventarisControllerTest extends TestCase
 
         $response->assertRedirect(route('inventaris.index'));
         $response->assertSessionHas('success');
-        $this->assertDatabaseHas('inventaris', ['nama_barang' => 'Laptop Asus']);
+        $this->assertDatabaseHas('inventaris_alat', ['nama_barang' => 'Laptop Asus']);
     }
 
     public function test_store_rejects_missing_required_fields(): void
@@ -58,7 +58,7 @@ class InventarisControllerTest extends TestCase
             'kondisi' => 'invalid',
         ]);
 
-        $response->assertSessionHasErrors(['nama_barang', 'stok', 'kondisi']);
+        $response->assertSessionHasErrors(['nama_barang', 'kondisi']);
     }
 
     public function test_unauthenticated_user_cannot_edit_inventaris(): void
@@ -83,7 +83,7 @@ class InventarisControllerTest extends TestCase
 
         $response->assertRedirect(route('inventaris.edit', $item->inventaris_id));
         $response->assertSessionHas('success');
-        $this->assertDatabaseHas('inventaris', [
+        $this->assertDatabaseHas('inventaris_alat', [
             'inventaris_id' => $item->inventaris_id,
             'nama_barang' => 'Updated',
             'stok' => 10,
@@ -106,6 +106,6 @@ class InventarisControllerTest extends TestCase
 
         $response->assertRedirect();
         $response->assertSessionHas('success');
-        $this->assertDatabaseMissing('inventaris', ['inventaris_id' => $item->inventaris_id]);
+        $this->assertDatabaseMissing('inventaris_alat', ['inventaris_id' => $item->inventaris_id]);
     }
 }

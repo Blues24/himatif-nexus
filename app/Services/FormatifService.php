@@ -2,8 +2,10 @@
 
 namespace App\Services;
 
+use App\Helpers\AutoSlugHelper;
 use App\Models\Formatif;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 
 class FormatifService extends BaseService
@@ -12,7 +14,7 @@ class FormatifService extends BaseService
 
     protected array $fillableColumns = [
         'user_id',
-        ' judul',
+        'judul',
         'slug',
         'kategori',
         'text_konten',
@@ -32,7 +34,7 @@ class FormatifService extends BaseService
     {
         if (! isset($data['slug'])) {
             $data['slug'] = AutoSlugHelper::generate(
-                subject: $data[' judul'],
+                subject: $data['judul'] ?? '',
                 table: 'formatif',
                 slugColumn: 'slug'
             );
@@ -47,7 +49,7 @@ class FormatifService extends BaseService
     public function published()
     {
         return $this->paginate(
-            fn (Formatif $q) => $q->where('status', 'publish')
+            fn (\Illuminate\Database\Eloquent\Builder|Formatif $q) => $q->where('status', 'publish')
         );
     }
 
@@ -57,7 +59,7 @@ class FormatifService extends BaseService
     public function search(string $keyword)
     {
         return $this->paginate(
-            fn (Formatif $q) => $q->where(' judul', 'like', "%{$keyword}%")
+            fn (Builder $q) => $q->where('judul', 'like', "%{$keyword}%")
                 ->orWhere('kategori', 'like', "%{$keyword}%")
         );
     }
@@ -87,13 +89,13 @@ class FormatifService extends BaseService
 
         $notification = [
             'type' => 'formatif',
-            'title' => 'Artikel Baru: ' . ($record-> judul ?? ''),
-            'message' => "Artikel \"{$record-> judul}\" telah dibuat.",
+            'title' => 'Artikel Baru: ' . ($record->judul ?? ''),
+            'message' => "Artikel \"{$record->judul}\" telah dibuat.",
             'data' => [
                 'formatif_id' => $record->formatif_id,
                 'status' => $record->status,
                 'slug' => $record->slug,
-                ' judul' => $record-> judul,
+                'judul' => $record->judul,
             ],
         ];
 
@@ -123,12 +125,12 @@ class FormatifService extends BaseService
                 $notification = [
                     'type' => 'formatif',
                     'title' => 'Artikel Diterbitkan',
-                    'message' => "Artikel \"{$record-> judul}\" telah diterbitkan.",
+                    'message' => "Artikel \"{$record->judul}\" telah diterbitkan.",
                     'data' => [
                         'formatif_id' => $record->formatif_id,
                         'status' => $newStatus,
                         'slug' => $record->slug,
-                        ' judul' => $record-> judul,
+                        'judul' => $record->judul,
                     ],
                 ];
 

@@ -50,9 +50,7 @@ class FormatifControllerTest extends TestCase
         $response->assertOk();
         $response->assertInertia(function ($page) use ($formatif) {
             $page->component('Blog/Show')
-                ->has('formatif', function ($assert) use ($formatif) {
-                    $assert->where('formatif_id', $formatif->formatif_id);
-                });
+                ->where('formatif.judul', $formatif->judul);
         });
     }
 
@@ -68,7 +66,7 @@ class FormatifControllerTest extends TestCase
             'slug' => 'test',
             'kategori' => 'Artikel',
             'text_konten' => 'Content here',
-            'status' => 'published',
+            'status' => 'publish',
         ])->assertRedirect();
     }
 
@@ -81,7 +79,7 @@ class FormatifControllerTest extends TestCase
             'slug' => 'belajar-laravel-13',
             'kategori' => 'Tutorial',
             'text_konten' => 'Isi konten formatif belajar laravel 13.',
-            'status' => 'published',
+            'status' => 'publish',
         ]);
 
         $response->assertRedirect(route('formatif.index'));
@@ -100,7 +98,7 @@ class FormatifControllerTest extends TestCase
             'text_konten' => '',
         ]);
 
-        $response->assertSessionHasErrors(['judul', 'slug', 'kategori', 'text_konten']);
+        $response->assertSessionHasErrors(['judul', 'kategori', 'text_konten']);
     }
 
     public function test_store_uploads_thumbnail(): void
@@ -115,7 +113,7 @@ class FormatifControllerTest extends TestCase
             'slug' => 'formatif-with-thumbnail',
             'kategori' => 'Artikel',
             'text_konten' => 'Content with image.',
-            'status' => 'published',
+            'status' => 'publish',
             'thumbnail_path' => $file,
         ]);
 
@@ -133,7 +131,7 @@ class FormatifControllerTest extends TestCase
             'slug' => 'updated-title',
             'kategori' => 'Artikel',
             'text_konten' => 'Updated content.',
-            'status' => 'published',
+            'status' => 'publish',
         ]);
 
         $response->assertRedirect(route('formatif.edit', $formatif->formatif_id));

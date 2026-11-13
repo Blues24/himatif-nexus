@@ -17,10 +17,7 @@ class PenyewaanAlatControllerTest extends TestCase
         $response = $this->get('/penyewaan');
 
         $response->assertOk();
-        $response->assertInertia(function ($page) {
-            $page->component('Inventory/Loans')
-                ->has('loans');
-        });
+        $response->assertInertia(fn ($page) => $page->component('Inventory/Loans')->has('loans'));
     }
 
     public function test_unauthenticated_user_cannot_create_loan(): void
@@ -42,6 +39,7 @@ class PenyewaanAlatControllerTest extends TestCase
 
         $response = $this->actingAs($user)->post('/penyewaan', [
             'inventaris_alat_id' => $inventaris->inventaris_id,
+            'user_id' => $user->user_uuid,
             'jumlah_pinjam' => 2,
             'tanggal_pinjam' => now()->toDateString(),
             'tanggal_kembali' => now()->addDays(3)->toDateString(),
@@ -49,7 +47,7 @@ class PenyewaanAlatControllerTest extends TestCase
 
         $response->assertRedirect(route('penyewaan.index'));
         $response->assertSessionHas('success');
-        $this->assertDatabaseHas('penyewaan_alat', [
+        $this->assertDatabaseHas('penyewaan_alats', [
             'inventaris_alat_id' => $inventaris->inventaris_id,
             'jumlah_pinjam' => 2,
             'status' => 'pending',
