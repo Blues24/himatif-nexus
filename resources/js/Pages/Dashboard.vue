@@ -134,7 +134,7 @@ const himatifServices = [
     {
         category: 'DANA USAHA (DANUS)',
         title: 'HIMATIF – Merch Shop',
-        desc: 'Katalog kemeja PDH resmi, lanyard, kaos, stiker, dan aksesoris identitas mahasiswa Teknik Informatika.',
+        desc: 'Katalog t-shirt eksklusif, hoodie, lanyard, stiker, dan aksesoris identitas mahasiswa Teknik Informatika.',
         btnText: 'Kunjungi Katalog',
         href: route('produk.index'),
         iconType: 'bag',

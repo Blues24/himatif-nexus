@@ -25,7 +25,7 @@ const sortBy = ref('terpopuler'); // 'terpopuler', 'termurah', 'termahal'
 
 const categories = [
     'Semua',
-    'Pakaian & PDH',
+    'Kaos & Pakaian',
     'Aksesoris & Lanyard',
     'Stiker & Souvenir',
     'Jaket & Hoodie',
@@ -35,27 +35,26 @@ const categories = [
 const masterMerch = [
     {
         id: 101,
-        title: 'Kemeja PDH Resmi HIMATIF POLINDRA 2026',
-        category: 'Pakaian & PDH',
-        price: 145000,
-        priceFormatted: 'Rp 145.000',
-        stock: 25,
-        stockStatus: 'Pre-Order Buka',
-        badge: 'Official PDH',
+        title: 'Gantungan Kunci Akrilik 2 Sisi Maskot HIMATIF',
+        category: 'Stiker & Souvenir',
+        price: 12000,
+        priceFormatted: 'Rp 12.000',
+        stock: 35,
+        stockStatus: 'Ready Stock',
+        badge: 'Souvenir Baru',
         badgeClass: 'bg-[#F95700] text-white',
         image: null,
-        placeholderIcon: '👔',
-        placeholderLabel: 'OFFICIAL APPAREL',
-        placeholderSub: 'Kemeja PDH HIMATIF',
-        hasSize: true,
-        sizes: ['S', 'M', 'L', 'XL', 'XXL'],
-        desc: 'Kemeja PDH resmi pengurus dan anggota HIMATIF POLINDRA bahan American Drill tebal berpori adem, dilengkapi bordir komputer logo kampus dan himpunan.',
-        features: ['Bahan American Drill Grade A', 'Bordir Komputer Presisi 4 Titik', 'Jahitan Ganda Rapi & Awet', 'Tersedia Ukuran S hingga XXL'],
+        placeholderIcon: '🔑',
+        placeholderLabel: 'SOUVENIR & MERCH',
+        placeholderSub: 'Akrilik Bening 4mm',
+        hasSize: false,
+        desc: 'Gantungan kunci akrilik tebal 2 sisi bergambar logo resmi dan maskot robotik HIMATIF dengan ring gantungan putar anti karat.',
+        features: ['Material Akrilik Bening 4mm', 'Printing UV 2 Sisi Anti Gores', 'Ring Gantungan Logam Anti Karat', 'Cocok untuk Kunci Motor atau Tas'],
     },
     {
         id: 102,
         title: 'T-Shirt Eksklusif "Code & Create" Navy Edition',
-        category: 'Pakaian & PDH',
+        category: 'Kaos & Pakaian',
         price: 85000,
         priceFormatted: 'Rp 85.000',
         stock: 18,
@@ -188,7 +187,7 @@ const allProducts = computed(() => {
         return props.products.map(p => ({
             id: p.produk_id,
             title: p.nama_produk,
-            category: 'Pakaian & PDH',
+            category: 'Kaos & Pakaian',
             price: Number(p.harga_produk),
             priceFormatted: `Rp ${Number(p.harga_produk).toLocaleString('id-ID')}`,
             stock: p.stok_produk,
@@ -322,7 +321,7 @@ const checkoutWhatsApp = () => {
 
                             <!-- Deskripsi Singkat -->
                             <p class="text-xs sm:text-sm text-slate-300 font-normal leading-relaxed max-w-xl">
-                                Dapatkan kemeja PDH resmi, t-shirt eksklusif, jaket hoodie, lanyard satin, dan aksesoris identitas mahasiswa Teknik Informatika POLINDRA. Setiap pembelian mendukung operasional kegiatan himpunan.
+                                Dapatkan t-shirt eksklusif, jaket hoodie, lanyard satin, dan berbagai aksesoris identitas mahasiswa Teknik Informatika POLINDRA. Setiap pembelian mendukung operasional kegiatan himpunan.
                             </p>
 
                             <!-- Tombol CTA & Status Toko -->
@@ -366,8 +365,8 @@ const checkoutWhatsApp = () => {
                                 <!-- Baris Sorotan -->
                                 <div class="divide-y divide-white/10 text-xs sm:text-[13px] pt-1">
                                     <div class="py-2.5 flex items-center justify-between text-slate-200">
-                                        <span class="font-medium">Kemeja PDH Resmi 2026</span>
-                                        <span class="font-bold text-orange-400">Rp 145.000</span>
+                                        <span class="font-medium">Jaket Hoodie "Compile Your Future"</span>
+                                        <span class="font-bold text-orange-400">Rp 175.000</span>
                                     </div>
                                     <div class="py-2.5 flex items-center justify-between text-slate-200">
                                         <span class="font-medium">Kaos "Code & Create" Navy</span>
@@ -414,7 +413,7 @@ const checkoutWhatsApp = () => {
                                 <input
                                     v-model="searchQuery"
                                     type="text"
-                                    placeholder="Cari kaos, PDH, lanyard..."
+                                    placeholder="Cari kaos, hoodie, lanyard, souvenir..."
                                     class="w-full pl-10 pr-4 py-2.5 rounded-full border border-slate-200 text-xs sm:text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 shadow-xs transition"
                                 />
                                 <svg class="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -575,7 +574,7 @@ const checkoutWhatsApp = () => {
                             <span class="text-2xl">🏛️</span>
                             <h4 class="text-sm font-bold text-slate-900">Resmi & Berstandar</h4>
                             <p class="text-xs text-slate-500 leading-relaxed">
-                                Seragam kemeja PDH dan atribut diakui resmi oleh jurusan Teknik Informatika POLINDRA.
+                                Seluruh merchandise dan atribut dirancang resmi oleh pengurus HIMATIF POLINDRA.
                             </p>
                         </div>
                         <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200/60 space-y-2">
