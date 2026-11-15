@@ -344,7 +344,8 @@ const downloadCalendarICS = () => {
                         <div
                             v-for="item in filteredActivities"
                             :key="item.id"
-                            class="bg-white rounded-2xl border border-slate-200/90 shadow-xs hover:shadow-xl hover:border-orange-300 transition-all duration-300 overflow-hidden flex flex-col justify-between group"
+                            @click="openDetailModal(item)"
+                            class="bg-white rounded-2xl border border-slate-200/90 shadow-xs hover:shadow-xl hover:border-orange-300 transition-all duration-300 overflow-hidden flex flex-col justify-between group cursor-pointer"
                         >
                             <div>
                                 <!-- Thumbnail Gambar dengan Badge Status & Kategori -->
@@ -458,9 +459,9 @@ const downloadCalendarICS = () => {
             class="fixed inset-0 z-50 overflow-y-auto bg-slate-950/70 backdrop-blur-xs flex items-center justify-center p-4"
             @click.self="closeModal"
         >
-            <div class="bg-white rounded-3xl max-w-xl w-full overflow-hidden shadow-2xl border border-slate-200 transform transition-all animate-in fade-in zoom-in-95 duration-200">
+            <div class="bg-white rounded-3xl max-w-xl w-full overflow-hidden shadow-2xl border border-slate-200 transform transition-all animate-in fade-in zoom-in-95 duration-200 max-h-[90vh] flex flex-col">
                 <!-- Header Gambar Modal -->
-                <div class="relative aspect-[16/9] w-full bg-gradient-to-br from-slate-800 to-slate-900 flex items-center justify-center">
+                <div class="relative aspect-[16/9] w-full bg-gradient-to-br from-slate-800 to-slate-900 flex items-center justify-center shrink-0">
                     <img
                         v-if="selectedKegiatan.image"
                         :src="selectedKegiatan.image"
@@ -492,7 +493,7 @@ const downloadCalendarICS = () => {
                 </div>
 
                 <!-- Konten Modal -->
-                <div class="p-6 sm:p-8 space-y-5 text-left">
+                <div class="p-6 sm:p-8 space-y-5 text-left overflow-y-auto">
                     <div>
                         <span class="text-xs font-black tracking-widest text-[#F95700] uppercase block">
                             {{ selectedKegiatan.category }}
