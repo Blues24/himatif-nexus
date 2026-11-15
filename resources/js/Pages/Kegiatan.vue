@@ -43,7 +43,6 @@ const masterActivities = [
         target: 'Sasaran Peserta Kegiatan',
         desc: 'Deskripsi lengkap mengenai agenda, tujuan pelaksanaan, materi utama, dan target luaran program kerja yang akan diselenggarakan oleh HIMATIF POLINDRA.',
         pic: 'Panitia Penyelenggara (Kontak PIC)',
-        rundown: 'Rincian susunan acara, pembicara, dan jadwal lengkap kegiatan akan diumumkan secara bertahap menjelang hari pelaksanaan.',
         actionText: 'Daftar Kegiatan',
     },
 
@@ -65,7 +64,6 @@ const masterActivities = [
         target: 'Sasaran Peserta Kegiatan',
         desc: 'Deskripsi arsip dokumentasi pelaksanaan program kerja yang telah berhasil diselenggarakan dengan sukses oleh pengurus himpunan.',
         pic: 'Panitia Penyelenggara HIMATIF',
-        rundown: 'Kegiatan telah sukses diselenggarakan sesuai dengan susunan jadwal dan target partisipasi peserta yang telah direncanakan.',
         actionText: 'Lihat Detail',
     },
     {
@@ -85,7 +83,6 @@ const masterActivities = [
         target: 'Sasaran Peserta Kegiatan',
         desc: 'Deskripsi arsip dokumentasi pelaksanaan program kerja yang telah berhasil diselenggarakan dengan sukses oleh pengurus himpunan.',
         pic: 'Panitia Penyelenggara HIMATIF',
-        rundown: 'Kegiatan telah sukses diselenggarakan sesuai dengan susunan jadwal dan target partisipasi peserta yang telah direncanakan.',
         actionText: 'Lihat Detail',
     },
     {
@@ -105,7 +102,6 @@ const masterActivities = [
         target: 'Sasaran Peserta Kegiatan',
         desc: 'Deskripsi arsip dokumentasi pelaksanaan program kerja yang telah berhasil diselenggarakan dengan sukses oleh pengurus himpunan.',
         pic: 'Panitia Penyelenggara HIMATIF',
-        rundown: 'Kegiatan telah sukses diselenggarakan sesuai dengan susunan jadwal dan target partisipasi peserta yang telah direncanakan.',
         actionText: 'Lihat Detail',
     },
 ];

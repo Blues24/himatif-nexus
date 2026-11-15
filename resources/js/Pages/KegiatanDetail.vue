@@ -34,12 +34,34 @@ const masterActivities = [
         desc: 'Program kerja ini dirancang untuk membekali mahasiswa dengan wawasan teknologi mutakhir, kompetensi praktis, dan jejaring profesional dalam menghadapi tantangan dunia industri digital.',
         pic: 'Panitia Penyelenggara HIMATIF (+62 812-3456-7890)',
         organizer: 'Departemen Riset, Teknologi & Informasi HIMATIF',
-        rundown: [
-            { time: '08:00 - 08:30 WIB', activity: 'Registrasi Peserta & Pembukaan Acara' },
-            { time: '08:30 - 09:00 WIB', activity: 'Sambutan Ketua Pelaksana, Ketua Umum HIMATIF & Pembina' },
-            { time: '09:00 - 11:30 WIB', activity: 'Penyampaian Materi Utama & Diskusi Interaktif' },
-            { time: '11:30 - 12:15 WIB', activity: 'Sesi Tanya Jawab (Q&A) & Live Demonstration' },
-            { time: '12:15 - 12:45 WIB', activity: 'Kuis Berhadiah, Penyerahan Plakat & Penutupan' },
+        documentationLinks: [
+            {
+                type: 'drive',
+                title: 'Google Drive Dokumentasi Foto & Banner',
+                desc: 'Arsip foto dokumentasi resolusi tinggi dan aset visual kegiatan.',
+                url: 'https://drive.google.com/drive/folders/placeholder-dokumentasi-himatif',
+                icon: '📁',
+                badge: 'Google Drive',
+                badgeClass: 'bg-blue-50 text-blue-700 border-blue-200',
+            },
+            {
+                type: 'youtube',
+                title: 'Video Dokumentasi / Aftermovie Acara',
+                desc: 'Tayangan video highlight rangkuman jalannya kegiatan di kanal YouTube.',
+                url: 'https://youtube.com/watch?v=placeholder-aftermovie',
+                icon: '🎬',
+                badge: 'YouTube',
+                badgeClass: 'bg-red-50 text-red-700 border-red-200',
+            },
+            {
+                type: 'materi',
+                title: 'Modul Materi & Notulensi Kegiatan',
+                desc: 'Berkas presentasi materi, panduan praktikum, dan notulensi arsip.',
+                url: 'https://drive.google.com/drive/folders/placeholder-materi-himatif',
+                icon: '📄',
+                badge: 'Berkas Materi',
+                badgeClass: 'bg-emerald-50 text-emerald-700 border-emerald-200',
+            },
         ],
         highlights: [
             'Pemahaman wawasan teknologi terapan langsung dari praktisi industri',
@@ -67,10 +89,34 @@ const masterActivities = [
         desc: 'Arsip dokumentasi program kerja pengenalan kehidupan kampus dan kultur jurusan bagi mahasiswa baru guna menumbuhkan integritas, kebersamaan, dan wawasan akademik.',
         pic: 'Departemen Kaderisasi HIMATIF',
         organizer: 'Departemen Kaderisasi & Pengembangan Organisasi',
-        rundown: [
-            { time: 'Hari 1', activity: 'Pengenalan Profil Jurusan & Struktur Organisasi Himpunan' },
-            { time: 'Hari 2', activity: 'Tour Laboratorium Komputer & Pengenalan Dosen TI' },
-            { time: 'Hari 3', activity: 'Inaugurasi Kebersamaan & Forum Diskusi Angkatan' },
+        documentationLinks: [
+            {
+                type: 'drive',
+                title: 'Google Drive Dokumentasi Foto PKPS',
+                desc: 'Arsip foto dokumentasi kegiatan pengenalan prodi dan inisiasi mahasiswa baru.',
+                url: 'https://drive.google.com/drive/folders/placeholder-pkps-himatif',
+                icon: '📁',
+                badge: 'Google Drive',
+                badgeClass: 'bg-blue-50 text-blue-700 border-blue-200',
+            },
+            {
+                type: 'youtube',
+                title: 'Aftermovie Resmi PKPS Teknik Informatika',
+                desc: 'Video rangkuman keseruan masa pengenalan program studi TI.',
+                url: 'https://youtube.com/watch?v=placeholder-aftermovie-pkps',
+                icon: '🎬',
+                badge: 'YouTube',
+                badgeClass: 'bg-red-50 text-red-700 border-red-200',
+            },
+            {
+                type: 'materi',
+                title: 'Buku Panduan Mahasiswa Baru TI',
+                desc: 'Buku panduan kurikulum, etika kampus, dan profil himpunan.',
+                url: 'https://drive.google.com/drive/folders/placeholder-panduan-pkps',
+                icon: '📄',
+                badge: 'Buku Panduan',
+                badgeClass: 'bg-emerald-50 text-emerald-700 border-emerald-200',
+            },
         ],
         highlights: [
             'Pengenalan etika akademik, sarana prasarana, dan sistem perkuliahan',
@@ -97,10 +143,34 @@ const masterActivities = [
         desc: 'Seri bincang inspiratif santai seputar tren rekayasa perangkat lunak, tips magang di startup, dan perjalanan karir alumni informatika di berbagai korporasi ternama.',
         pic: 'Departemen INFOKOM HIMATIF',
         organizer: 'Departemen Komunikasi, Media & Informasi',
-        rundown: [
-            { time: '19:30 - 19:40 WIB', activity: 'Opening Host Podcast & Pengenalan Bintang Tamu' },
-            { time: '19:40 - 20:30 WIB', activity: 'Bincang Pengalaman & Kupas Tuntas Portofolio Karir' },
-            { time: '20:30 - 21:00 WIB', activity: 'Menjawab Pertanyaan Live Chat Audiens & Closing' },
+        documentationLinks: [
+            {
+                type: 'youtube',
+                title: 'Streaming & Video Podcast Episode Lengkap',
+                desc: 'Tayangan video podcast bincang teknologi dan insight karir software engineer.',
+                url: 'https://youtube.com/playlist?list=placeholder-podcast-itcast',
+                icon: '🎙️',
+                badge: 'YouTube',
+                badgeClass: 'bg-red-50 text-red-700 border-red-200',
+            },
+            {
+                type: 'drive',
+                title: 'Galeri Foto Behind The Scene (BTS)',
+                desc: 'Foto dokumentasi suasana proses rekaman podcast di studio HIMATIF.',
+                url: 'https://drive.google.com/drive/folders/placeholder-bts-podcast',
+                icon: '📁',
+                badge: 'Google Drive',
+                badgeClass: 'bg-blue-50 text-blue-700 border-blue-200',
+            },
+            {
+                type: 'materi',
+                title: 'Resume & Catatan Topik Pembahasan',
+                desc: 'Rangkuman poin penting, rekomendasi buku, dan tautan karir dari narasumber.',
+                url: 'https://drive.google.com/drive/folders/placeholder-resume-podcast',
+                icon: '📄',
+                badge: 'Ringkasan',
+                badgeClass: 'bg-amber-50 text-amber-700 border-amber-200',
+            },
         ],
         highlights: [
             'Wawasan seputar rekrutmen karir teknologi dan persiapan CV/portfolio',
@@ -127,10 +197,34 @@ const masterActivities = [
         desc: 'Pelatihan manajemen mahasiswa tingkat dasar untuk mengasah kepemimpinan, manajemen waktu, dinamika kelompok, serta problem-solving dalam tata kelola organisasi.',
         pic: 'Panitia LKMM-D HIMATIF',
         organizer: 'Departemen Pengembangan Sumber Daya Manusia',
-        rundown: [
-            { time: 'Sesi 1', activity: 'Manajemen Diri, Analisis Swot, & Komunikasi Efektif' },
-            { time: 'Sesi 2', activity: 'Simulasi Sidang & Perumusan Program Kerja' },
-            { time: 'Sesi 3', activity: 'Outbound Kepemimpinan & Pengambilan Komitmen Bersama' },
+        documentationLinks: [
+            {
+                type: 'drive',
+                title: 'Google Drive Dokumentasi Foto LKMM-D',
+                desc: 'Arsip foto dokumentasi simulasi sidang, dinamika kelompok, dan outbound.',
+                url: 'https://drive.google.com/drive/folders/placeholder-lkmmd-himatif',
+                icon: '📁',
+                badge: 'Google Drive',
+                badgeClass: 'bg-blue-50 text-blue-700 border-blue-200',
+            },
+            {
+                type: 'youtube',
+                title: 'Highlight Video Aftermovie LKMM-D',
+                desc: 'Video rangkuman kegiatan kepemimpinan mahasiswa tingkat dasar.',
+                url: 'https://youtube.com/watch?v=placeholder-aftermovie-lkmmd',
+                icon: '🎬',
+                badge: 'YouTube',
+                badgeClass: 'bg-red-50 text-red-700 border-red-200',
+            },
+            {
+                type: 'materi',
+                title: 'Modul Pelatihan & Draft Simulasi Sidang',
+                desc: 'Materi kepemimpinan, teknik analisis SWOT, dan template administrasi proker.',
+                url: 'https://drive.google.com/drive/folders/placeholder-materi-lkmmd',
+                icon: '📄',
+                badge: 'Modul Kepemimpinan',
+                badgeClass: 'bg-indigo-50 text-indigo-700 border-indigo-200',
+            },
         ],
         highlights: [
             'Pembekalan soft skills kepemimpinan dan manajemen organisasi mahasiswa',
@@ -162,8 +256,34 @@ const currentKegiatan = computed(() => {
             desc: props.kegiatan.deskripsi || 'Deskripsi kegiatan belum tersedia.',
             pic: props.kegiatan.pic || 'Panitia HIMATIF',
             organizer: 'Pengurus HIMATIF POLINDRA',
-            rundown: [
-                { time: 'Waktu Pelaksanaan', activity: 'Informasi susunan acara diumumkan oleh panitia.' }
+            documentationLinks: [
+                {
+                    type: 'drive',
+                    title: 'Google Drive Dokumentasi Foto Kegiatan',
+                    desc: 'Arsip foto dokumentasi resmi resolusi tinggi selama kegiatan.',
+                    url: 'https://drive.google.com/drive/folders/placeholder-dokumentasi-himatif',
+                    icon: '📁',
+                    badge: 'Google Drive',
+                    badgeClass: 'bg-blue-50 text-blue-700 border-blue-200',
+                },
+                {
+                    type: 'youtube',
+                    title: 'Video Dokumentasi / Aftermovie Kegiatan',
+                    desc: 'Video rangkuman jalannya kegiatan di kanal YouTube.',
+                    url: 'https://youtube.com/watch?v=placeholder-aftermovie',
+                    icon: '🎬',
+                    badge: 'YouTube',
+                    badgeClass: 'bg-red-50 text-red-700 border-red-200',
+                },
+                {
+                    type: 'materi',
+                    title: 'Modul Materi & Berkas Arsip Kegiatan',
+                    desc: 'Berkas presentasi dan arsip evaluasi kegiatan.',
+                    url: 'https://drive.google.com/drive/folders/placeholder-materi-himatif',
+                    icon: '📄',
+                    badge: 'Berkas Materi',
+                    badgeClass: 'bg-emerald-50 text-emerald-700 border-emerald-200',
+                },
             ],
             highlights: [
                 'Wadah pengembangan kompetensi dan kepemimpinan mahasiswa',
@@ -311,7 +431,7 @@ const shareToWhatsApp = () => {
                 <!-- 4. Konten Utama Kegiatan (2 Kolom di Desktop) -->
                 <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 text-left pt-2">
                     
-                    <!-- Kolom Kiri: Ulasan, Rundown, Manfaat -->
+                    <!-- Kolom Kiri: Ulasan, Link Dokumentasi, Manfaat -->
                     <main class="lg:col-span-8 space-y-6">
                         <!-- Box Ringkasan Acara -->
                         <div class="p-5 sm:p-6 rounded-3xl bg-orange-50/80 border border-orange-200/60 text-slate-800 space-y-2">
@@ -323,29 +443,70 @@ const shareToWhatsApp = () => {
                             </p>
                         </div>
 
-                        <!-- Susunan Acara / Rundown -->
+                        <!-- Tautan Dokumentasi & Arsip Kegiatan (Placeholder Link) -->
                         <div class="p-5 sm:p-6 rounded-3xl bg-white border border-slate-200/90 shadow-xs space-y-4">
-                            <h3 class="text-base font-black text-slate-900 flex items-center gap-2">
-                                <span>📋</span>
-                                <span>Susunan Rundown Acara</span>
-                            </h3>
-
-                            <div v-if="Array.isArray(currentKegiatan.rundown)" class="space-y-3">
-                                <div
-                                    v-for="(item, idx) in currentKegiatan.rundown"
-                                    :key="idx"
-                                    class="flex items-start gap-4 p-3 rounded-2xl bg-slate-50 border border-slate-100 hover:border-orange-200 transition"
-                                >
-                                    <div class="px-2.5 py-1 rounded-xl bg-orange-500/10 text-orange-700 font-bold text-xs shrink-0 whitespace-nowrap">
-                                        {{ item.time }}
-                                    </div>
-                                    <div class="text-xs sm:text-sm font-medium text-slate-700">
-                                        {{ item.activity }}
-                                    </div>
+                            <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-100 pb-3">
+                                <div>
+                                    <h3 class="text-base font-black text-slate-900 flex items-center gap-2">
+                                        <span>📁</span>
+                                        <span>Dokumentasi & Berkas Kegiatan</span>
+                                    </h3>
+                                    <p class="text-xs text-slate-400 mt-0.5">
+                                        Akses tautan arsip dokumentasi foto, video aftermovie, dan berkas materi
+                                    </p>
                                 </div>
+                                <span class="text-[11px] font-bold px-2.5 py-1 rounded-full bg-slate-100 text-slate-600 border border-slate-200">
+                                    Arsip Terbuka
+                                </span>
                             </div>
-                            <div v-else class="text-xs sm:text-sm text-slate-600 leading-relaxed">
-                                {{ currentKegiatan.rundown }}
+
+                            <!-- Daftar Link Dokumentasi Placeholder -->
+                            <div class="space-y-3">
+                                <a
+                                    v-for="(link, idx) in currentKegiatan.documentationLinks"
+                                    :key="idx"
+                                    :href="link.url"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    class="flex items-center justify-between p-3.5 sm:p-4 rounded-2xl bg-slate-50 border border-slate-200/80 hover:border-orange-300 hover:bg-orange-50/30 transition group"
+                                >
+                                    <div class="flex items-center gap-3.5 min-w-0">
+                                        <div class="w-10 h-10 rounded-xl bg-white border border-slate-200 shadow-2xs flex items-center justify-center text-xl shrink-0 group-hover:scale-105 transition">
+                                            {{ link.icon }}
+                                        </div>
+                                        <div class="min-w-0">
+                                            <div class="flex items-center gap-2">
+                                                <span class="text-xs sm:text-sm font-bold text-slate-900 group-hover:text-[#F95700] transition truncate">
+                                                    {{ link.title }}
+                                                </span>
+                                                <span :class="link.badgeClass" class="text-[10px] font-bold px-2 py-0.5 rounded-md border shrink-0 hidden sm:inline-block">
+                                                    {{ link.badge }}
+                                                </span>
+                                            </div>
+                                            <p class="text-[11px] text-slate-500 truncate mt-0.5">
+                                                {{ link.desc }}
+                                            </p>
+                                            <span class="text-[10px] text-orange-600 font-mono font-medium truncate block mt-0.5">
+                                                {{ link.url }}
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                    <div class="shrink-0 ml-3">
+                                        <span class="inline-flex items-center gap-1 px-3 py-1.5 rounded-xl bg-white border border-slate-200 text-xs font-bold text-slate-700 group-hover:bg-[#F95700] group-hover:text-white group-hover:border-transparent transition shadow-2xs">
+                                            <span>Buka</span>
+                                            <span class="text-xs">↗</span>
+                                        </span>
+                                    </div>
+                                </a>
+                            </div>
+
+                            <!-- Catatan Tambahan Placeholder -->
+                            <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-200/60 flex items-center gap-2.5 text-xs text-slate-500">
+                                <span class="text-base">💡</span>
+                                <span>
+                                    Tautan di atas merupakan placeholder tautan dokumentasi. Tautan arsip resmi akan diperbarui secara langsung oleh panitia atau pengurus departemen terkait.
+                                </span>
                             </div>
                         </div>
 
