@@ -31,153 +31,153 @@ const categories = [
     'Jaket & Hoodie',
 ];
 
-// Data Master Merchandise HIMATIF (8 Item Lengkap Grid 4 Kolom)
+// Data Master Merchandise HIMATIF (8 Item Placeholder Grid 4 Kolom)
 const masterMerch = [
     {
         id: 101,
-        title: 'Gantungan Kunci Akrilik 2 Sisi Maskot HIMATIF',
+        title: 'Nama Produk Souvenir & Aksesoris (Placeholder 1)',
         category: 'Stiker & Souvenir',
-        price: 12000,
-        priceFormatted: 'Rp 12.000',
-        stock: 35,
+        price: 15000,
+        priceFormatted: 'Rp 15.000',
+        stock: 50,
         stockStatus: 'Ready Stock',
-        badge: 'Souvenir Baru',
+        badge: 'Placeholder',
         badgeClass: 'bg-[#F95700] text-white',
         image: null,
         placeholderIcon: '🔑',
-        placeholderLabel: 'SOUVENIR & MERCH',
-        placeholderSub: 'Akrilik Bening 4mm',
+        placeholderLabel: 'DOKUMENTASI MERCH',
+        placeholderSub: 'Merchandise Placeholder #1',
         hasSize: false,
-        desc: 'Gantungan kunci akrilik tebal 2 sisi bergambar logo resmi dan maskot robotik HIMATIF dengan ring gantungan putar anti karat.',
-        features: ['Material Akrilik Bening 4mm', 'Printing UV 2 Sisi Anti Gores', 'Ring Gantungan Logam Anti Karat', 'Cocok untuk Kunci Motor atau Tas'],
+        desc: 'Deskripsi ringkas spesifikasi dan detail produk merchandise souvenir resmi HIMATIF POLINDRA yang akan segera dirilis.',
+        features: ['Material Kualitas Pilihan', 'Desain Maskot Resmi HIMATIF', 'Stok Tersedia di Sekretariat'],
     },
     {
         id: 102,
-        title: 'T-Shirt Eksklusif "Code & Create" Navy Edition',
+        title: 'Nama Produk Kaos & Apparel (Placeholder 2)',
         category: 'Kaos & Pakaian',
         price: 85000,
         priceFormatted: 'Rp 85.000',
-        stock: 18,
+        stock: 25,
         stockStatus: 'Ready Stock',
-        badge: 'Best Seller',
+        badge: 'Placeholder',
         badgeClass: 'bg-emerald-600 text-white',
         image: null,
         placeholderIcon: '👕',
-        placeholderLabel: 'OFFICIAL T-SHIRT',
-        placeholderSub: 'Navy Cotton Combed 24s',
+        placeholderLabel: 'DOKUMENTASI MERCH',
+        placeholderSub: 'Merchandise Placeholder #2',
         hasSize: true,
         sizes: ['S', 'M', 'L', 'XL', 'XXL'],
-        desc: 'Kaos kasual bertema programmer dengan sablon plastisol halus di dada dan tipografi filosofis di belakang. Sangat nyaman untuk kuliah dan nongkrong.',
-        features: ['100% Cotton Combed 24s Reaktif', 'Sablon Plastisol High Density', 'Pola Regular Fit Unisex', 'Warna Navy Deep Blue Tahan Cuci'],
+        desc: 'Deskripsi ringkas bahan kain, pola potongan, sablon grafis, dan varian ukuran pakaian resmi mahasiswa Teknik Informatika.',
+        features: ['100% Cotton Combed Premium', 'Pola Regular Fit Unisex', 'Tersedia Pilihan Ukuran S - XXL'],
     },
     {
         id: 103,
-        title: 'Official Lanyard Satin + ID Card Holder Transparan',
+        title: 'Nama Produk Lanyard & ID Card (Placeholder 3)',
         category: 'Aksesoris & Lanyard',
         price: 25000,
         priceFormatted: 'Rp 25.000',
-        stock: 45,
+        stock: 40,
         stockStatus: 'Ready Stock',
-        badge: 'Favorit Mahasiswa',
+        badge: 'Placeholder',
         badgeClass: 'bg-amber-500 text-white',
         image: null,
         placeholderIcon: '🪪',
-        placeholderLabel: 'ACCESSORIES',
-        placeholderSub: 'Lanyard Satin 2cm',
+        placeholderLabel: 'DOKUMENTASI MERCH',
+        placeholderSub: 'Merchandise Placeholder #3',
         hasSize: false,
-        desc: 'Tali gantungan ID card bahan satin kilap printing 2 sisi warna oranye-hitam khas HIMATIF, dilengkapi kait oval metal kokoh dan stopper buckle.',
-        features: ['Bahan Satin Halus Tidak Menggores Leher', 'Printing Sublimasi Anti Luntur', 'Kait Logam Putar Anti Karat', 'Termasuk Wadah Plastik Transparan'],
+        desc: 'Deskripsi ringkas spesifikasi bahan tali lanyard printing, tipe kait logam, dan kelengkapan card holder identitas kampus.',
+        features: ['Bahan Satin Halus Printing 2 Sisi', 'Kait Logam Anti Karat', 'Termasuk Card Case Transparan'],
     },
     {
         id: 104,
-        title: 'Hoodie Zipper HIMATIF "Compile Your Future"',
+        title: 'Nama Produk Jaket & Outerwear (Placeholder 4)',
         category: 'Jaket & Hoodie',
         price: 175000,
         priceFormatted: 'Rp 175.000',
-        stock: 10,
+        stock: 15,
         stockStatus: 'Pre-Order Buka',
-        badge: 'Edisi Terbatas',
+        badge: 'Placeholder',
         badgeClass: 'bg-indigo-600 text-white',
         image: null,
         placeholderIcon: '🧥',
-        placeholderLabel: 'WINTER & APPAREL',
-        placeholderSub: 'Fleece Cotton Premium',
+        placeholderLabel: 'DOKUMENTASI MERCH',
+        placeholderSub: 'Merchandise Placeholder #4',
         hasSize: true,
         sizes: ['M', 'L', 'XL', 'XXL'],
-        desc: 'Jaket hoodie zipper tebal bahan fleece katun bertekstur lembut di bagian dalam dengan sablon minimalis modern untuk pelindung cuaca di lab AC maupun outdoor.',
-        features: ['Bahan Cotton Fleece 330 Gsm', 'Resleting Besi YKK Smooth', 'Saku Kangguru Hangat', 'Tali Hood Tebal Berujung Logam'],
+        desc: 'Deskripsi ringkas ketebalan bahan kain, resleting, aksen bordir minimalis, dan saku jaket hangat untuk kegiatan mahasiswa.',
+        features: ['Bahan Cotton Fleece Tebal & Hangat', 'Resleting Besi YKK Berkualitas', 'Pola Nyaman untuk Pria & Wanita'],
     },
     {
         id: 105,
-        title: 'Paket Sticker Pack Laptop "Dev Series" (Isi 10 Pcs)',
+        title: 'Nama Paket Stiker Laptop Dev (Placeholder 5)',
         category: 'Stiker & Souvenir',
         price: 15000,
         priceFormatted: 'Rp 15.000',
         stock: 60,
         stockStatus: 'Ready Stock',
-        badge: 'Paling Laris',
+        badge: 'Placeholder',
         badgeClass: 'bg-emerald-600 text-white',
         image: null,
         placeholderIcon: '✨',
-        placeholderLabel: 'STICKER PACK',
-        placeholderSub: 'Vinyl Waterproof & Doff',
+        placeholderLabel: 'DOKUMENTASI MERCH',
+        placeholderSub: 'Merchandise Placeholder #5',
         hasSize: false,
-        desc: 'Satu set 10 stiker bertema bahasa pemrograman (Laravel, Python, React, Git, Linux, Terminal, dan Maskot HIMATIF) untuk hiasan laptop.',
-        features: ['Bahan Vinyl Premium Anti Air', 'Finishing Laminasi Doff Elegan', 'Die-Cut Rapi Tinggal Tempel', 'Tidak Meninggalkan Bekas Lem'],
+        desc: 'Deskripsi ringkas bahan stiker vinyl anti air dan anti gores dengan berbagai grafis teknologi dan maskot himpunan.',
+        features: ['Bahan Vinyl Anti Air & Tahan Cuci', 'Laminasi Doff Anti Gores', 'Die-Cut Rapi Tinggal Tempel'],
     },
     {
         id: 106,
-        title: 'Tote Bag Kanvas Minimalis "Hello World" TI',
+        title: 'Nama Produk Tas & Tote Bag (Placeholder 6)',
         category: 'Aksesoris & Lanyard',
         price: 45000,
         priceFormatted: 'Rp 45.000',
-        stock: 22,
+        stock: 20,
         stockStatus: 'Ready Stock',
-        badge: 'Ready Stock',
+        badge: 'Placeholder',
         badgeClass: 'bg-slate-900 text-white',
         image: null,
         placeholderIcon: '👜',
-        placeholderLabel: 'BAG & CANVAS',
-        placeholderSub: 'Kanvas Tebal Resleting',
+        placeholderLabel: 'DOKUMENTASI MERCH',
+        placeholderSub: 'Merchandise Placeholder #6',
         hasSize: false,
-        desc: 'Tas jinjing kanvas tebal berkapasitas besar, muat laptop hingga 15 inci, buku perkuliahan, dan botol minum, dilengkapi resleting utama.',
-        features: ['Material Baby Canvas Broken White', 'Resleting Penutup Utama Aman', 'Saku Bagian Dalam untuk Ponsel', 'Tali Webbing Tebal dan Kuat'],
+        desc: 'Deskripsi ringkas material kain kanvas kuat, kapasitas muat laptop kuliah, dan tipe resleting penutup utama tas jinjing.',
+        features: ['Material Kanvas Tebal Berkualitas', 'Resleting Penutup Utama Aman', 'Muat Laptop Hingga 15 Inci'],
     },
     {
         id: 107,
-        title: 'Tumbler Stainless Steel Termos Suhu Digital 500ml',
+        title: 'Nama Produk Botol Minum Tumbler (Placeholder 7)',
         category: 'Stiker & Souvenir',
         price: 65000,
         priceFormatted: 'Rp 65.000',
-        stock: 14,
+        stock: 15,
         stockStatus: 'Ready Stock',
-        badge: 'New Arrival',
+        badge: 'Placeholder',
         badgeClass: 'bg-[#F95700] text-white',
         image: null,
         placeholderIcon: '🥤',
-        placeholderLabel: 'DRINKWARE',
-        placeholderSub: 'Insulated Stainless 304',
+        placeholderLabel: 'DOKUMENTASI MERCH',
+        placeholderSub: 'Merchandise Placeholder #7',
         hasSize: false,
-        desc: 'Botol minum termos stainless steel berinsulasi vakum dengan sensor layar LED sentuh penunjuk temperatur cairan dan grafir laser logo HIMATIF.',
-        features: ['Food Grade Stainless Steel SUS 304', 'Tahan Panas/Dingin hingga 12 Jam', 'Smart LED Touch Temperature Display', 'Kapasitas 500ml Pas di Ransel'],
+        desc: 'Deskripsi ringkas kapasitas volume botol termos stainless steel, insulasi penahan suhu panas/dingin, dan grafir logo HIMATIF.',
+        features: ['Stainless Steel SUS 304 Food Grade', 'Tahan Panas/Dingin hingga 12 Jam', 'Kapasitas 500ml Pas di Tas Ransel'],
     },
     {
         id: 108,
-        title: 'Topi Baseball Cap Bordir Timbul HIMATIF Tech',
+        title: 'Nama Produk Topi & Headwear (Placeholder 8)',
         category: 'Aksesoris & Lanyard',
         price: 40000,
         priceFormatted: 'Rp 40.000',
-        stock: 16,
+        stock: 20,
         stockStatus: 'Ready Stock',
-        badge: 'Ready Stock',
+        badge: 'Placeholder',
         badgeClass: 'bg-slate-900 text-white',
         image: null,
         placeholderIcon: '🧢',
-        placeholderLabel: 'HEADWEAR',
-        placeholderSub: 'Twill Cotton Adjustable',
+        placeholderLabel: 'DOKUMENTASI MERCH',
+        placeholderSub: 'Merchandise Placeholder #8',
         hasSize: false,
-        desc: 'Topi baseball kasual warna hitam pekat dengan bordir timbul inisial HIMATIF di bagian depan dan gesper pengatur ukuran logam di bagian belakang.',
-        features: ['Bahan Katun Twill Tebal Berkualitas', 'Bordir Timbul 3D Rapi', 'Gesper Pengait Besi Belakang', 'Visor Lengkung Kokoh'],
+        desc: 'Deskripsi ringkas material kain katun twill tebal, aksen bordir timbul inisial himpunan, dan pengatur ukuran lingkar kepala.',
+        features: ['Bahan Katun Twill Tebal Berkualitas', 'Bordir Timbul Rapi & Awet', 'Gesper Pengatur Logam Belakang'],
     },
 ];
 
@@ -355,26 +355,26 @@ const checkoutWhatsApp = () => {
                             <div class="bg-[#212430]/90 backdrop-blur-md border border-slate-700/60 rounded-2xl p-5 sm:p-6 shadow-xl text-left space-y-3">
                                 <div>
                                     <span class="text-[11px] font-black tracking-widest text-[#F95700] uppercase block">
-                                        SOROTAN PRODUK BULAN INI
+                                        SOROTAN PRODUK MERCHANDISE
                                     </span>
                                     <h3 class="text-lg font-black text-white mt-0.5">
-                                        MERCHANDISE PILIHAN
+                                        KATALOG MERCH 2026
                                     </h3>
                                 </div>
 
                                 <!-- Baris Sorotan -->
                                 <div class="divide-y divide-white/10 text-xs sm:text-[13px] pt-1">
                                     <div class="py-2.5 flex items-center justify-between text-slate-200">
-                                        <span class="font-medium">Jaket Hoodie "Compile Your Future"</span>
-                                        <span class="font-bold text-orange-400">Rp 175.000</span>
+                                        <span class="font-medium">Kaos & Apparel (Placeholder)</span>
+                                        <span class="font-bold text-orange-400">Segera Hadir</span>
                                     </div>
                                     <div class="py-2.5 flex items-center justify-between text-slate-200">
-                                        <span class="font-medium">Kaos "Code & Create" Navy</span>
-                                        <span class="font-bold text-orange-400">Rp 85.000</span>
+                                        <span class="font-medium">Aksesoris & Lanyard (Placeholder)</span>
+                                        <span class="font-bold text-orange-400">Segera Hadir</span>
                                     </div>
                                     <div class="py-2.5 flex items-center justify-between text-slate-200">
-                                        <span class="font-medium">Lanyard Satin + Card Holder</span>
-                                        <span class="font-bold text-orange-400">Rp 25.000</span>
+                                        <span class="font-medium">Stiker & Souvenir (Placeholder)</span>
+                                        <span class="font-bold text-orange-400">Segera Hadir</span>
                                     </div>
                                 </div>
 
