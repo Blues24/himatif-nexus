@@ -39,87 +39,87 @@ const closeModal = () => {
 
 // Data Master Program Kerja HIMATIF (Akan Datang & Selesai Terlaksana)
 const masterActivities = [
-    // 1. Program Kerja Akan Datang (Upcoming)
+    // 1. Program Kerja Akan Datang (Upcoming - Placeholder)
     {
         id: 1,
-        title: 'Seminar Teknologi Nasional: The Rise of AI & Modern Software Engineering',
+        title: 'Nama Program Kerja Mendatang (Placeholder)',
         category: 'Seminar & Edukasi',
         status: 'akan_datang',
         statusLabel: 'Akan Datang',
         statusBadgeClass: 'bg-amber-500 text-white',
-        date: '15 Desember 2026',
-        time: '08:30 - 13:00 WIB',
-        location: 'Auditorium Utama POLINDRA',
+        date: 'DD Bulan YYYY',
+        time: '08:00 - Selesai WIB',
+        location: 'Lokasi Pelaksanaan Kegiatan',
         image: null,
         placeholderIcon: '💡',
         placeholderLabel: 'Poster Agenda',
-        placeholderSub: 'Seminar Teknologi 2026',
-        target: 'Mahasiswa POLINDRA & Umum',
-        desc: 'Seminar teknologi nasional yang menghadirkan praktisi software engineer industri terkemuka untuk mengupas tuntas akselerasi kecerdasan buatan, arsitektur sistem software masa kini, dan strategi membangun portofolio karir teknologi.',
-        pic: 'Departemen Riset & Teknologi (0821-9876-5432)',
-        rundown: '08:30 Registrasi Peserta • 09:00 Keynote Session AI & Cloud • 11:00 Panel Talk Karir Tech • 12:30 Sesi Tanya Jawab & Doorprize',
-        actionText: 'Daftar Seminar',
+        placeholderSub: 'Agenda Placeholder #1',
+        target: 'Sasaran Peserta Kegiatan',
+        desc: 'Deskripsi lengkap mengenai agenda, tujuan pelaksanaan, materi utama, dan target luaran program kerja yang akan diselenggarakan oleh HIMATIF POLINDRA.',
+        pic: 'Panitia Penyelenggara (Kontak PIC)',
+        rundown: 'Rincian susunan acara, pembicara, dan jadwal lengkap kegiatan akan diumumkan secara bertahap menjelang hari pelaksanaan.',
+        actionText: 'Daftar Kegiatan',
     },
 
-    // 2. Program Kerja yang Sudah Terlaksana (Selesai Terlaksana)
+    // 2. Program Kerja yang Sudah Terlaksana (Selesai Terlaksana - Placeholder)
     {
         id: 3,
-        title: 'PKPS (Pengenalan Kehidupan Program Studi) Teknik Informatika 2026',
+        title: 'Nama Program Kerja Terlaksana (Placeholder 1)',
         category: 'Kaderisasi & Pengenalan',
         status: 'selesai',
         statusLabel: 'Selesai Terlaksana',
         statusBadgeClass: 'bg-emerald-600 text-white',
-        date: '02 - 04 September 2026',
-        time: '07:30 - 16:00 WIB',
-        location: 'Gedung Direktorat & Lab TI POLINDRA',
+        date: 'DD Bulan YYYY',
+        time: '08:00 - Selesai WIB',
+        location: 'Lokasi Pelaksanaan Kegiatan',
         image: null,
         placeholderIcon: '🎓',
         placeholderLabel: 'Dokumentasi Arsip',
-        placeholderSub: 'PKPS Teknik Informatika',
-        target: 'Mahasiswa Baru Teknik Informatika 2026',
-        desc: 'Pengenalan kehidupan program studi Teknik Informatika bagi mahasiswa baru angkatan 2026, meliputi kurikulum akademik perkuliahan, etika civitas kampus, pengenalan laboratorium, serta sambutan pengurus himpunan.',
-        pic: 'Panitia PKPS HIMATIF (0813-2233-4455)',
-        rundown: 'Telah sukses diselenggarakan menyambut 160 mahasiswa baru Teknik Informatika dengan pengenalan kurikulum dan tour fasilitas laboratorium terpadu.',
+        placeholderSub: 'Arsip Placeholder #2',
+        target: 'Sasaran Peserta Kegiatan',
+        desc: 'Deskripsi arsip dokumentasi pelaksanaan program kerja yang telah berhasil diselenggarakan dengan sukses oleh pengurus himpunan.',
+        pic: 'Panitia Penyelenggara HIMATIF',
+        rundown: 'Kegiatan telah sukses diselenggarakan sesuai dengan susunan jadwal dan target partisipasi peserta yang telah direncanakan.',
         actionText: 'Lihat Detail',
     },
     {
         id: 4,
-        title: 'IT Cast: Podcast & Tech Talk Series Mahasiswa Informatika',
+        title: 'Nama Program Kerja Terlaksana (Placeholder 2)',
         category: 'Edukasi & Media',
         status: 'selesai',
         statusLabel: 'Selesai Terlaksana',
         statusBadgeClass: 'bg-emerald-600 text-white',
-        date: '12 Oktober 2026',
-        time: '14:00 - 16:00 WIB',
-        location: 'Studio Multimedia HIMATIF (Streaming YouTube)',
+        date: 'DD Bulan YYYY',
+        time: '08:00 - Selesai WIB',
+        location: 'Lokasi Pelaksanaan Kegiatan',
         image: null,
         placeholderIcon: '🎙️',
         placeholderLabel: 'Dokumentasi Arsip',
-        placeholderSub: 'IT Cast Podcast Series',
-        target: 'Mahasiswa & Pegiat Teknologi',
-        desc: 'Program bincang santai inspiratif bersama alumni dan mahasiswa berprestasi yang mengulas dinamika industri software engineering, tips lolos magang unicorn, dan riset teknologi terkini.',
-        pic: 'Departemen Komunikasi & Informasi (INFOKOM)',
-        rundown: 'Telah rampung ditayangkan pada kanal resmi YouTube HIMATIF dengan total interaksi lebih dari 1.500 penonton aktif.',
+        placeholderSub: 'Arsip Placeholder #3',
+        target: 'Sasaran Peserta Kegiatan',
+        desc: 'Deskripsi arsip dokumentasi pelaksanaan program kerja yang telah berhasil diselenggarakan dengan sukses oleh pengurus himpunan.',
+        pic: 'Panitia Penyelenggara HIMATIF',
+        rundown: 'Kegiatan telah sukses diselenggarakan sesuai dengan susunan jadwal dan target partisipasi peserta yang telah direncanakan.',
         actionText: 'Lihat Detail',
     },
     {
         id: 5,
-        title: 'LKMM-D (Latihan Keterampilan Manajemen Mahasiswa Tingkat Dasar) 2026',
+        title: 'Nama Program Kerja Terlaksana (Placeholder 3)',
         category: 'Kaderisasi & Organisasi',
         status: 'selesai',
         statusLabel: 'Selesai Terlaksana',
         statusBadgeClass: 'bg-emerald-600 text-white',
-        date: '18 - 20 Oktober 2026',
-        time: '3 Hari 2 Malam (Inap)',
-        location: 'Bumi Perkemahan & Aula Pertemuan Kampus',
+        date: 'DD Bulan YYYY',
+        time: '08:00 - Selesai WIB',
+        location: 'Lokasi Pelaksanaan Kegiatan',
         image: null,
         placeholderIcon: '👥',
         placeholderLabel: 'Dokumentasi Arsip',
-        placeholderSub: 'LKMM-D Tingkat Dasar',
-        target: 'Mahasiswa Baru Teknik Informatika 2026',
-        desc: 'Kaderisasi formal pembentukan kepemimpinan mahasiswa, manajemen organisasi, komunikasi efektif, analisis SWOT, etika persidangan, serta perancangan program kerja himpunan.',
-        pic: 'Departemen PSDM HIMATIF (0857-1234-5678)',
-        rundown: 'Telah sukses diselenggarakan dengan 100% kelulusan dari 145 peserta kader baru Teknik Informatika.',
+        placeholderSub: 'Arsip Placeholder #4',
+        target: 'Sasaran Peserta Kegiatan',
+        desc: 'Deskripsi arsip dokumentasi pelaksanaan program kerja yang telah berhasil diselenggarakan dengan sukses oleh pengurus himpunan.',
+        pic: 'Panitia Penyelenggara HIMATIF',
+        rundown: 'Kegiatan telah sukses diselenggarakan sesuai dengan susunan jadwal dan target partisipasi peserta yang telah direncanakan.',
         actionText: 'Lihat Detail',
     },
 ];
@@ -216,7 +216,7 @@ const downloadCalendarICS = () => {
 
                             <!-- Deskripsi Singkat -->
                             <p class="text-xs sm:text-sm text-slate-300 font-normal leading-relaxed max-w-xl">
-                                Ikuti berbagai rangkaian seminar teknologi nasional, kaderisasi LKMM-D, pengenalan PKPS, hingga bincang inspiratif IT Cast yang diselenggarakan oleh HIMATIF POLINDRA.
+                                Ikuti berbagai rangkaian program kerja, agenda seminar teknologi, pelatihan praktis, hingga forum diskusi yang diselenggarakan oleh HIMATIF POLINDRA.
                             </p>
 
                             <!-- Tombol CTA & Status Terdekat -->
@@ -230,7 +230,7 @@ const downloadCalendarICS = () => {
 
                                 <div class="inline-flex items-center gap-2 px-4 py-3 rounded-xl bg-white/10 border border-white/15 text-xs sm:text-sm text-slate-200 font-medium">
                                     <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
-                                    <span>Terdekat: <strong>Seminar Teknologi (15 Des 2026)</strong></span>
+                                    <span>Terdekat: <strong>Agenda Mendatang (Segera Diumumkan)</strong></span>
                                 </div>
                             </div>
                         </div>
@@ -243,7 +243,7 @@ const downloadCalendarICS = () => {
                                         SOROTAN KEGIATAN TERDEKAT
                                     </span>
                                     <h3 class="text-lg font-black text-white mt-0.5">
-                                        SEMINAR TEKNOLOGI 2026
+                                        AGENDA KEGIATAN HIMATIF 2026
                                     </h3>
                                 </div>
 
@@ -251,11 +251,11 @@ const downloadCalendarICS = () => {
                                 <div class="divide-y divide-white/10 text-xs sm:text-[13px] pt-1">
                                     <div class="py-2.5 flex items-center justify-between text-slate-200">
                                         <span class="font-medium">Jadwal Acara</span>
-                                        <span class="font-bold text-orange-400">15 Des 2026</span>
+                                        <span class="font-bold text-orange-400">Segera Diumumkan</span>
                                     </div>
                                     <div class="py-2.5 flex items-center justify-between text-slate-200">
                                         <span class="font-medium">Lokasi</span>
-                                        <span class="font-bold text-slate-300">Auditorium POLINDRA</span>
+                                        <span class="font-bold text-slate-300">Kampus POLINDRA</span>
                                     </div>
                                     <div class="py-2.5 flex items-center justify-between text-slate-200">
                                         <span class="font-medium">Status Pendaftaran</span>
