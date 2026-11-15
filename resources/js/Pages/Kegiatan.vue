@@ -23,20 +23,6 @@ const activeStatusFilter = ref('semua'); // 'semua', 'akan_datang', 'selesai'
 const searchQuery = ref('');
 const currentPage = ref(1);
 
-// State Modal Detail Kegiatan
-const selectedKegiatan = ref(null);
-const isModalOpen = ref(false);
-
-const openDetailModal = (item) => {
-    selectedKegiatan.value = item;
-    isModalOpen.value = true;
-};
-
-const closeModal = () => {
-    isModalOpen.value = false;
-    selectedKegiatan.value = null;
-};
-
 // Data Master Program Kerja HIMATIF (Akan Datang & Selesai Terlaksana)
 const masterActivities = [
     // 1. Program Kerja Akan Datang (Upcoming - Placeholder)
@@ -341,10 +327,10 @@ const downloadCalendarICS = () => {
 
                     <!-- 3. Grid Kartu Program Kerja (Ukuran Presisi Selaras dengan Halaman Informasi) -->
                     <div v-if="filteredActivities.length > 0" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 sm:gap-6">
-                        <div
+                        <Link
                             v-for="item in filteredActivities"
                             :key="item.id"
-                            @click="openDetailModal(item)"
+                            :href="route('kegiatan.show', item.id)"
                             class="bg-white rounded-2xl border border-slate-200/90 shadow-xs hover:shadow-xl hover:border-orange-300 transition-all duration-300 overflow-hidden flex flex-col justify-between group cursor-pointer"
                         >
                             <div>
@@ -418,18 +404,14 @@ const downloadCalendarICS = () => {
 
                             <!-- Footer Aksi Kartu -->
                             <div class="px-4 sm:px-5 pb-4 sm:pb-5 pt-1 flex items-center justify-between border-t border-slate-100">
-                                <button
-                                    type="button"
-                                    @click="openDetailModal(item)"
-                                    class="text-xs font-bold text-slate-900 group-hover:text-[#F95700] transition"
-                                >
+                                <span class="text-xs font-bold text-slate-900 group-hover:text-[#F95700] transition">
                                     {{ item.status === 'akan_datang' ? item.actionText : 'Lihat Detail' }}
-                                </button>
+                                </span>
                                 <span class="text-slate-400 group-hover:text-[#F95700] group-hover:translate-x-1 transition text-sm">
                                     →
                                 </span>
                             </div>
-                        </div>
+                        </Link>
                     </div>
 
                     <!-- State Kosong jika Tidak Ada Kegiatan -->
@@ -453,110 +435,7 @@ const downloadCalendarICS = () => {
             </div>
         </div>
 
-        <!-- MODAL POPUP DETAIL PROGRAM KERJA -->
-        <div
-            v-if="isModalOpen && selectedKegiatan"
-            class="fixed inset-0 z-50 overflow-y-auto bg-slate-950/70 backdrop-blur-xs flex items-center justify-center p-4"
-            @click.self="closeModal"
-        >
-            <div class="bg-white rounded-3xl max-w-xl w-full overflow-hidden shadow-2xl border border-slate-200 transform transition-all animate-in fade-in zoom-in-95 duration-200 max-h-[90vh] flex flex-col">
-                <!-- Header Gambar Modal -->
-                <div class="relative aspect-[16/9] w-full bg-gradient-to-br from-slate-800 to-slate-900 flex items-center justify-center shrink-0">
-                    <img
-                        v-if="selectedKegiatan.image"
-                        :src="selectedKegiatan.image"
-                        :alt="selectedKegiatan.title"
-                        class="w-full h-full object-cover"
-                    />
-                    <div v-else class="flex flex-col items-center justify-center text-center p-6 text-slate-300">
-                        <span class="text-5xl mb-2">{{ selectedKegiatan.placeholderIcon || '📋' }}</span>
-                        <span class="text-sm font-black tracking-wider uppercase text-white">{{ selectedKegiatan.placeholderLabel || 'Dokumentasi Arsip' }}</span>
-                        <span class="text-xs text-slate-400 mt-1 max-w-sm">{{ selectedKegiatan.placeholderSub || selectedKegiatan.title }}</span>
-                    </div>
-                    <!-- Tombol Tutup -->
-                    <button
-                        type="button"
-                        @click="closeModal"
-                        class="absolute top-4 right-4 w-9 h-9 rounded-full bg-black/60 hover:bg-black text-white flex items-center justify-center transition shadow-lg text-sm"
-                    >
-                        ✕
-                    </button>
-                    <!-- Status Badge -->
-                    <div class="absolute bottom-4 left-4">
-                        <span
-                            class="px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider text-white shadow-md"
-                            :class="selectedKegiatan.status === 'akan_datang' ? 'bg-[#F95700]' : 'bg-emerald-600'"
-                        >
-                            {{ selectedKegiatan.statusLabel }}
-                        </span>
-                    </div>
-                </div>
 
-                <!-- Konten Modal -->
-                <div class="p-6 sm:p-8 space-y-5 text-left overflow-y-auto">
-                    <div>
-                        <span class="text-xs font-black tracking-widest text-[#F95700] uppercase block">
-                            {{ selectedKegiatan.category }}
-                        </span>
-                        <h3 class="text-xl sm:text-2xl font-black text-slate-900 mt-1 leading-snug">
-                            {{ selectedKegiatan.title }}
-                        </h3>
-                    </div>
-
-                    <!-- Meta Information Grid -->
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 p-4 rounded-2xl bg-slate-50 border border-slate-200/80 text-xs text-slate-700">
-                        <div>
-                            <span class="font-bold text-slate-400 block mb-0.5">WAKTU PELAKSANAAN</span>
-                            <span class="font-semibold text-slate-900">📅 {{ selectedKegiatan.date }}</span>
-                            <span class="block text-slate-500 mt-0.5">⏰ {{ selectedKegiatan.time }}</span>
-                        </div>
-                        <div>
-                            <span class="font-bold text-slate-400 block mb-0.5">LOKASI KEGIATAN</span>
-                            <span class="font-semibold text-slate-900">📍 {{ selectedKegiatan.location }}</span>
-                        </div>
-                    </div>
-
-                    <!-- Deskripsi Lengkap -->
-                    <div class="space-y-1.5">
-                        <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider">Deskripsi Kegiatan</h4>
-                        <p class="text-xs sm:text-sm text-slate-600 leading-relaxed font-normal">
-                            {{ selectedKegiatan.desc }}
-                        </p>
-                    </div>
-
-                    <!-- Rundown / Catatan Pelaksanaan -->
-                    <div class="space-y-1.5 p-3.5 rounded-xl bg-orange-50 border border-orange-200/60 text-xs">
-                        <h4 class="font-bold text-orange-950 uppercase tracking-wider">Rundown / Hasil Pelaksanaan</h4>
-                        <p class="text-orange-900/90 leading-relaxed">
-                            {{ selectedKegiatan.rundown }}
-                        </p>
-                    </div>
-
-                    <!-- PIC Kontak & Sasaran -->
-                    <div class="flex items-center justify-between text-xs text-slate-500 pt-1">
-                        <span>🎯 Sasaran: <strong class="text-slate-800">{{ selectedKegiatan.target }}</strong></span>
-                    </div>
-
-                    <!-- Footer Modal Action -->
-                    <div class="pt-3 flex items-center justify-end gap-3 border-t border-slate-100">
-                        <button
-                            type="button"
-                            @click="closeModal"
-                            class="px-5 py-2.5 rounded-xl text-xs font-bold text-slate-600 hover:bg-slate-100 transition"
-                        >
-                            Tutup
-                        </button>
-                        <button
-                            type="button"
-                            @click="closeModal"
-                            class="px-6 py-2.5 rounded-xl text-xs font-bold text-white bg-[#F95700] hover:bg-orange-600 transition shadow-md shadow-orange-500/20"
-                        >
-                            {{ selectedKegiatan.status === 'akan_datang' ? 'Konfirmasi Kehadiran' : 'Tutup' }}
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
 
     </AuthenticatedLayout>
 </template>

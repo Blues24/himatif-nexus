@@ -22,6 +22,12 @@ Route::get('/informasi', function () {
     return Inertia::render('Informasi');
 })->name('informasi');
 
+Route::get('/informasi/{id}', function (int $id) {
+    return Inertia::render('InformasiDetail', [
+        'id' => $id,
+    ]);
+})->whereNumber('id')->name('informasi.show');
+
 // Penyewaan Inventaris: public catalog & placeholder reservation
 Route::get('/penyewaan-inventaris', function () {
     return Inertia::render('PenyewaanInventaris');

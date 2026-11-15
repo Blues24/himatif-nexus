@@ -62,7 +62,7 @@ const showingNavigationDropdown = ref(false);
                             <Link
                                 :href="route('informasi')"
                                 class="inline-flex items-center px-1 pt-1 text-sm font-semibold transition"
-                                :class="route().current('informasi') ? 'font-bold text-orange-600' : 'text-slate-700 hover:text-orange-600'"
+                                :class="route().current('informasi*') ? 'font-bold text-orange-600' : 'text-slate-700 hover:text-orange-600'"
                             >
                                 Informasi
                             </Link>
@@ -223,7 +223,7 @@ const showingNavigationDropdown = ref(false);
                         </ResponsiveNavLink>
                         <ResponsiveNavLink
                             :href="route('informasi')"
-                            :active="route().current('informasi')"
+                            :active="route().current('informasi*')"
                         >
                             Informasi
                         </ResponsiveNavLink>

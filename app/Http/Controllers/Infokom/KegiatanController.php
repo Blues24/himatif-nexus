@@ -30,9 +30,16 @@ class KegiatanController extends Controller
 
     public function show(int $id): Response
     {
-        $kegiatan = $this->service->findOrFail($id);
+        $kegiatan = null;
 
-        return Inertia::render('Infokom/Kegiatan/Show', [
+        try {
+            $kegiatan = $this->service->findOrFail($id);
+        } catch (\Throwable) {
+            // Fallback to placeholder/master kegiatan
+        }
+
+        return Inertia::render('KegiatanDetail', [
+            'id' => $id,
             'kegiatan' => $kegiatan,
         ]);
     }

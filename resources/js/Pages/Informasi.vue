@@ -8,20 +8,6 @@ const activeCategory = ref('Semua');
 const searchQuery = ref('');
 const currentPage = ref(1);
 
-// State Modal Detail Artikel
-const selectedArticle = ref(null);
-const isModalOpen = ref(false);
-
-const openDetailModal = (item) => {
-    selectedArticle.value = item;
-    isModalOpen.value = true;
-};
-
-const closeModal = () => {
-    isModalOpen.value = false;
-    selectedArticle.value = null;
-};
-
 const categories = [
     'Semua',
     'Formatif',
@@ -383,10 +369,10 @@ const filteredArticles = computed(() => {
 
                     <!-- 4. Grid Kartu Informasi (4 Kolom Responsive Sesuai Permintaan) -->
                     <div v-if="filteredArticles.length > 0" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 sm:gap-6">
-                        <div
+                        <Link
                             v-for="item in filteredArticles"
                             :key="item.id"
-                            @click="openDetailModal(item)"
+                            :href="route('informasi.show', item.id)"
                             class="bg-white rounded-2xl border border-slate-200/90 shadow-xs hover:shadow-xl hover:border-orange-300 transition-all duration-300 overflow-hidden flex flex-col justify-between group cursor-pointer"
                         >
                             <div>
@@ -434,19 +420,17 @@ const filteredArticles = computed(() => {
 
                             <!-- Footer Kartu -->
                             <div class="px-4 sm:px-5 pb-4 sm:pb-5 pt-1 flex items-center justify-between border-t border-slate-100">
-                                <button
-                                    type="button"
-                                    @click.stop="openDetailModal(item)"
+                                <span
                                     class="text-xs font-bold transition group-hover:underline"
                                     :class="item.actionClass"
                                 >
                                     {{ item.actionText }}
-                                </button>
+                                </span>
                                 <span class="text-slate-400 group-hover:text-[#F95700] group-hover:translate-x-1 transition text-sm">
                                     →
                                 </span>
                             </div>
-                        </div>
+                        </Link>
                     </div>
 
                     <!-- State Kosong jika Pencarian Tidak Ditemukan -->
@@ -501,124 +485,6 @@ const filteredArticles = computed(() => {
                     </div>
                 </div>
 
-            </div>
-        </div>
-
-        <!-- MODAL POPUP DETAIL ARTIKEL INFORMASI -->
-        <div
-            v-if="isModalOpen && selectedArticle"
-            class="fixed inset-0 z-50 overflow-y-auto bg-slate-950/70 backdrop-blur-xs flex items-center justify-center p-4"
-            @click.self="closeModal"
-        >
-            <div class="bg-white rounded-3xl max-w-2xl w-full overflow-hidden shadow-2xl border border-slate-200 transform transition-all animate-in fade-in zoom-in-95 duration-200 max-h-[90vh] flex flex-col">
-                <!-- Header Gambar / Placeholder Modal -->
-                <div class="relative aspect-[16/9] w-full bg-gradient-to-br from-slate-800 to-slate-900 flex items-center justify-center shrink-0">
-                    <img
-                        v-if="selectedArticle.image"
-                        :src="selectedArticle.image"
-                        :alt="selectedArticle.title"
-                        class="w-full h-full object-cover"
-                    />
-                    <div v-else class="flex flex-col items-center justify-center text-center p-6 text-slate-300">
-                        <span class="text-5xl mb-2">{{ selectedArticle.placeholderIcon || '📰' }}</span>
-                        <span class="text-sm font-black tracking-wider uppercase text-white">{{ selectedArticle.placeholderLabel || 'DOKUMENTASI WARTA' }}</span>
-                        <span class="text-xs text-slate-400 mt-1 max-w-sm">{{ selectedArticle.placeholderSub || selectedArticle.title }}</span>
-                    </div>
-
-                    <!-- Tombol Tutup -->
-                    <button
-                        type="button"
-                        @click="closeModal"
-                        class="absolute top-4 right-4 w-9 h-9 rounded-full bg-black/60 hover:bg-black text-white flex items-center justify-center transition shadow-lg text-sm"
-                    >
-                        ✕
-                    </button>
-
-                    <!-- Badge Kategori -->
-                    <div class="absolute bottom-4 left-4">
-                        <span
-                            class="px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider text-white shadow-md"
-                            :class="selectedArticle.badgeClass"
-                        >
-                            {{ selectedArticle.badgeText }}
-                        </span>
-                    </div>
-                </div>
-
-                <!-- Konten Scrollable Modal -->
-                <div class="p-6 sm:p-8 space-y-5 text-left overflow-y-auto">
-                    <!-- Meta Info: Tanggal, Author, Waktu Baca -->
-                    <div class="flex flex-wrap items-center gap-3 text-xs text-slate-500 font-semibold border-b border-slate-100 pb-3">
-                        <span class="flex items-center gap-1 text-orange-600">
-                            📅 {{ selectedArticle.date }}
-                        </span>
-                        <span>•</span>
-                        <span class="flex items-center gap-1">
-                            ✍️ {{ selectedArticle.author || 'Departemen INFOKOM HIMATIF' }}
-                        </span>
-                        <span>•</span>
-                        <span class="flex items-center gap-1">
-                            ⏱️ {{ selectedArticle.readTime || '3 Menit Baca' }}
-                        </span>
-                    </div>
-
-                    <!-- Judul Besar Artikel -->
-                    <div>
-                        <h2 class="text-xl sm:text-2xl font-black text-slate-900 leading-snug">
-                            {{ selectedArticle.title }}
-                        </h2>
-                    </div>
-
-                    <!-- Excerpt / Ringkasan Utama -->
-                    <div class="p-4 rounded-2xl bg-orange-50/80 border border-orange-200/60 text-xs sm:text-sm text-orange-950 font-medium leading-relaxed">
-                        {{ selectedArticle.desc }}
-                    </div>
-
-                    <!-- Isi Lengkap Artikel -->
-                    <div class="space-y-3.5 text-xs sm:text-sm text-slate-600 leading-relaxed">
-                        <p v-for="(para, idx) in selectedArticle.paragraphs" :key="idx">
-                            {{ para }}
-                        </p>
-                    </div>
-
-                    <!-- Key Takeaways / Poin Penting -->
-                    <div v-if="selectedArticle.keyPoints?.length" class="p-4 rounded-2xl bg-slate-50 border border-slate-200/80 space-y-2">
-                        <h4 class="text-xs font-bold text-slate-800 uppercase tracking-wide">
-                            📌 Poin Pembahasan Utama:
-                        </h4>
-                        <ul class="text-xs text-slate-600 space-y-1.5 list-disc list-inside">
-                            <li v-for="(pt, idx) in selectedArticle.keyPoints" :key="idx">
-                                {{ pt }}
-                            </li>
-                        </ul>
-                    </div>
-
-                    <!-- Tags Kategori -->
-                    <div class="flex flex-wrap items-center gap-1.5 pt-2">
-                        <span class="text-xs font-bold text-slate-400 mr-1">Topik:</span>
-                        <span
-                            v-for="tag in (selectedArticle.tags || ['Informatika', 'HIMATIF', 'Warta'])"
-                            :key="tag"
-                            class="px-2.5 py-1 rounded-lg bg-slate-100 text-slate-600 font-semibold text-[11px]"
-                        >
-                            #{{ tag }}
-                        </span>
-                    </div>
-
-                    <!-- Footer Modal Action -->
-                    <div class="pt-4 border-t border-slate-100 flex items-center justify-between">
-                        <div class="text-[11px] text-slate-400">
-                            Dipublikasikan oleh HIMATIF POLINDRA
-                        </div>
-                        <button
-                            type="button"
-                            @click="closeModal"
-                            class="px-5 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs transition active:scale-95 shadow-sm"
-                        >
-                            Tutup Artikel
-                        </button>
-                    </div>
-                </div>
             </div>
         </div>
     </AuthenticatedLayout>
