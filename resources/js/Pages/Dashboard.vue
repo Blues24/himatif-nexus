@@ -128,7 +128,7 @@ const himatifServices = [
         title: 'Penyewaan Inventaris',
         desc: 'Layanan penyewaan proyektor, sound system, kamera, hingga perlengkapan kepanitiaan kampus.',
         btnText: 'Ajukan Penyewaan',
-        href: route('penyewaan.index'),
+        href: route('penyewaan-inventaris'),
         iconType: 'box',
     },
     {

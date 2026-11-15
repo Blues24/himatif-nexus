@@ -82,7 +82,8 @@ const showingNavigationDropdown = ref(false);
                                     <template #trigger>
                                         <button
                                             type="button"
-                                            class="inline-flex items-center gap-1 px-1 pt-1 text-sm font-semibold text-slate-700 hover:text-orange-600 transition focus:outline-none"
+                                            class="inline-flex items-center gap-1 px-1 pt-1 text-sm font-semibold transition focus:outline-none"
+                                            :class="route().current('penyewaan-inventaris') ? 'font-bold text-orange-600' : 'text-slate-700 hover:text-orange-600'"
                                         >
                                             <span>Lainnya</span>
                                             <svg class="h-4 w-4 text-slate-400" viewBox="0 0 20 20" fill="currentColor">
@@ -91,7 +92,7 @@ const showingNavigationDropdown = ref(false);
                                         </button>
                                     </template>
                                     <template #content>
-                                        <DropdownLink :href="route('dashboard') + '#layanan'">
+                                        <DropdownLink :href="route('penyewaan-inventaris')">
                                             Penyewaan Alat
                                         </DropdownLink>
                                         <DropdownLink :href="route('dashboard') + '#layanan'">
@@ -226,11 +227,17 @@ const showingNavigationDropdown = ref(false);
                         >
                             Informasi
                         </ResponsiveNavLink>
-                        <ResponsiveNavLink :href="route('dashboard') + '#agenda'">
+                        <ResponsiveNavLink
+                            :href="route('kegiatan.index')"
+                            :active="route().current('kegiatan*')"
+                        >
                             Kegiatan
                         </ResponsiveNavLink>
-                        <ResponsiveNavLink :href="route('dashboard') + '#layanan'">
-                            Lainnya
+                        <ResponsiveNavLink
+                            :href="route('penyewaan-inventaris')"
+                            :active="route().current('penyewaan-inventaris')"
+                        >
+                            Penyewaan Alat
                         </ResponsiveNavLink>
                     </div>
 

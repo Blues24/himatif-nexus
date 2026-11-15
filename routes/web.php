@@ -22,6 +22,15 @@ Route::get('/informasi', function () {
     return Inertia::render('Informasi');
 })->name('informasi');
 
+// Penyewaan Inventaris: public catalog & placeholder reservation
+Route::get('/penyewaan-inventaris', function () {
+    return Inertia::render('PenyewaanInventaris');
+})->name('penyewaan-inventaris');
+
+Route::get('/penyewaan-alat', function () {
+    return redirect()->route('penyewaan-inventaris');
+});
+
 // Danus Shop: public browse, auth-restricted writes
 Route::controller(ProdukController::class)->group(function () {
     Route::get('/produk', 'index')->name('produk.index');
