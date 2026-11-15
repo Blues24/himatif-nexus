@@ -56,7 +56,7 @@ onUnmounted(() => {
     if (timerInterval) clearInterval(timerInterval);
 });
 
-// Data Artikel / Informasi Koleksi Warta (9 Item Unik Tanpa Duplikasi)
+// Data Artikel / Informasi Koleksi Warta (4 Item dengan Placeholder Thumbnail)
 const allArticles = [
     {
         id: 1,
@@ -66,7 +66,10 @@ const allArticles = [
         badgeText: 'Formatif',
         badgeClass: 'bg-white/95 text-slate-800 font-bold',
         date: '20 Oktober 2026',
-        image: '/images/informasi-api.jpg',
+        image: null,
+        placeholderIcon: '⚡',
+        placeholderLabel: 'Dokumentasi Warta',
+        placeholderSub: 'Formatif: RESTful API',
         actionText: 'Lihat Selengkapnya...',
         actionClass: 'text-[#F95700] hover:text-orange-700',
     },
@@ -78,7 +81,10 @@ const allArticles = [
         badgeText: 'Workshop',
         badgeClass: 'bg-white/95 text-slate-800 font-bold',
         date: '20 Oktober 2026 • GSC Polindra',
-        image: '/images/aktivitas-workshop.png',
+        image: null,
+        placeholderIcon: '💻',
+        placeholderLabel: 'Dokumentasi Arsip',
+        placeholderSub: 'Workshop & Pelatihan',
         actionText: 'Selesai Terlaksana',
         actionClass: 'text-[#F95700]',
     },
@@ -90,7 +96,10 @@ const allArticles = [
         badgeText: 'Formatif',
         badgeClass: 'bg-white/95 text-slate-800 font-bold',
         date: '22 Oktober 2026',
-        image: '/images/informasi-domain-hosting.jpg',
+        image: null,
+        placeholderIcon: '🌐',
+        placeholderLabel: 'Dokumentasi Warta',
+        placeholderSub: 'Formatif: Domain & Hosting',
         actionText: 'Lihat Selengkapnya...',
         actionClass: 'text-[#F95700] hover:text-orange-700',
     },
@@ -102,7 +111,10 @@ const allArticles = [
         badgeText: 'Open Registration',
         badgeClass: 'bg-[#F95700] text-white font-bold',
         date: '15 Nov 2026 • Politeknik Negeri Indramayu',
-        image: '/images/aktivitas-iconfest.png',
+        image: null,
+        placeholderIcon: '🏆',
+        placeholderLabel: 'Poster Kompetisi',
+        placeholderSub: 'ICONFEST POLINDRA 2026',
         actionText: 'Sisa 8 Hari',
         actionClass: 'text-[#F95700]',
     },
@@ -313,12 +325,19 @@ const filteredArticles = computed(() => {
                             <div>
                                 <!-- Thumbnail Gambar dengan Badge Kategori -->
                                 <div class="p-3 pb-0">
-                                    <div class="relative overflow-hidden rounded-xl aspect-[16/10] bg-slate-100">
+                                    <div class="relative overflow-hidden rounded-xl aspect-[16/10] bg-gradient-to-br from-slate-800 to-slate-900 flex items-center justify-center">
                                         <img
+                                            v-if="item.image"
                                             :src="item.image"
                                             :alt="item.title"
                                             class="w-full h-full object-cover group-hover:scale-105 transition duration-300"
                                         />
+                                        <!-- Placeholder Elegan Jika Foto Belum Ada -->
+                                        <div v-else class="flex flex-col items-center justify-center text-center p-4 text-slate-300">
+                                            <span class="text-3xl mb-1">{{ item.placeholderIcon || '📰' }}</span>
+                                            <span class="text-[11px] font-black tracking-wider uppercase text-slate-200">{{ item.placeholderLabel || 'Dokumentasi Warta' }}</span>
+                                            <span class="text-[10px] text-slate-400 mt-0.5 truncate max-w-[190px]">{{ item.placeholderSub || item.title }}</span>
+                                        </div>
                                         <!-- Badge Kategori di Atas Gambar -->
                                         <div class="absolute top-2.5 left-2.5">
                                             <span

@@ -50,7 +50,10 @@ const masterActivities = [
         date: '15 Desember 2026',
         time: '08:30 - 13:00 WIB',
         location: 'Auditorium Utama POLINDRA',
-        image: '/images/aktivitas-iconfest.png',
+        image: null,
+        placeholderIcon: '💡',
+        placeholderLabel: 'Poster Agenda',
+        placeholderSub: 'Seminar Teknologi 2026',
         target: 'Mahasiswa POLINDRA & Umum',
         desc: 'Seminar teknologi nasional yang menghadirkan praktisi software engineer industri terkemuka untuk mengupas tuntas akselerasi kecerdasan buatan, arsitektur sistem software masa kini, dan strategi membangun portofolio karir teknologi.',
         pic: 'Departemen Riset & Teknologi (0821-9876-5432)',
@@ -70,11 +73,14 @@ const masterActivities = [
         time: '07:30 - 16:00 WIB',
         location: 'Gedung Direktorat & Lab TI POLINDRA',
         image: null,
+        placeholderIcon: '🎓',
+        placeholderLabel: 'Dokumentasi Arsip',
+        placeholderSub: 'PKPS Teknik Informatika',
         target: 'Mahasiswa Baru Teknik Informatika 2026',
         desc: 'Pengenalan kehidupan program studi Teknik Informatika bagi mahasiswa baru angkatan 2026, meliputi kurikulum akademik perkuliahan, etika civitas kampus, pengenalan laboratorium, serta sambutan pengurus himpunan.',
         pic: 'Panitia PKPS HIMATIF (0813-2233-4455)',
         rundown: 'Telah sukses diselenggarakan menyambut 160 mahasiswa baru Teknik Informatika dengan pengenalan kurikulum dan tour fasilitas laboratorium terpadu.',
-        actionText: 'Lihat Dokumentasi',
+        actionText: 'Lihat Detail',
     },
     {
         id: 4,
@@ -86,12 +92,15 @@ const masterActivities = [
         date: '12 Oktober 2026',
         time: '14:00 - 16:00 WIB',
         location: 'Studio Multimedia HIMATIF (Streaming YouTube)',
-        image: '/images/aktivitas-itcast.png',
+        image: null,
+        placeholderIcon: '🎙️',
+        placeholderLabel: 'Dokumentasi Arsip',
+        placeholderSub: 'IT Cast Podcast Series',
         target: 'Mahasiswa & Pegiat Teknologi',
         desc: 'Program bincang santai inspiratif bersama alumni dan mahasiswa berprestasi yang mengulas dinamika industri software engineering, tips lolos magang unicorn, dan riset teknologi terkini.',
         pic: 'Departemen Komunikasi & Informasi (INFOKOM)',
         rundown: 'Telah rampung ditayangkan pada kanal resmi YouTube HIMATIF dengan total interaksi lebih dari 1.500 penonton aktif.',
-        actionText: 'Lihat Dokumentasi',
+        actionText: 'Lihat Detail',
     },
     {
         id: 5,
@@ -103,12 +112,15 @@ const masterActivities = [
         date: '18 - 20 Oktober 2026',
         time: '3 Hari 2 Malam (Inap)',
         location: 'Bumi Perkemahan & Aula Pertemuan Kampus',
-        image: '/images/galeri-3.png',
+        image: null,
+        placeholderIcon: '👥',
+        placeholderLabel: 'Dokumentasi Arsip',
+        placeholderSub: 'LKMM-D Tingkat Dasar',
         target: 'Mahasiswa Baru Teknik Informatika 2026',
         desc: 'Kaderisasi formal pembentukan kepemimpinan mahasiswa, manajemen organisasi, komunikasi efektif, analisis SWOT, etika persidangan, serta perancangan program kerja himpunan.',
         pic: 'Departemen PSDM HIMATIF (0857-1234-5678)',
         rundown: 'Telah sukses diselenggarakan dengan 100% kelulusan dari 145 peserta kader baru Teknik Informatika.',
-        actionText: 'Lihat Dokumentasi',
+        actionText: 'Lihat Detail',
     },
 ];
 
@@ -345,11 +357,11 @@ const downloadCalendarICS = () => {
                                             class="w-full h-full object-cover group-hover:scale-105 transition duration-500"
                                             loading="lazy"
                                         />
-                                        <!-- Placeholder Elegan Jika Foto Belum Ada (e.g. PKPS) -->
+                                        <!-- Placeholder Elegan Jika Foto Belum Ada -->
                                         <div v-else class="flex flex-col items-center justify-center text-center p-4 text-slate-300">
-                                            <span class="text-3xl mb-1">🎓</span>
-                                            <span class="text-[11px] font-black tracking-wider uppercase text-slate-200">Dokumentasi Arsip</span>
-                                            <span class="text-[10px] text-slate-400 mt-0.5">PKPS Teknik Informatika</span>
+                                            <span class="text-3xl mb-1">{{ item.placeholderIcon || '📋' }}</span>
+                                            <span class="text-[11px] font-black tracking-wider uppercase text-slate-200">{{ item.placeholderLabel || 'Dokumentasi Arsip' }}</span>
+                                            <span class="text-[10px] text-slate-400 mt-0.5 truncate max-w-[190px]">{{ item.placeholderSub || item.title }}</span>
                                         </div>
                                         <!-- Badge Status di Atas Kiri -->
                                         <div class="absolute top-2.5 left-2.5">
@@ -456,9 +468,9 @@ const downloadCalendarICS = () => {
                         class="w-full h-full object-cover"
                     />
                     <div v-else class="flex flex-col items-center justify-center text-center p-6 text-slate-300">
-                        <span class="text-5xl mb-2">🎓</span>
-                        <span class="text-sm font-black tracking-wider uppercase text-white">Dokumentasi PKPS 2026</span>
-                        <span class="text-xs text-slate-400 mt-1">Foto dokumentasi kegiatan akan diperbarui segera</span>
+                        <span class="text-5xl mb-2">{{ selectedKegiatan.placeholderIcon || '📋' }}</span>
+                        <span class="text-sm font-black tracking-wider uppercase text-white">{{ selectedKegiatan.placeholderLabel || 'Dokumentasi Arsip' }}</span>
+                        <span class="text-xs text-slate-400 mt-1 max-w-sm">{{ selectedKegiatan.placeholderSub || selectedKegiatan.title }}</span>
                     </div>
                     <!-- Tombol Tutup -->
                     <button
