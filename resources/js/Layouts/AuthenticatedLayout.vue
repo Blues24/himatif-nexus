@@ -83,7 +83,7 @@ const showingNavigationDropdown = ref(false);
                                         <button
                                             type="button"
                                             class="inline-flex items-center gap-1 px-1 pt-1 text-sm font-semibold transition focus:outline-none"
-                                            :class="route().current('penyewaan-inventaris') ? 'font-bold text-orange-600' : 'text-slate-700 hover:text-orange-600'"
+                                            :class="route().current('penyewaan-inventaris') || route().current('produk*') ? 'font-bold text-orange-600' : 'text-slate-700 hover:text-orange-600'"
                                         >
                                             <span>Lainnya</span>
                                             <svg class="h-4 w-4 text-slate-400" viewBox="0 0 20 20" fill="currentColor">
@@ -95,7 +95,7 @@ const showingNavigationDropdown = ref(false);
                                         <DropdownLink :href="route('penyewaan-inventaris')">
                                             Penyewaan Alat
                                         </DropdownLink>
-                                        <DropdownLink :href="route('dashboard') + '#layanan'">
+                                        <DropdownLink :href="route('produk.index')">
                                             Merch Shop
                                         </DropdownLink>
                                     </template>
@@ -238,6 +238,12 @@ const showingNavigationDropdown = ref(false);
                             :active="route().current('penyewaan-inventaris')"
                         >
                             Penyewaan Alat
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink
+                            :href="route('produk.index')"
+                            :active="route().current('produk*')"
+                        >
+                            Merch Shop
                         </ResponsiveNavLink>
                     </div>
 
