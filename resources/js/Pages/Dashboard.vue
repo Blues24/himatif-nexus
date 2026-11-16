@@ -278,77 +278,85 @@ const activities = [
                     </div>
                 </div>
 
-                <!-- 2. Orange Stats Banner (Seperti di Desain) -->
+                <!-- 2. Orange Stats Banner (Sesuai Desain Mockup) -->
                 <div class="relative z-10 -mt-2 sm:-mt-4">
-                    <div class="bg-gradient-to-r from-[#F95700] via-[#F95900] to-[#FF6A00] rounded-2xl sm:rounded-3xl shadow-xl shadow-orange-500/25 p-5 sm:p-7 text-slate-900">
-                        <div class="grid grid-cols-2 md:grid-cols-4 gap-6 sm:gap-4 divide-y sm:divide-y-0 sm:divide-x divide-white/20">
+                    <div class="bg-gradient-to-r from-[#FF5500] via-[#F95700] to-[#FF5E00] rounded-2xl sm:rounded-3xl shadow-xl shadow-orange-500/25 p-5 sm:py-6 sm:px-8">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-6 lg:gap-0 lg:divide-x lg:divide-white/25">
                             <!-- 1. 500+ Anggota Mahasiswa -->
-                            <div class="flex items-center gap-3.5 sm:gap-4">
-                                <div class="w-12 h-12 rounded-xl bg-white shadow-xs flex items-center justify-center shrink-0 text-slate-800">
-                                    <svg class="w-6 h-6 text-slate-900" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+                            <div class="flex items-center gap-3.5 sm:gap-4 lg:pr-6">
+                                <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-white shadow-md flex items-center justify-center shrink-0">
+                                    <svg class="w-6 h-6 sm:w-7 sm:h-7 text-[#F95700]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <circle cx="12" cy="7" r="3"/>
+                                        <circle cx="5" cy="10" r="2.5"/>
+                                        <circle cx="19" cy="10" r="2.5"/>
+                                        <path d="M7 20v-2a5 5 0 0 1 10 0v2"/>
+                                        <path d="M2 20v-1.5a4 4 0 0 1 3.5-3.9"/>
+                                        <path d="M22 20v-1.5a4 4 0 0 0-3.5-3.9"/>
                                     </svg>
                                 </div>
                                 <div>
-                                    <div class="text-xl sm:text-2xl font-black text-slate-950 tracking-tight leading-none">
+                                    <div class="text-xl sm:text-2xl font-black text-white tracking-tight leading-none drop-shadow-xs">
                                         500+
                                     </div>
-                                    <div class="text-xs sm:text-sm font-semibold text-slate-900/90 mt-1">
-                                        Anggota Mahasiswa
+                                    <div class="text-xs sm:text-sm font-medium text-white/90 mt-1 sm:mt-1.5 leading-tight">
+                                        Mahasiswa Aktif
                                     </div>
                                 </div>
                             </div>
 
                             <!-- 2. 12 Program Kerja Tahunan -->
-                            <div class="flex items-center gap-3.5 sm:gap-4 pt-4 sm:pt-0 sm:pl-6">
-                                <div class="w-12 h-12 rounded-xl bg-white shadow-xs flex items-center justify-center shrink-0 text-slate-800">
-                                    <svg class="w-6 h-6 text-slate-900" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M15.59 14.37a6 6 0 01-5.84 7.38v-4.8m5.84-2.58a14.98 14.98 0 006.16-12.12A14.98 14.98 0 009.63 8.41m5.96 5.96a14.926 14.926 0 01-5.841 2.58m-.119-8.54a6 6 0 00-7.381 5.84h4.8m2.58-5.84a14.927 14.927 0 00-2.58 5.84m2.699 2.7a3 3 0 114.243-4.243 3 3 0 01-4.243 4.243z"/>
+                            <div class="flex items-center gap-3.5 sm:gap-4 lg:px-6">
+                                <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-white shadow-md flex items-center justify-center shrink-0">
+                                    <svg class="w-6 h-6 sm:w-7 sm:h-7 text-[#F95700]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/>
+                                        <path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/>
+                                        <path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/>
+                                        <path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/>
                                     </svg>
                                 </div>
                                 <div>
-                                    <div class="text-xl sm:text-2xl font-black text-slate-950 tracking-tight leading-none">
+                                    <div class="text-xl sm:text-2xl font-black text-white tracking-tight leading-none drop-shadow-xs">
                                         12 Program
                                     </div>
-                                    <div class="text-xs sm:text-sm font-semibold text-slate-900/90 mt-1">
+                                    <div class="text-xs sm:text-sm font-medium text-white/90 mt-1 sm:mt-1.5 leading-tight">
                                         Kerja Tahunan
                                     </div>
                                 </div>
                             </div>
 
                             <!-- 3. 3 Divisi Pilar Organisasi -->
-                            <div class="flex items-center gap-3.5 sm:gap-4 pt-4 sm:pt-0 sm:pl-6">
-                                <div class="w-12 h-12 rounded-xl bg-white shadow-xs flex items-center justify-center shrink-0 text-slate-800">
-                                    <svg class="w-6 h-6 text-slate-900" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <rect x="9" y="3" width="6" height="4" rx="1"/>
-                                        <rect x="2" y="17" width="6" height="4" rx="1"/>
-                                        <rect x="16" y="17" width="6" height="4" rx="1"/>
-                                        <path d="M12 7v5m0 0H5v5m7-5h7v5"/>
+                            <div class="flex items-center gap-3.5 sm:gap-4 lg:px-6">
+                                <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-white shadow-md flex items-center justify-center shrink-0">
+                                    <svg class="w-6 h-6 sm:w-7 sm:h-7 text-[#F95700]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <rect x="9" y="3" width="6" height="5" rx="1"/>
+                                        <rect x="3" y="16" width="6" height="5" rx="1"/>
+                                        <rect x="15" y="16" width="6" height="5" rx="1"/>
+                                        <path d="M12 8v4m-6 4v-4h12v4"/>
                                     </svg>
                                 </div>
                                 <div>
-                                    <div class="text-xl sm:text-2xl font-black text-slate-950 tracking-tight leading-none">
+                                    <div class="text-xl sm:text-2xl font-black text-white tracking-tight leading-none drop-shadow-xs">
                                         3 Divisi
                                     </div>
-                                    <div class="text-xs sm:text-sm font-semibold text-slate-900/90 mt-1">
+                                    <div class="text-xs sm:text-sm font-medium text-white/90 mt-1 sm:mt-1.5 leading-tight">
                                         Pilar Organisasi
                                     </div>
                                 </div>
                             </div>
 
-                            <!-- 4. Sangat Baik Akreditasi Jurusan -->
-                            <div class="flex items-center gap-3.5 sm:gap-4 pt-4 sm:pt-0 sm:pl-6">
-                                <div class="w-12 h-12 rounded-xl bg-white shadow-xs flex items-center justify-center shrink-0 text-slate-800">
-                                    <svg class="w-6 h-6 text-slate-900" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <circle cx="12" cy="8" r="6"/>
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M8.21 13.89L7 22l5-3 5 3-1.21-8.11"/>
+                            <!-- 4. Baik Sekali Akreditasi Prodi -->
+                            <div class="flex items-center gap-3.5 sm:gap-4 lg:pl-6">
+                                <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-white shadow-md flex items-center justify-center shrink-0">
+                                    <svg class="w-6 h-6 sm:w-7 sm:h-7 text-[#F95700]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <circle cx="12" cy="8" r="5"/>
+                                        <path d="M8.21 12.89L7 21l5-3 5 3-1.21-8.11"/>
                                     </svg>
                                 </div>
                                 <div>
-                                    <div class="text-xl sm:text-2xl font-black text-slate-950 tracking-tight leading-none">
+                                    <div class="text-xl sm:text-2xl font-black text-white tracking-tight leading-none drop-shadow-xs">
                                         Baik Sekali
                                     </div>
-                                    <div class="text-xs sm:text-sm font-semibold text-slate-900/90 mt-1">
+                                    <div class="text-xs sm:text-sm font-medium text-white/90 mt-1 sm:mt-1.5 leading-tight">
                                         Akreditasi Prodi
                                     </div>
                                 </div>
