@@ -336,4 +336,86 @@ himatif-nexus/
 └── AGENTS.md  CLAUDE.md  README.md  ARCHITECTURE.id-ID.md
 ```
 | Missing empty/loading/error state documentation for data views | 🟡 Medium | **Planned** |
+
+---
+
+## 12. Sistem Notifikasi SSE (Server-Sent Events)
+
+### 12.1 Keputusan Arsitektur
+
+Saluran notifikasi one-way, backend-push ke browser, **scope-nya eksklusif untuk Kegiatan (Activities) dan Informasi/Formatif (Articles)**. Hanya diaktifkan ketika ada konten baru atau perubahan status.
+
+| Properti | Nilai |
+| :--- | :--- |
+| Protokol | HTTP long-lived stream (`text/event-stream`) |
+| Arah | **Hanya Server → Client** (tanpa client push kembali) |
+| Transport | `Symfony\Component\HttpFoundation\StreamedResponse` (native Laravel) |
+| Dep Luar | **Tidak ada** — tanpa tambahan package composer/npm |
+| Fallback store | Redis Pub/Sub (`REDIS_HOST=127.0.0.1` aktif) atau Cache array fallback |
+| Heartbeat | Komentar 2s (`: keep-alive`) agar proxy tidak timeout |
+
+### 12.2 Endpoint
+
+`GET /notifications/stream` (dilindungi auth)
+
+Headers:
+```
+Content-Type: text/event-stream
+Cache-Control: no-cache
+Connection: keep-alive
+X-Accel-Buffering: no   # bypass buffering Nginx
+```
+
+### 12.3 Jenis Event (Scope)
+
+| Event | Pemicu | Sumber |
+| :--- | :--- | :--- |
+| `kegiatan_created` | Kegiatan baru dibuat | `KegiatanService::afterCreate()` |
+| `kegiatan_updated` | `status_kegiatan` berubah | `KegiatanService::afterUpdate()` |
+| `informasi_published` | Artikel baru diterbitkan | `FormatifService::afterCreate()` |
+
+### 12.4 Integrasi Hook Service
+
+`BaseService` sudah menyediakan hook `afterCreate()` / `afterUpdate()` — logika notifikasi tetap berada di dalam Service (SRP §7.1), **bukan** di Controller.
+
+```php
+// app/Services/KegiatanService.php
+protected function afterCreate(object $record, array $data): void
+{
+    SseNotificationService::publish(
+        type: 'kegiatan_created',
+        title: 'Kegiatan Baru',
+        payload: ['id' => $record->kegiatan_id, 'nama' => $record->nama_kegiatan]
+    );
+}
+
+protected function afterUpdate(object $record, array $data): void
+{
+    if (isset($data['status_kegiatan']) && $record->getOriginal('status_kegiatan') !== $data['status_kegiatan']) {
+        SseNotificationService::publish(
+            type: 'kegiatan_updated',
+            title: 'Status Kegiatan Diperbarui',
+            payload: ['id' => $record->kegiatan_id, 'status' => $data['status_kegiatan']]
+        );
+    }
+}
+```
+
+### 12.5 Client
+
+```js
+// resources/js/Composables/useNotifications.js
+const es = new EventSource('/notifications/stream');
+es.addEventListener('kegiatan_created',       (e) => push(JSON.parse(e.data)));
+es.addEventListener('kegiatan_updated',       (e) => push(JSON.parse(e.data)));
+es.addEventListener('informasi_published',  (e) => push(JSON.parse(e.data)));
+```
+
+### 12.6 Rencana File
+
+| File | Tujuan |
+| :--- | :--- |
+| `app/Http/Controllers/NotificationStreamController.php` | Endpoint SSE `StreamedResponse` |
+| `app/Services/SseNotificationService.php` | `publish(type, title, payload)` — Redis pub-sub / Cache fallback |
+| `app/Http/Middleware/EnsureSseAuth.php` | Lindungi route stream |
 | **Accessibility (antislop-human)**: Full checklist in §9.R of antislop-human skill | 🟡 Medium | **Planned** >>

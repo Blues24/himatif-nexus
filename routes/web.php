@@ -1,14 +1,22 @@
 <?php
 
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\DanusSHop\ProdukController;
 use App\Http\Controllers\Infokom\FormatifController;
 use App\Http\Controllers\Infokom\KegiatanController;
 use App\Http\Controllers\Portal\InventarisController;
 use App\Http\Controllers\Portal\PenyewaanAlatController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Middleware\EnsureAdminRole;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+
+/*
+|--------------------------------------------------------------------------
+| Public Routes
+|--------------------------------------------------------------------------
+*/
 
 Route::get('/', function () {
     return Inertia::render('Dashboard');
@@ -18,6 +26,11 @@ Route::get('/beranda', function () {
     return Inertia::render('Dashboard');
 });
 
+Route::get('/dashboard', function () {
+    return Inertia::render('Dashboard');
+})->name('dashboard');
+
+// Warta & Edukasi Informasi Publik
 Route::get('/informasi', function () {
     return Inertia::render('Informasi');
 })->name('informasi');
@@ -28,7 +41,7 @@ Route::get('/informasi/{id}', function (int $id) {
     ]);
 })->whereNumber('id')->name('informasi.show');
 
-// Penyewaan Inventaris: public catalog & placeholder reservation
+// Penyewaan Inventaris Publik
 Route::get('/penyewaan-inventaris', function () {
     return Inertia::render('PenyewaanInventaris');
 })->name('penyewaan-inventaris');
@@ -36,6 +49,10 @@ Route::get('/penyewaan-inventaris', function () {
 Route::get('/penyewaan-alat', function () {
     return redirect()->route('penyewaan-inventaris');
 });
+
+// Kegiatan Publik (Index & Detail)
+Route::get('/kegiatan', [KegiatanController::class, 'index'])->name('kegiatan.index');
+Route::get('/kegiatan/{id}', [KegiatanController::class, 'show'])->whereNumber('id')->name('kegiatan.show');
 
 // Danus Shop: public browse, auth-restricted writes
 Route::controller(ProdukController::class)->group(function () {
@@ -66,65 +83,65 @@ Route::controller(FormatifController::class)->group(function () {
     Route::get('/formatif/{id}', 'show')->whereNumber('id')->name('formatif.show');
 });
 
-// Kegiatan: public browse, auth-restricted writes
-Route::controller(KegiatanController::class)->group(function () {
-    Route::get('/kegiatan', 'index')->name('kegiatan.index');
-    Route::get('/kegiatan/{id}', 'show')->whereNumber('id')->name('kegiatan.show');
-    Route::middleware('auth')->group(function () {
-        Route::get('/kegiatan/create', 'create')->name('kegiatan.create');
-        Route::post('/kegiatan', 'store')->name('kegiatan.store');
-        Route::get('/kegiatan/{id}/edit', 'edit')->name('kegiatan.edit');
-        Route::patch('/kegiatan/{id}', 'update')->name('kegiatan.update');
-        Route::delete('/kegiatan/{id}', 'destroy')->name('kegiatan.destroy');
-    });
-});
-
-Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->name('dashboard');
-
-// Portal: Inventory management (auth required)
-Route::middleware('auth')->group(function () {
-    Route::controller(InventarisController::class)->prefix('inventaris')->name('inventaris.')->group(function () {
-        Route::get('/', 'index')->name('index');
-        Route::get('/create', 'create')->name('create');
-        Route::post('/', 'store')->name('store');
-        Route::get('/{id}/edit', 'edit')->name('edit');
-        Route::patch('/{id}', 'update')->name('update');
-        Route::delete('/{id}', 'destroy')->name('destroy');
-    });
-
-    Route::controller(PenyewaanAlatController::class)->prefix('penyewaan')->name('penyewaan.')->group(function () {
-        Route::get('/', 'index')->name('index');
-        Route::get('/create', 'create')->name('create');
-        Route::post('/', 'store')->name('store');
-        Route::post('/{id}/approve', 'approve')->name('approve');
-        Route::post('/{id}/reject', 'reject')->name('reject');
-        Route::post('/{id}/return', 'markReturned')->name('return');
-    });
-});
-
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-});
-
 /*
 |--------------------------------------------------------------------------
-| Admin Routes
+| Authenticated Routes
 |--------------------------------------------------------------------------
 */
 
-Route::prefix('admin')->name('admin.')->group(function () {
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    // Kegiatan Admin/Auth Writes
+    Route::get('/kegiatan/create', [KegiatanController::class, 'create'])->name('kegiatan.create');
+    Route::post('/kegiatan', [KegiatanController::class, 'store'])->name('kegiatan.store');
+    Route::get('/kegiatan/{kegiatan}/edit', [KegiatanController::class, 'edit'])->name('kegiatan.edit');
+    Route::put('/kegiatan/{kegiatan}', [KegiatanController::class, 'update'])->name('kegiatan.update');
+    Route::delete('/kegiatan/{kegiatan}', [KegiatanController::class, 'destroy'])->name('kegiatan.destroy');
+
+    // Inventaris CRUD
+    Route::get('/inventaris', [InventarisController::class, 'index'])->name('inventaris.index');
+    Route::get('/inventaris/create', [InventarisController::class, 'create'])->name('inventaris.create');
+    Route::post('/inventaris', [InventarisController::class, 'store'])->name('inventaris.store');
+    Route::get('/inventaris/{inventaris}/edit', [InventarisController::class, 'edit'])->name('inventaris.edit');
+    Route::put('/inventaris/{inventaris}', [InventarisController::class, 'update'])->name('inventaris.update');
+    Route::delete('/inventaris/{inventaris}', [InventarisController::class, 'destroy'])->name('inventaris.destroy');
+
+    // Penyewaan Alat CRUD
+    Route::get('/penyewaan', [PenyewaanAlatController::class, 'index'])->name('penyewaan.index');
+    Route::get('/penyewaan/create', [PenyewaanAlatController::class, 'create'])->name('penyewaan.create');
+    Route::post('/penyewaan', [PenyewaanAlatController::class, 'store'])->name('penyewaan.store');
+    Route::get('/penyewaan/{penyewaan}/edit', [PenyewaanAlatController::class, 'edit'])->name('penyewaan.edit');
+    Route::put('/penyewaan/{penyewaan}', [PenyewaanAlatController::class, 'update'])->name('penyewaan.update');
+    Route::delete('/penyewaan/{penyewaan}', [PenyewaanAlatController::class, 'destroy'])->name('penyewaan.destroy');
+});
+
+/*
+ |--------------------------------------------------------------------------
+ | Admin Routes
+ |--------------------------------------------------------------------------
+*/
+
+Route::prefix('admin')->name('admin.')->middleware([EnsureAdminRole::class])->group(function () {
     Route::get('/', DashboardController::class)->name('dashboard');
-    Route::get('/dashboard', DashboardController::class)->name('dashboard.index');
+    Route::get('/dashboard', fn () => Inertia::render('Admin/Dashboard'))->name('dashboard.index');
     Route::get('/shop', fn () => Inertia::render('Admin/DanusShop'))->name('shop.index');
     Route::get('/formatif', fn () => Inertia::render('Admin/Formatif'))->name('formatif.index');
     Route::get('/informasi', fn () => Inertia::render('Admin/Dashboard'))->name('informasi.index');
     Route::get('/inventaris', fn () => Inertia::render('Admin/Inventaris'))->name('inventaris.index');
     Route::get('/kegiatan', fn () => Inertia::render('Admin/Kegiatan'))->name('kegiatan.index');
-    Route::get('/hak-akses', fn () => Inertia::render('Admin/HakAkses'))->name('hak-akses.index');
+
+    Route::resource('hak-akses', UserController::class)
+        ->names([
+            'index' => 'hak-akses.index',
+            'store' => 'hak-akses.store',
+            'update' => 'hak-akses.update',
+            'destroy' => 'hak-akses.destroy',
+        ])
+        ->parameters(['hak-akses' => 'user'])
+        ->only(['index', 'store', 'update', 'destroy']);
 });
 
 require __DIR__.'/auth.php';
