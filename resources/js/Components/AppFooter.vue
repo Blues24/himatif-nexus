@@ -17,33 +17,31 @@ const scrollToTop = () => {
                 
                 <!-- Kolom 1: Profil Organisasi & Dua Logo (POLINDRA & HIMATIF) -->
                 <div class="lg:col-span-4 space-y-5 text-left">
-                    <!-- Logo POLINDRA & HIMATIF Side-by-Side dengan Container Rapi -->
-                    <div class="flex items-center gap-3">
-                        <div class="flex items-center gap-2.5 bg-white p-2 sm:p-2.5 rounded-2xl shadow-sm border border-white/40">
+                    <!-- Logo POLINDRA & HIMATIF Side-by-Side Tanpa Background Putih -->
+                    <div class="flex items-center gap-3.5 sm:gap-4">
+                        <div class="flex items-center gap-3 shrink-0">
                             <!-- Logo Politeknik Negeri Indramayu -->
                             <img
                                 src="/images/logo-polindra.png"
                                 alt="Logo POLINDRA"
-                                class="h-10 sm:h-11 w-auto object-contain drop-shadow-2xs"
+                                class="h-12 sm:h-14 w-auto object-contain drop-shadow-md"
                                 loading="lazy"
                             />
-                            <!-- Garis Pembatas -->
-                            <div class="h-7 w-[1px] bg-slate-200"></div>
                             <!-- Logo HIMATIF POLINDRA -->
                             <img
                                 src="/images/logo-himatif.png"
                                 alt="Logo HIMATIF"
-                                class="h-10 sm:h-11 w-auto object-contain drop-shadow-2xs"
+                                class="h-12 sm:h-14 w-auto object-contain drop-shadow-md"
                                 loading="lazy"
                             />
                         </div>
 
                         <!-- Nama Singkat Organisasi -->
-                        <div class="border-l border-slate-800 pl-3">
-                            <span class="text-xs font-black tracking-tight leading-tight uppercase block text-[#F95700]">
+                        <div class="border-l border-slate-700/80 pl-3.5">
+                            <span class="text-sm font-black tracking-tight leading-tight uppercase block text-[#F95700]">
                                 HIMATIF
                             </span>
-                            <span class="text-xs font-extrabold tracking-tight leading-tight uppercase text-white block">
+                            <span class="text-sm font-extrabold tracking-tight leading-tight uppercase text-white block">
                                 POLINDRA
                             </span>
                         </div>
@@ -143,24 +141,28 @@ const scrollToTop = () => {
                 <!-- Kolom 3: Layanan & Departemen -->
                 <div class="lg:col-span-3 space-y-4 text-left">
                     <h4 class="text-xs font-bold text-white uppercase tracking-wider">
-                        Departemen & Program
+                        Divisi & Subdivisi
                     </h4>
                     <ul class="space-y-2.5 text-xs text-slate-400">
                         <li class="flex items-center gap-2">
                             <span class="text-[#F95700]">▸</span>
-                            <span>Departemen INFOKOM (Komunikasi & Warta)</span>
+                            <span>Divisi PSDM (Pengembangan Sumber Daya Manusia)</span>
                         </li>
                         <li class="flex items-center gap-2">
                             <span class="text-[#F95700]">▸</span>
-                            <span>Departemen Kaderisasi & Organisasi</span>
+                            <span>Divisi INFOKOM (Komunikasi & Warta)</span>
                         </li>
                         <li class="flex items-center gap-2">
                             <span class="text-[#F95700]">▸</span>
-                            <span>Departemen Riset, Teknologi & Workshop</span>
+                            <span>Divisi Kaderisasi & Organisasi</span>
                         </li>
                         <li class="flex items-center gap-2">
                             <span class="text-[#F95700]">▸</span>
-                            <span>Departemen Danus (Dana & Usaha)</span>
+                            <span>Divisi Riset, Teknologi & Workshop</span>
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <span class="text-[#F95700]">▸</span>
+                            <span>Divisi Danus (Dana & Usaha)</span>
                         </li>
                         <li class="flex items-center gap-2">
                             <span class="text-[#F95700]">▸</span>
