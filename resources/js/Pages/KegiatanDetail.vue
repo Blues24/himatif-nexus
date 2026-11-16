@@ -37,28 +37,10 @@ const masterActivities = [
         documentationLinks: [
             {
                 type: 'drive',
-                title: 'Google Drive: Dokumentasi Foto & Banner Kegiatan',
-                desc: 'Folder arsip foto dokumentasi resolusi tinggi dan aset visual kegiatan.',
+                title: 'Google Drive: Dokumentasi Foto Kegiatan',
+                desc: 'Folder arsip foto dokumentasi resmi resolusi tinggi selama kegiatan berlangsung.',
                 url: 'https://drive.google.com/drive/folders/placeholder-foto-kegiatan',
-                icon: '📁',
-                badge: 'Google Drive',
-                badgeClass: 'bg-blue-50 text-blue-700 border-blue-200',
-            },
-            {
-                type: 'drive',
-                title: 'Google Drive: Rekaman Video & Dokumentasi',
-                desc: 'Folder arsip video dokumentasi dan rekaman jalannya kegiatan.',
-                url: 'https://drive.google.com/drive/folders/placeholder-video-kegiatan',
-                icon: '🎥',
-                badge: 'Google Drive',
-                badgeClass: 'bg-blue-50 text-blue-700 border-blue-200',
-            },
-            {
-                type: 'drive',
-                title: 'Google Drive: Berkas Materi & Notulensi',
-                desc: 'Folder berkas presentasi materi, panduan hands-on, dan notulensi arsip.',
-                url: 'https://drive.google.com/drive/folders/placeholder-materi-kegiatan',
-                icon: '📄',
+                icon: '📷',
                 badge: 'Google Drive',
                 badgeClass: 'bg-blue-50 text-blue-700 border-blue-200',
             },
@@ -92,28 +74,10 @@ const masterActivities = [
         documentationLinks: [
             {
                 type: 'drive',
-                title: 'Google Drive: Dokumentasi Foto PKPS',
-                desc: 'Folder arsip foto kegiatan pengenalan prodi dan inisiasi mahasiswa baru.',
+                title: 'Google Drive: Dokumentasi Foto PKPS TI',
+                desc: 'Folder arsip foto dokumentasi kegiatan pengenalan prodi dan inisiasi mahasiswa baru.',
                 url: 'https://drive.google.com/drive/folders/placeholder-foto-pkps',
-                icon: '📁',
-                badge: 'Google Drive',
-                badgeClass: 'bg-blue-50 text-blue-700 border-blue-200',
-            },
-            {
-                type: 'drive',
-                title: 'Google Drive: Video Dokumentasi & Aftermovie PKPS',
-                desc: 'Folder rekaman video rangkuman kegiatan dan aftermovie resmi prodi TI.',
-                url: 'https://drive.google.com/drive/folders/placeholder-video-pkps',
-                icon: '🎥',
-                badge: 'Google Drive',
-                badgeClass: 'bg-blue-50 text-blue-700 border-blue-200',
-            },
-            {
-                type: 'drive',
-                title: 'Google Drive: Buku Panduan & Modul Mahasiswa Baru',
-                desc: 'Folder buku panduan kurikulum, etika kampus, dan profil himpunan.',
-                url: 'https://drive.google.com/drive/folders/placeholder-panduan-pkps',
-                icon: '📄',
+                icon: '📷',
                 badge: 'Google Drive',
                 badgeClass: 'bg-blue-50 text-blue-700 border-blue-200',
             },
@@ -146,28 +110,10 @@ const masterActivities = [
         documentationLinks: [
             {
                 type: 'drive',
-                title: 'Google Drive: Rekaman Audio & Video Podcast',
-                desc: 'Folder video dan audio podcast lengkap bincang teknologi mahasiswa.',
-                url: 'https://drive.google.com/drive/folders/placeholder-rekaman-podcast',
-                icon: '🎙️',
-                badge: 'Google Drive',
-                badgeClass: 'bg-blue-50 text-blue-700 border-blue-200',
-            },
-            {
-                type: 'drive',
-                title: 'Google Drive: Galeri Foto Studio Behind The Scene',
-                desc: 'Folder arsip foto dokumentasi proses rekaman di studio multimedia.',
+                title: 'Google Drive: Dokumentasi Foto IT Cast Series',
+                desc: 'Folder arsip foto dokumentasi behind the scene sesi rekaman podcast.',
                 url: 'https://drive.google.com/drive/folders/placeholder-foto-podcast',
-                icon: '📁',
-                badge: 'Google Drive',
-                badgeClass: 'bg-blue-50 text-blue-700 border-blue-200',
-            },
-            {
-                type: 'drive',
-                title: 'Google Drive: Resume & Notulensi Topik IT',
-                desc: 'Folder rangkuman poin narasumber, referensi buku, dan modul karir.',
-                url: 'https://drive.google.com/drive/folders/placeholder-resume-podcast',
-                icon: '📄',
+                icon: '📷',
                 badge: 'Google Drive',
                 badgeClass: 'bg-blue-50 text-blue-700 border-blue-200',
             },
@@ -200,28 +146,10 @@ const masterActivities = [
         documentationLinks: [
             {
                 type: 'drive',
-                title: 'Google Drive: Dokumentasi Foto LKMM-D',
+                title: 'Google Drive: Dokumentasi Foto LKMM-D TI',
                 desc: 'Folder arsip foto simulasi sidang, dinamika kelompok, dan sesi outbound.',
                 url: 'https://drive.google.com/drive/folders/placeholder-foto-lkmmd',
-                icon: '📁',
-                badge: 'Google Drive',
-                badgeClass: 'bg-blue-50 text-blue-700 border-blue-200',
-            },
-            {
-                type: 'drive',
-                title: 'Google Drive: Video Dokumentasi & Highlight Acara',
-                desc: 'Folder rekaman dokumentasi video pelatihan kepemimpinan mahasiswa.',
-                url: 'https://drive.google.com/drive/folders/placeholder-video-lkmmd',
-                icon: '🎥',
-                badge: 'Google Drive',
-                badgeClass: 'bg-blue-50 text-blue-700 border-blue-200',
-            },
-            {
-                type: 'drive',
-                title: 'Google Drive: Modul Pelatihan & Berkas Sidang',
-                desc: 'Folder materi kepemimpinan, analisis SWOT, dan administrasi organisasi.',
-                url: 'https://drive.google.com/drive/folders/placeholder-materi-lkmmd',
-                icon: '📄',
+                icon: '📷',
                 badge: 'Google Drive',
                 badgeClass: 'bg-blue-50 text-blue-700 border-blue-200',
             },
@@ -262,25 +190,7 @@ const currentKegiatan = computed(() => {
                     title: 'Google Drive: Dokumentasi Foto Kegiatan',
                     desc: 'Folder arsip foto dokumentasi resmi resolusi tinggi selama kegiatan.',
                     url: 'https://drive.google.com/drive/folders/placeholder-foto-kegiatan',
-                    icon: '📁',
-                    badge: 'Google Drive',
-                    badgeClass: 'bg-blue-50 text-blue-700 border-blue-200',
-                },
-                {
-                    type: 'drive',
-                    title: 'Google Drive: Rekaman Video Dokumentasi',
-                    desc: 'Folder rekaman video dokumentasi dan rangkuman jalannya kegiatan.',
-                    url: 'https://drive.google.com/drive/folders/placeholder-video-kegiatan',
-                    icon: '🎥',
-                    badge: 'Google Drive',
-                    badgeClass: 'bg-blue-50 text-blue-700 border-blue-200',
-                },
-                {
-                    type: 'drive',
-                    title: 'Google Drive: Modul Materi & Berkas Kegiatan',
-                    desc: 'Folder berkas presentasi dan arsip evaluasi kegiatan.',
-                    url: 'https://drive.google.com/drive/folders/placeholder-materi-kegiatan',
-                    icon: '📄',
+                    icon: '📷',
                     badge: 'Google Drive',
                     badgeClass: 'bg-blue-50 text-blue-700 border-blue-200',
                 },
@@ -443,7 +353,7 @@ const shareToWhatsApp = () => {
                             </p>
                         </div>
 
-                        <!-- Tautan Dokumentasi & Arsip Kegiatan (Khusus Google Drive) -->
+                        <!-- Tautan Dokumentasi Foto Kegiatan (Khusus Google Drive) -->
                         <div class="p-5 sm:p-6 rounded-3xl bg-white border border-slate-200/90 shadow-xs space-y-4">
                             <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-100 pb-3">
                                 <div>
@@ -451,10 +361,10 @@ const shareToWhatsApp = () => {
                                         <svg class="w-5 h-5 text-blue-600 shrink-0" viewBox="0 0 24 24" fill="currentColor">
                                             <path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM19 18H6c-2.21 0-4-1.79-4-4 0-2.05 1.53-3.76 3.56-3.97l1.07-.11.5-.95C8.08 7.14 9.94 6 12 6c2.62 0 4.88 1.86 5.39 4.43l.3 1.5 1.53.11c1.56.1 2.78 1.41 2.78 2.96 0 1.65-1.35 3-3 3z"/>
                                         </svg>
-                                        <span>Dokumentasi Kegiatan (Google Drive)</span>
+                                        <span>Dokumentasi Foto Kegiatan (Google Drive)</span>
                                     </h3>
                                     <p class="text-xs text-slate-400 mt-0.5">
-                                        Seluruh arsip dokumentasi resmi kegiatan tersimpan di folder Google Drive HIMATIF POLINDRA
+                                        Akses galeri foto dokumentasi resmi kegiatan melalui tautan Google Drive
                                     </p>
                                 </div>
                                 <span class="text-[11px] font-bold px-2.5 py-1 rounded-full bg-blue-50 text-blue-700 border border-blue-200 flex items-center gap-1.5">
@@ -463,7 +373,7 @@ const shareToWhatsApp = () => {
                                 </span>
                             </div>
 
-                            <!-- Daftar Link Dokumentasi Google Drive Placeholder -->
+                            <!-- Link Dokumentasi Foto Google Drive Placeholder -->
                             <div class="space-y-3">
                                 <a
                                     v-for="(link, idx) in currentKegiatan.documentationLinks"
@@ -508,7 +418,7 @@ const shareToWhatsApp = () => {
                             <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-200/60 flex items-center gap-2.5 text-xs text-slate-500">
                                 <span class="text-base">💡</span>
                                 <span>
-                                    Tautan di atas merupakan placeholder folder Google Drive. Tautan arsip resmi akan diperbarui secara langsung oleh pengurus HIMATIF POLINDRA.
+                                    Tautan di atas merupakan placeholder folder Google Drive untuk dokumentasi foto kegiatan. Tautan folder resmi akan diperbarui secara langsung oleh pengurus HIMATIF POLINDRA.
                                 </span>
                             </div>
                         </div>
