@@ -60,7 +60,7 @@ const scrollToTop = () => {
                     <!-- Social Media Links -->
                     <div class="pt-1 flex items-center gap-2.5">
                         <a
-                            href="https://instagram.com"
+                            href="https://www.instagram.com/himatif_polindraa?xtok=MWpmdnprdHNnaG53bg=="
                             target="_blank"
                             rel="noopener noreferrer"
                             aria-label="Instagram HIMATIF"
