@@ -35,7 +35,7 @@ const masterInventory = [
         placeholderSub: 'Inventaris Audio Visual',
         desc: 'Deskripsi spesifikasi teknis, kelengkapan kabel konektor, daya output, dan panduan pengoperasian unit audio visual inventaris HIMATIF.',
         specs: ['1x Unit Utama', '2x Kabel Power AC', '1x Hardcase Pelindung'],
-        pic: 'Divisi Logistik & Inventaris (0812-3456-7890)',
+        pic: 'Staf Manajemen Aset HIMATIF (0812-3456-7890)',
     },
     {
         id: 2,
@@ -54,7 +54,7 @@ const masterInventory = [
         placeholderSub: 'Inventaris Perlengkapan',
         desc: 'Deskripsi spesifikasi teknis, kelengkapan unit display atau proyektor presentasi, port HDMI, dan panduan penggunaan.',
         specs: ['1x Unit Display / Proyektor', '1x Kabel HDMI 10m', '1x Tripod Standar'],
-        pic: 'Divisi Logistik & Inventaris (0812-3456-7890)',
+        pic: 'Staf Manajemen Aset HIMATIF (0812-3456-7890)',
     },
     {
         id: 3,
@@ -73,7 +73,7 @@ const masterInventory = [
         placeholderSub: 'Inventaris Kelistrikan',
         desc: 'Deskripsi spesifikasi rol kabel tembaga kualitas tinggi dengan proteksi arus beban lebih untuk kebutuhan pasokan daya acara kepanitiaan.',
         specs: ['Panjang Kabel 25 Meter', '4 Lubang Stop Kontak', 'Pengaman Arus (Fuse)'],
-        pic: 'Divisi Logistik & Inventaris (0812-3456-7890)',
+        pic: 'Staf Manajemen Aset HIMATIF (0812-3456-7890)',
     },
     {
         id: 4,
@@ -92,7 +92,7 @@ const masterInventory = [
         placeholderSub: 'Inventaris Multimedia',
         desc: 'Deskripsi spesifikasi kamera dokumentasi resolusi tinggi dan aksesoris memori untuk kebutuhan peliputan kegiatan kemahasiswaan.',
         specs: ['1x Body Kamera', '1x Lensa Standar', '2x Baterai & Charger Pack'],
-        pic: 'Departemen Komunikasi & Informasi (INFOKOM)',
+        pic: 'Staf Manajemen Aset HIMATIF (0812-3456-7890)',
     },
     {
         id: 5,
@@ -111,7 +111,7 @@ const masterInventory = [
         placeholderSub: 'Inventaris Logistik',
         desc: 'Deskripsi perlengkapan tenda lipat, partisi pameran, atau backdrop portabel yang kokoh untuk penunjang stand kegiatan mahasiswa.',
         specs: ['Rangka Baja Ringan', 'Kain Parasut Tahan Cuaca', 'Tas Jinjing Logistik'],
-        pic: 'Divisi Logistik & Inventaris (0812-3456-7890)',
+        pic: 'Staf Manajemen Aset HIMATIF (0812-3456-7890)',
     },
     {
         id: 6,
@@ -130,7 +130,7 @@ const masterInventory = [
         placeholderSub: 'Inventaris Komputasi',
         desc: 'Deskripsi unit pointer wireless, switch hub LAN, serta adaptor multi-display untuk menunjang kelancaran seminar dan presentasi.',
         specs: ['1x Wireless Presenter Laser', '1x USB Dongle Receiver', '1x Pouch Pelindung'],
-        pic: 'Divisi Logistik & Inventaris (0812-3456-7890)',
+        pic: 'Staf Manajemen Aset HIMATIF (0812-3456-7890)',
     },
     {
         id: 7,
@@ -149,7 +149,7 @@ const masterInventory = [
         placeholderSub: 'Inventaris Komunikasi',
         desc: 'Deskripsi handy talkie dual band jangkauan luas untuk koordinasi cepat antar seksi panitia acara di lapangan atau auditorium.',
         specs: ['Frekuensi VHF/UHF Dual Band', 'Headset Earpiece PTT', 'Desktop Charger Dock'],
-        pic: 'Divisi Logistik & Inventaris (0812-3456-7890)',
+        pic: 'Staf Manajemen Aset HIMATIF (0812-3456-7890)',
     },
     {
         id: 8,
@@ -168,7 +168,7 @@ const masterInventory = [
         placeholderSub: 'Inventaris Display',
         desc: 'Deskripsi standing banner display, tiang antrean pembatas, atau display signage informasi kegiatan ormawa.',
         specs: ['Tinggi Dapat Diatur (Adjustable)', 'Material Aluminium Anodize', 'Mudah Dibongkar Pasang'],
-        pic: 'Divisi Logistik & Inventaris (0812-3456-7890)',
+        pic: 'Staf Manajemen Aset HIMATIF (0812-3456-7890)',
     },
 ];
 
@@ -650,7 +650,7 @@ const submitRental = () => {
                             <span>Pengajuan Peminjaman Berhasil Dikirim!</span>
                         </div>
                         <p class="text-emerald-700 text-xs">
-                            Formulir pengajuan peminjaman alat (demo placeholder) telah berhasil dicatat. Silakan hubungi divisi inventaris untuk konfirmasi pengambilan unit.
+                            Formulir pengajuan peminjaman alat (demo placeholder) telah berhasil dicatat. Silakan hubungi Staf Manajemen Aset untuk konfirmasi pengambilan unit.
                         </p>
                     </div>
 

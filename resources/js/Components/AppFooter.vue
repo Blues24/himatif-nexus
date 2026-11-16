@@ -138,35 +138,31 @@ const scrollToTop = () => {
                     </ul>
                 </div>
 
-                <!-- Kolom 3: Layanan & Departemen -->
+                <!-- Kolom 3: Struktur Divisi & Staf HIMATIF -->
                 <div class="lg:col-span-3 space-y-4 text-left">
                     <h4 class="text-xs font-bold text-white uppercase tracking-wider">
-                        Divisi & Subdivisi
+                        Divisi & Staf HIMATIF
                     </h4>
                     <ul class="space-y-2.5 text-xs text-slate-400">
                         <li class="flex items-center gap-2">
                             <span class="text-[#F95700]">▸</span>
-                            <span>Divisi PSDM (Pengembangan Sumber Daya Manusia)</span>
+                            <span>Divisi PSDM (Kaderisasi & Keakraban)</span>
                         </li>
                         <li class="flex items-center gap-2">
                             <span class="text-[#F95700]">▸</span>
-                            <span>Divisi INFOKOM (Komunikasi & Warta)</span>
+                            <span>Divisi Humas (Hub. Eksternal & INFOKOM)</span>
                         </li>
                         <li class="flex items-center gap-2">
                             <span class="text-[#F95700]">▸</span>
-                            <span>Divisi Kaderisasi & Organisasi</span>
+                            <span>Divisi Riset & Teknologi (Study Club & Kompetisi)</span>
                         </li>
                         <li class="flex items-center gap-2">
                             <span class="text-[#F95700]">▸</span>
-                            <span>Divisi Riset, Teknologi & Workshop</span>
+                            <span>Staf Manajemen Aset (Inventaris)</span>
                         </li>
                         <li class="flex items-center gap-2">
                             <span class="text-[#F95700]">▸</span>
-                            <span>Divisi Danus (Dana & Usaha)</span>
-                        </li>
-                        <li class="flex items-center gap-2">
-                            <span class="text-[#F95700]">▸</span>
-                            <span>Layanan Inventaris & Fasilitas Lab</span>
+                            <span>Staf Dana Usaha (Merchandise Shop)</span>
                         </li>
                     </ul>
                 </div>
@@ -227,7 +223,7 @@ const scrollToTop = () => {
 
                 <div class="flex items-center gap-4">
                     <span class="text-[11px] text-slate-500 hidden md:inline">
-                        Dikembangkan oleh Departemen INFOKOM HIMATIF
+                        Dikembangkan oleh Divisi Humas (Subdivisi INFOKOM) HIMATIF POLINDRA
                     </span>
                     <button
                         type="button"

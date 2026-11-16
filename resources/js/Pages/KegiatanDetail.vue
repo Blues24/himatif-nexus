@@ -33,7 +33,7 @@ const masterActivities = [
         target: 'Sasaran Peserta Kegiatan (Mahasiswa POLINDRA & Umum)',
         desc: 'Program kerja ini dirancang untuk membekali mahasiswa dengan wawasan teknologi mutakhir, kompetensi praktis, dan jejaring profesional dalam menghadapi tantangan dunia industri digital.',
         pic: 'Panitia Penyelenggara HIMATIF (+62 812-3456-7890)',
-        organizer: 'Departemen Riset, Teknologi & Informasi HIMATIF',
+        organizer: 'Divisi Riset dan Teknologi',
         documentationLinks: [
             {
                 type: 'drive',
@@ -69,8 +69,8 @@ const masterActivities = [
         placeholderSub: 'Arsip Placeholder #2',
         target: 'Mahasiswa Baru Teknik Informatika POLINDRA',
         desc: 'Arsip dokumentasi program kerja pengenalan kehidupan kampus dan kultur jurusan bagi mahasiswa baru guna menumbuhkan integritas, kebersamaan, dan wawasan akademik.',
-        pic: 'Departemen Kaderisasi HIMATIF',
-        organizer: 'Departemen Kaderisasi & Pengembangan Organisasi',
+        pic: 'Divisi PSDM (Subdivisi Kaderisasi)',
+        organizer: 'Divisi Pengembangan Sumber Daya Manusia (PSDM)',
         documentationLinks: [
             {
                 type: 'drive',
@@ -105,8 +105,8 @@ const masterActivities = [
         placeholderSub: 'Arsip Placeholder #3',
         target: 'Mahasiswa & Pegiat Teknologi Informatika',
         desc: 'Seri bincang inspiratif santai seputar tren rekayasa perangkat lunak, tips magang di startup, dan perjalanan karir alumni informatika di berbagai korporasi ternama.',
-        pic: 'Departemen INFOKOM HIMATIF',
-        organizer: 'Departemen Komunikasi, Media & Informasi',
+        pic: 'Divisi Humas (Subdivisi INFOKOM)',
+        organizer: 'Divisi Humas HIMATIF',
         documentationLinks: [
             {
                 type: 'drive',
@@ -141,8 +141,8 @@ const masterActivities = [
         placeholderSub: 'Arsip Placeholder #4',
         target: 'Pengurus & Calon Pengurus HIMATIF POLINDRA',
         desc: 'Pelatihan manajemen mahasiswa tingkat dasar untuk mengasah kepemimpinan, manajemen waktu, dinamika kelompok, serta problem-solving dalam tata kelola organisasi.',
-        pic: 'Panitia LKMM-D HIMATIF',
-        organizer: 'Departemen Pengembangan Sumber Daya Manusia',
+        pic: 'Divisi PSDM (Subdivisi Kaderisasi)',
+        organizer: 'Divisi Pengembangan Sumber Daya Manusia (PSDM)',
         documentationLinks: [
             {
                 type: 'drive',

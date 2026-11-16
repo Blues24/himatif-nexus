@@ -20,8 +20,8 @@ const allArticles = [
         badgeText: 'Formatif',
         badgeClass: 'bg-[#F95700] text-white',
         date: 'DD Bulan YYYY',
-        author: 'Departemen INFOKOM HIMATIF',
-        authorRole: 'Divisi Komunikasi & Informasi',
+        author: 'Divisi Humas HIMATIF',
+        authorRole: 'Subdivisi Informasi dan Komunikasi',
         readTime: '3 Menit Baca',
         image: null,
         placeholderIcon: '⚡',
@@ -49,8 +49,8 @@ const allArticles = [
         badgeText: 'Workshop',
         badgeClass: 'bg-emerald-600 text-white',
         date: 'DD Bulan YYYY • GSC POLINDRA',
-        author: 'Departemen Riset & Teknologi',
-        authorRole: 'Divisi Pelatihan & Workshop',
+        author: 'Divisi Riset dan Teknologi',
+        authorRole: 'Subdivisi Study Club',
         readTime: '4 Menit Baca',
         image: null,
         placeholderIcon: '💻',
@@ -78,8 +78,8 @@ const allArticles = [
         badgeText: 'Formatif',
         badgeClass: 'bg-indigo-600 text-white',
         date: 'DD Bulan YYYY',
-        author: 'Departemen Akademik & Kaderisasi',
-        authorRole: 'Divisi Litbang Akademik',
+        author: 'Divisi Pengembangan Sumber Daya Manusia (PSDM)',
+        authorRole: 'Subdivisi Kaderisasi',
         readTime: '3 Menit Baca',
         image: null,
         placeholderIcon: '🌐',
@@ -107,8 +107,8 @@ const allArticles = [
         badgeText: 'Kompetisi',
         badgeClass: 'bg-[#F95700] text-white',
         date: 'DD Bulan YYYY • Politeknik Negeri Indramayu',
-        author: 'Divisi Delegasi & Prestasi',
-        authorRole: 'Koordinator Perlombaan',
+        author: 'Divisi Riset dan Teknologi',
+        authorRole: 'Subdivisi Kompetisi',
         readTime: '2 Menit Baca',
         image: null,
         placeholderIcon: '🏆',
@@ -332,7 +332,7 @@ const shareToWhatsApp = () => {
                     <!-- Kolom Kanan: Sidebar Widget (4 Kolom) -->
                     <aside class="lg:col-span-4 space-y-6">
                         
-                        <!-- Card Penulis / Departemen -->
+                        <!-- Card Penulis / Divisi Pengelola -->
                         <div class="p-6 rounded-3xl bg-white border border-slate-200/90 shadow-xs space-y-3">
                             <div class="text-xs font-black text-orange-600 uppercase tracking-widest">
                                 PENERBIT RESMI
