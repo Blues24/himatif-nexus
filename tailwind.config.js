@@ -14,6 +14,7 @@ export default {
         extend: {
             fontFamily: {
                 sans: ['Figtree', ...defaultTheme.fontFamily.sans],
+                merriweather: ['"Merriweather Sans"', ...defaultTheme.fontFamily.sans],
             },
         },
     },

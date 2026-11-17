@@ -10,7 +10,7 @@ class KegiatanUpdateRequest extends FormRequest
 {
     public function authorize(): bool
     {
-        return $this->user()?->can('update', $this->route('id'));
+        return $this->user()?->can('update', Kegiatan::find($this->route('id')));
     }
 
     /** @return array<string, ValidationRule|array<mixed>|string> */

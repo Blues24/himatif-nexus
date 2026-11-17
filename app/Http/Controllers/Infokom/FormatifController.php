@@ -32,7 +32,7 @@ class FormatifController extends Controller
         $formatif = $this->service->findOrFail($id);
 
         return Inertia::render('Blog/Show', [
-            'formatif' => $formatif,
+            'formatif' => $formatif->only(['formatif_id', 'judul', 'slug', 'kategori', 'text_konten', 'thumbnail_path', 'status', 'created_at']),
         ]);
     }
 

@@ -26,6 +26,21 @@ class InventarisService extends BaseService
     protected array $withRelations = [];
 
     /**
+     * Override paginate to avoid `latest()` which orders by created_at —
+     * the table has no timestamp columns, so we fall back to primary key desc.
+     */
+    public function paginate(?callable $scope = null, int $perPage = 15): LengthAwarePaginator
+    {
+        $query = app($this->model);
+
+        if ($scope !== null) {
+            $query = $scope($query);
+        }
+
+        return $query->orderBy('inventaris_id', 'desc')->paginate($perPage);
+    }
+
+    /**
      * Items grouped by condition for the filter view.
      */
     public function byCondition(string $condition): LengthAwarePaginator

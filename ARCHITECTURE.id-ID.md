@@ -27,7 +27,8 @@ Versi di bawah mencerminkan apa yang benar-benar dideklarasikan di `composer.jso
 | **Color Picker** | `vue3-colorpicker` | — | **(rencana)** | Color wheel & input hex untuk style kustom |
 | **Styling & UI** | `tailwindcss` + `@tailwindcss/forms` | ^3.2 (direktif v3 di `resources/css/app.css`) | Terpasang | Styling CSS utility-first |
 | **Build Tool** | `vite` + `laravel-vite-plugin` | ^8.0 / ^3.1 | Terpasang | Bundling aset & HMR |
-| **RBAC Engine** | `spatie/laravel-permission` | — | **(rencana)** | Manajemen Role & Permission |
+| **RBAC Engine** | **Custom** (tabel `roles` + relasi `User::role()`) | — | **Terpasang** | Manajemen Role & Permission via method `hasRole()`, `isBph()` |
+| **Notification Engine** | **SSE (Server-Sent Events)** — cache queue per-user | — | **Terpasang (T6)** | Push notifikasi real-time via `StreamedResponse` & Cache |
 | **Database Engine** | **PostgreSQL** | 18.x / 17.x | **(target)** | Relational database engine |
 
 ---
@@ -79,14 +80,14 @@ Tabel sebagaimana dibuat oleh migration yang ada di `database/migrations/`. Kolo
 
 | Tabel | Model | Tujuan | Kolom saat ini |
 | :--- | :--- | :--- | :--- |
-| `users` | `User` | Akun untuk keempat tim | `id`, `timestamps` *(stub)* |
-| `roles` | `Role` | Role RBAC (BPH / Infokom / Portal / Danus Shop) | `id`, `timestamps` *(stub)* |
-| `formatifs` | `Formatif` | Artikel Formatif & konten Puck | `id`, `timestamps` *(stub)* |
-| `kegiatans` | `Kegiatan` | Kegiatan/acara organisasi | `id`, `timestamps` *(stub)* |
-| `transaksis` | `Transaksi` | Transaksi lintas modul | `id`, `timestamps` *(stub)* |
-| `produks` | `Produk` (+ `ShopDetail`) | Katalog produk Danus Shop | `id`, `timestamps` *(stub)* |
-| `inventaris` | `Inventaris` | Inventaris alat/aset HM | `id`, `timestamps` *(stub)* |
-| `penyewaan_alats` | `PenyewaanAlat` | Pengajuan peminjaman alat | `id`, `timestamps` *(stub)* |
+| `users` | `User` | Akun untuk keempat tim | `user_id`, `role_id`, `name`, `email`, `timestamps` |
+| `roles` | `Role` | Role RBAC (BPH / Infokom / Portal / Danus Shop) | `role_id`, `nama_role`, `timestamps` |
+| `formatifs` | `Formatif` | Artikel Formatif & konten Puck | `formatif_id`, `judul`, `konten`, `status`, `timestamps` |
+| `kegiatans` | `Kegiatan` | Kegiatan/acara organisasi | `kegiatan_id`, `nama_kegiatan`, `deskripsi`, `status_kegiatan`, `timestamps` |
+| `transaksis` | `Transaksi` | Transaksi lintas modul | `transaksi_id`, `timestamps` *(stub)* |
+| `produks` | `Produk` (+ `ShopDetail`) | Katalog produk Danus Shop | `produk_id`, `nama_produk`, `harga`, `stok`, `timestamps` |
+| `inventaris` | `Inventaris` | Inventaris alat/aset HM | `inventaris_id`, `nama_alat`, `jumlah`, `kondisi`, `timestamps` |
+| `penyewaan_alats` | `PenyewaanAlat` | Pengajuan peminjaman alat | `penyewaan_id`, `user_id`, `inventaris_id`, `tanggal_pinjam`, `status`, `timestamps` |
 
 > **Catatan penamaan:** `Pluralizer` bawaan Laravel menghasilkan `kegiatans`, `transaksis`, dan `produks`. Bentuk ini salah secara kaidah bahasa Indonesia, tetapi konsisten dengan model dan migration yang di-generate — biarkan apa adanya daripada mengubah nama `$table` secara manual, yang akan merusak inferensi `Model::$table`.
 
@@ -343,79 +344,23 @@ himatif-nexus/
 
 ### 12.1 Keputusan Arsitektur
 
-Saluran notifikasi one-way, backend-push ke browser, **scope-nya eksklusif untuk Kegiatan (Activities) dan Informasi/Formatif (Articles)**. Hanya diaktifkan ketika ada konten baru atau perubahan status.
+Saluran notifikasi one-way, backend-push ke browser yang dikelola dalam antrean Cache per-user.
 
 | Properti | Nilai |
 | :--- | :--- |
 | Protokol | HTTP long-lived stream (`text/event-stream`) |
-| Arah | **Hanya Server → Client** (tanpa client push kembali) |
+| Arah | **Hanya Server → Client** |
 | Transport | `Symfony\Component\HttpFoundation\StreamedResponse` (native Laravel) |
-| Dep Luar | **Tidak ada** — tanpa tambahan package composer/npm |
-| Fallback store | Redis Pub/Sub (`REDIS_HOST=127.0.0.1` aktif) atau Cache array fallback |
-| Heartbeat | Komentar 2s (`: keep-alive`) agar proxy tidak timeout |
+| Dep Luar | **Tidak ada** (tanpa package composer/npm tambahan) |
+| Penyimpanan | Laravel Cache (`notifications_user_{userId}`, maks 50 item, TTL 7 hari) |
+| Heartbeat | Ping awal + poll unread setiap 3 detik |
 
 ### 12.2 Endpoint
 
-`GET /notifications/stream` (dilindungi auth)
+- `GET /notifications` (JSON index, 20 notifikasi terakhir + unread_count)
+- `GET /notifications/stream` (SSE stream, dilindungi middleware `EnsureSseAuth`)
 
-Headers:
-```
-Content-Type: text/event-stream
-Cache-Control: no-cache
-Connection: keep-alive
-X-Accel-Buffering: no   # bypass buffering Nginx
-```
+### 12.3 Integrasi Service
 
-### 12.3 Jenis Event (Scope)
+`KegiatanService` dan `FormatifService` mengirimkan notifikasi lewat `SseNotificationService` di hook `afterCreate()` / `afterUpdate()`.
 
-| Event | Pemicu | Sumber |
-| :--- | :--- | :--- |
-| `kegiatan_created` | Kegiatan baru dibuat | `KegiatanService::afterCreate()` |
-| `kegiatan_updated` | `status_kegiatan` berubah | `KegiatanService::afterUpdate()` |
-| `informasi_published` | Artikel baru diterbitkan | `FormatifService::afterCreate()` |
-
-### 12.4 Integrasi Hook Service
-
-`BaseService` sudah menyediakan hook `afterCreate()` / `afterUpdate()` — logika notifikasi tetap berada di dalam Service (SRP §7.1), **bukan** di Controller.
-
-```php
-// app/Services/KegiatanService.php
-protected function afterCreate(object $record, array $data): void
-{
-    SseNotificationService::publish(
-        type: 'kegiatan_created',
-        title: 'Kegiatan Baru',
-        payload: ['id' => $record->kegiatan_id, 'nama' => $record->nama_kegiatan]
-    );
-}
-
-protected function afterUpdate(object $record, array $data): void
-{
-    if (isset($data['status_kegiatan']) && $record->getOriginal('status_kegiatan') !== $data['status_kegiatan']) {
-        SseNotificationService::publish(
-            type: 'kegiatan_updated',
-            title: 'Status Kegiatan Diperbarui',
-            payload: ['id' => $record->kegiatan_id, 'status' => $data['status_kegiatan']]
-        );
-    }
-}
-```
-
-### 12.5 Client
-
-```js
-// resources/js/Composables/useNotifications.js
-const es = new EventSource('/notifications/stream');
-es.addEventListener('kegiatan_created',       (e) => push(JSON.parse(e.data)));
-es.addEventListener('kegiatan_updated',       (e) => push(JSON.parse(e.data)));
-es.addEventListener('informasi_published',  (e) => push(JSON.parse(e.data)));
-```
-
-### 12.6 Rencana File
-
-| File | Tujuan |
-| :--- | :--- |
-| `app/Http/Controllers/NotificationStreamController.php` | Endpoint SSE `StreamedResponse` |
-| `app/Services/SseNotificationService.php` | `publish(type, title, payload)` — Redis pub-sub / Cache fallback |
-| `app/Http/Middleware/EnsureSseAuth.php` | Lindungi route stream |
-| **Accessibility (antislop-human)**: Full checklist in §9.R of antislop-human skill | 🟡 Medium | **Planned** >>
