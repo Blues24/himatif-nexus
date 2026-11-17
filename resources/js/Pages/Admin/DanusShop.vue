@@ -10,7 +10,7 @@ const activeTab = ref('produk');
 const searchQuery = ref('');
 const statusFilter = ref('Semua status');
 
-// Data Produk (Sesuai referensi desain)
+// Data Produk (Sesuai referensi desain 3 · Manajemen Danus Shop)
 const products = ref([
   { id: 1, code: 'KS', name: 'Kaos HIMATIF', desc: 'Katun combed 30s', price: 85000, stock: 42 },
   { id: 2, code: 'HD', name: 'Hoodie HIMATIF', desc: 'Fleece tebal', price: 185000, stock: 6 },
@@ -28,7 +28,7 @@ const incomingOrders = ref([
   { id: 'ORD-0139', buyer: 'Siti Aisyah', nim: '2503008', item: 'Tote bag x1', total: 45000, status: 'Sudah diambil' }
 ]);
 
-// Helper penentu status otomatis dari jumlah stok
+// Penentu status otomatis berdasarkan jumlah stok
 const getProductStatus = (stock) => {
   if (stock <= 0) return { label: 'Habis', type: 'danger' };
   if (stock <= 10) return { label: 'Stok menipis', type: 'warning' };
@@ -40,7 +40,7 @@ const formatRupiah = (angka) => {
   return 'Rp' + Number(angka).toLocaleString('id-ID');
 };
 
-// Produk yang sudah difilter berdasarkan input cari & dropdown status
+// Filter produk berdasarkan input cari & dropdown status
 const filteredProducts = computed(() => {
   return products.value.filter((item) => {
     const matchName = item.name.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
@@ -89,7 +89,6 @@ const editProduct = (product) => {
 const saveProduct = () => {
   if (!form.value.name.trim()) return;
 
-  // Buat inisial 2 huruf dari nama produk
   const words = form.value.name.trim().split(' ');
   const code = words.length > 1
     ? (words[0][0] + words[1][0]).toUpperCase()
@@ -149,7 +148,6 @@ const verifyOrder = (order) => {
     title="Danus / Shop"
     subtitle="Kelola produk merchandise resmi HIMATIF dan verifikasi pesanan."
   >
-    <!-- Tombol Kanan Atas Header -->
     <template #actions>
       <button class="btn-himatif" @click="resetForm(); activeTab = 'produk'">
         + Tambah produk
@@ -176,12 +174,11 @@ const verifyOrder = (order) => {
       </button>
     </div>
 
-    <!-- TAB 1: KELOLA PRODUK (Split View Kiri Tabel, Kanan Form) -->
+    <!-- TAB 1: KELOLA PRODUK -->
     <div v-if="activeTab === 'produk'" class="row g-3 align-items-start">
       <!-- Kolom Kiri: Filter & Tabel Produk -->
       <div class="col-12 col-xl-8">
         <div class="card-panel">
-          <!-- Baris Filter & Search -->
           <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-3">
             <div class="d-flex flex-wrap align-items-center gap-2 flex-grow-1">
               <input
@@ -207,7 +204,6 @@ const verifyOrder = (order) => {
             </div>
           </div>
 
-          <!-- Tabel Produk -->
           <div class="table-responsive">
             <table class="table align-middle mb-0 custom-table">
               <thead>
@@ -242,7 +238,6 @@ const verifyOrder = (order) => {
                   </td>
                   <td class="text-end">
                     <div class="d-inline-flex gap-1">
-                      <!-- Tombol Edit -->
                       <button
                         type="button"
                         class="action-icon-btn"
@@ -254,7 +249,6 @@ const verifyOrder = (order) => {
                           <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
                         </svg>
                       </button>
-                      <!-- Tombol Hapus -->
                       <button
                         type="button"
                         class="action-icon-btn delete"
@@ -513,25 +507,10 @@ const verifyOrder = (order) => {
   font-weight: 600;
 }
 
-.pill-success {
-  background-color: #D1FAE5;
-  color: #0F765E;
-}
-
-.pill-warning {
-  background-color: #FEF3C7;
-  color: #B45309;
-}
-
-.pill-danger {
-  background-color: #FEE2E2;
-  color: #B91C1C;
-}
-
-.pill-neutral {
-  background-color: #F3F4F6;
-  color: #4B5563;
-}
+.pill-success { background-color: #D1FAE5; color: #0F765E; }
+.pill-warning { background-color: #FEF3C7; color: #B45309; }
+.pill-danger { background-color: #FEE2E2; color: #B91C1C; }
+.pill-neutral { background-color: #F3F4F6; color: #4B5563; }
 
 .action-icon-btn {
   width: 30px;
@@ -551,10 +530,7 @@ const verifyOrder = (order) => {
   color: #111827;
 }
 
-.action-icon-btn.delete {
-  color: #DC2626;
-}
-
+.action-icon-btn.delete { color: #DC2626; }
 .action-icon-btn.delete:hover {
   background-color: #FEF2F2;
   border-color: #FECACA;

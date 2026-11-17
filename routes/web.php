@@ -161,8 +161,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 |--------------------------------------------------------------------------|
 */
 
-Route::prefix('admin')->name('admin.')->middleware([EnsureAdminRole::class])->group(function () {
-    Route::get('/', DashboardController::class)->name('dashboard');
+Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', fn () => Inertia::render('Admin/Dashboard'))->name('dashboard.index');
     Route::get('/shop', fn () => Inertia::render('Admin/DanusShop'))->name('shop.index');
     Route::get('/formatif', fn () => Inertia::render('Admin/Formatif'))->name('formatif.index');
