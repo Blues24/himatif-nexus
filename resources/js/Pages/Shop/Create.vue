@@ -56,7 +56,7 @@ function submit() {
 
           <div>
             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Gambar</label>
-            <input v-model="form.gambar_produk" type="file" accept="image/*" class="mt-1 block w-full text-sm dark:text-gray-400" />
+            <input type="file" accept="image/*" class="mt-1 block w-full text-sm dark:text-gray-400" @change="form.gambar_produk = $event.target.files[0]" />
             <p v-if="form.errors.gambar_produk" class="text-red-600 text-sm mt-1">{{ form.errors.gambar_produk }}</p>
           </div>
 

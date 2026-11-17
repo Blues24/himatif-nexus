@@ -1,309 +1,281 @@
 <script setup>
-import { Head, Link } from '@inertiajs/vue3';
+import { Link } from '@inertiajs/vue3';
 import AdminLayout from '@/Layouts/AdminLayout.vue';
 import StatCard from '@/Components/Admin/StatCard.vue';
 
-const stats = [
-  {
-    title: 'Pesanan menunggu verifikasi',
-    value: 7,
-    subtitle: 'Merchandise · dikelola Danus',
-    variant: 'amber',
-    icon: 'bag'
-  },
-  {
-    title: 'Penyewaan menunggu konfirmasi',
-    value: 4,
-    subtitle: '9 alat sedang disewa · dikelola Manset',
-    variant: 'blue',
-    icon: 'box'
-  },
-  {
-    title: 'Kegiatan mendatang',
-    value: 3,
-    subtitle: 'Dalam 30 hari ke depan',
-    variant: 'green',
-    icon: 'calendar'
-  },
-  {
-    title: 'Artikel Formatif',
-    value: 18,
-    subtitle: 'Terbit · 2 masih draf',
-    variant: 'gray',
-    icon: 'doc'
-  }
+const today = new Date();
+const hari = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+const bulan = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+const bulanPendek = ['JAN', 'FEB', 'MAR', 'APR', 'MEI', 'JUN', 'JUL', 'AGU', 'SEP', 'OKT', 'NOV', 'DES'];
+const formattedDate = `${hari[today.getDay()]}, ${today.getDate()} ${bulan[today.getMonth()]} ${today.getFullYear()}`;
+
+const penyewaanPending = [
+    { id: 1, nama_penyewa: 'Dina Putri', nama_alat: 'Proyektor', tanggal_mulai: '2026-10-15', tanggal_selesai: '2026-10-16' },
+    { id: 2, nama_penyewa: 'Raka Mahendra', nama_alat: 'Tripod + Kamera', tanggal_mulai: '2026-10-17', tanggal_selesai: '2026-10-17' },
+    { id: 3, nama_penyewa: 'Salsa Nurul', nama_alat: 'Terminal kabel', tanggal_mulai: '2026-10-18', tanggal_selesai: '2026-10-19' },
+    { id: 4, nama_penyewa: 'Fajar Ramadhan', nama_alat: 'Mikrofon nirkabel', tanggal_mulai: '2026-10-20', tanggal_selesai: '2026-10-20' },
 ];
 
-const rentals = [
-  { penyewa: 'Dina Putri', alat: 'Proyektor', tanggal: '15 – 16 Okt' },
-  { penyewa: 'Raka Mahendra', alat: 'Tripod + Kamera', tanggal: '17 Okt' },
-  { penyewa: 'Salsa Nurul', alat: 'Terminal kabel', tanggal: '18 – 19 Okt' },
-  { penyewa: 'Fajar Ramadhan', alat: 'Mikrofon nirkabel', tanggal: '20 Okt' }
+const pesananTerbaru = [
+    { id: 1, no_pesanan: 'ORD-0142', nama_produk: 'Kaos HIMATIF x2', total: 170000, status: 'Menunggu verifikasi' },
+    { id: 2, no_pesanan: 'ORD-0141', nama_produk: 'Hoodie HIMATIF', total: 185000, status: 'Menunggu verifikasi' },
+    { id: 3, no_pesanan: 'ORD-0140', nama_produk: 'Paket stiker A', total: 15000, status: 'Terverifikasi' },
+    { id: 4, no_pesanan: 'ORD-0139', nama_produk: 'Ganci', total: 45000, status: 'Sudah diambil' },
+    { id: 5, no_pesanan: 'ORD-0138', nama_produk: 'Tumbler HIMATIF', total: 45000, status: 'Sudah diambil' },
 ];
 
-const orders = [
-  { no: 'ORD-0142', produk: 'Kaos HIMATIF x2', total: 'Rp170.000', status: 'Menunggu verifikasi', type: 'warning' },
-  { no: 'ORD-0141', produk: 'Hoodie HIMATIF', total: 'Rp185.000', status: 'Menunggu verifikasi', type: 'warning' },
-  { no: 'ORD-0140', produk: 'Paket stiker', total: 'Rp15.000', status: 'Terverifikasi', type: 'success' },
-  { no: 'ORD-0139', produk: 'Tote bag', total: 'Rp45.000', status: 'Sudah diambil', type: 'neutral' }
+const kegiatanMendatang = [
+    { id: 1, nama_kegiatan: 'Pelatihan Dasar Laravel', lokasi: 'Lab Komputer · 09.00 WIB', tanggal_mulai: '2026-10-18', status: 'Akan datang' },
+    { id: 2, nama_kegiatan: 'Lomba Desain Web', lokasi: 'Pendaftaran dibuka', tanggal_mulai: '2026-10-25', status: 'Akan datang' },
+    { id: 3, nama_kegiatan: 'Rapat Kerja Pengurus', lokasi: 'Internal BPH', tanggal_mulai: '2026-11-02', status: 'Draf' },
 ];
 
-const events = [
-  { day: '18', month: 'OKT', title: 'Pelatihan Dasar Laravel', loc: 'Lab Komputer · 09.00 WIB', status: 'Akan datang', isDraft: false },
-  { day: '25', month: 'OKT', title: 'Lomba Desain Web', loc: 'Pendaftaran dibuka', status: 'Akan datang', isDraft: false },
-  { day: '02', month: 'NOV', title: 'Rapat Kerja Pengurus', loc: 'Internal BPH', status: 'Draf', isDraft: true }
+const aktivitasTerbaru = [
+    { id: 1, inisial: 'IK', avatarBg: '#3B82F6', pelaku: 'Infokom', aksi: 'menerbitkan artikel "Dasar Git untuk Pemula"', waktu: 'Hari ini, 09.12' },
+    { id: 2, inisial: 'DN', avatarBg: '#F59E0B', pelaku: 'Danus', aksi: 'menambah produk "Lanyard HIMATIF"', waktu: 'Kemarin, 16.40' },
+    { id: 3, inisial: 'MS', avatarBg: '#0F765E', pelaku: 'Manset', aksi: 'mengonfirmasi pengembalian Proyektor', waktu: 'Kemarin, 11.05' },
 ];
 
-const activities = [
-  { initials: 'IK', badgeClass: 'act-blue', actor: 'Infokom', action: 'menerbitkan artikel "Dasar Git untuk Pemula"', time: 'Hari ini, 09.12' },
-  { initials: 'DN', badgeClass: 'act-amber', actor: 'Danus', action: 'menambah produk "Lanyard HIMATIF"', time: 'Kemarin, 16.40' },
-  { initials: 'MS', badgeClass: 'act-green', actor: 'Manset', action: 'mengonfirmasi pengembalian Proyektor', time: 'Kemarin, 11.05' }
-];
+function formatTanggalRange(mulai, selesai) {
+    const d1 = new Date(mulai);
+    const d2 = new Date(selesai);
+    const h1 = d1.getDate();
+    const h2 = d2.getDate();
+    const b = bulanPendek[d1.getMonth()];
+    if (h1 === h2) return `${h1} ${b}`;
+    return `${h1} – ${h2} ${b}`;
+}
+
+function formatRupiah(n) {
+    return 'Rp' + n.toLocaleString('id-ID');
+}
 </script>
 
 <template>
-  <Head title="Dashboard Admin" />
+    <AdminLayout
+        title="Dashboard"
+        :subtitle="`${formattedDate} · Ringkasan operasional HIMATIF`"
+    >
+        <template #actions>
+            <button class="btn btn-outline-secondary btn-sm d-flex align-items-center justify-content-center" style="width: 38px; height: 38px; border-radius: 8px;">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9" />
+                    <path d="M13.73 21a2 2 0 01-3.46 0" />
+                </svg>
+            </button>
+            <Link
+                href="/admin/kegiatan"
+                class="btn btn-himatif d-flex align-items-center gap-2"
+            >
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <line x1="12" y1="5" x2="12" y2="19" />
+                    <line x1="5" y1="12" x2="19" y2="12" />
+                </svg>
+                Tambah kegiatan
+            </Link>
+        </template>
 
-  <AdminLayout
-    title="Dashboard"
-    subtitle="Selasa, 13 Oktober 2026 · Ringkasan operasional HIMATIF"
-  >
-    <template #actions>
-      <button class="notif-btn" title="Notifikasi">
-        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-          <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
-          <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
-        </svg>
-      </button>
-      <Link href="/admin/kegiatan" class="btn-himatif text-decoration-none">
-        + Tambah kegiatan
-      </Link>
-    </template>
-
-    <!-- 4 StatCard KPI -->
-    <div class="row g-3 mb-4">
-      <div v-for="(item, idx) in stats" :key="idx" class="col-12 col-sm-6 col-xl-3">
-        <StatCard
-          :title="item.title"
-          :value="item.value"
-          :subtitle="item.subtitle"
-          :variant="item.variant"
-          :icon="item.icon"
-        />
-      </div>
-    </div>
-
-    <!-- Baris Tengah: Tabel Penyewaan & Pesanan Merchandise -->
-    <div class="row g-3 mb-4">
-      <div class="col-12 col-xl-6">
-        <div class="card-panel h-100">
-          <div class="d-flex align-items-center justify-content-between mb-3">
-            <h6 class="fw-bold mb-0">Penyewaan menunggu konfirmasi</h6>
-            <Link href="/admin/inventaris" class="panel-link">Lihat semua</Link>
-          </div>
-
-          <div class="table-responsive">
-            <table class="table align-middle mb-0 custom-table">
-              <thead>
-                <tr>
-                  <th>PENYEWA</th>
-                  <th>ALAT</th>
-                  <th>TANGGAL PAKAI</th>
-                  <th class="text-end">AKSI</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for="(item, i) in rentals" :key="i">
-                  <td class="fw-medium">{{ item.penyewa }}</td>
-                  <td>{{ item.alat }}</td>
-                  <td class="text-secondary">{{ item.tanggal }}</td>
-                  <td class="text-end">
-                    <button class="btn-confirm">Konfirmasi</button>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-12 col-xl-6">
-        <div class="card-panel h-100">
-          <div class="d-flex align-items-center justify-content-between mb-3">
-            <h6 class="fw-bold mb-0">Pesanan merchandise terbaru</h6>
-            <Link href="/admin/danus" class="panel-link">Lihat semua</Link>
-          </div>
-
-          <div class="table-responsive">
-            <table class="table align-middle mb-0 custom-table">
-              <thead>
-                <tr>
-                  <th>NO. PESANAN</th>
-                  <th>PRODUK</th>
-                  <th>TOTAL</th>
-                  <th>STATUS</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for="(order, i) in orders" :key="i">
-                  <td class="font-monospace text-secondary" style="font-size: 12px;">{{ order.no }}</td>
-                  <td class="fw-medium">{{ order.produk }}</td>
-                  <td>{{ order.total }}</td>
-                  <td>
-                    <span class="status-pill" :class="`pill-${order.type}`">
-                      {{ order.status }}
-                    </span>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Baris Bawah: Kegiatan Mendatang & Aktivitas Terbaru -->
-    <div class="row g-3">
-      <div class="col-12 col-xl-6">
-        <div class="card-panel h-100">
-          <div class="d-flex align-items-center justify-content-between mb-3">
-            <h6 class="fw-bold mb-0">Kegiatan mendatang</h6>
-            <Link href="/admin/kegiatan" class="panel-link">Kelola</Link>
-          </div>
-
-          <div class="d-flex flex-column gap-3">
-            <div v-for="(ev, i) in events" :key="i" class="d-flex align-items-center justify-content-between">
-              <div class="d-flex align-items-center gap-3">
-                <div class="date-badge text-center">
-                  <div class="fw-bold lh-1" style="font-size: 14px;">{{ ev.day }}</div>
-                  <div style="font-size: 9px; font-weight: 600;">{{ ev.month }}</div>
-                </div>
-                <div>
-                  <div class="fw-semibold" style="font-size: 13.5px;">{{ ev.title }}</div>
-                  <div class="text-secondary" style="font-size: 12px;">{{ ev.loc }}</div>
-                </div>
-              </div>
-              <span class="status-pill" :class="ev.isDraft ? 'pill-neutral' : 'pill-info'">
-                {{ ev.status }}
-              </span>
+        <!-- Stat Cards -->
+        <div class="row g-3 mb-4">
+            <div class="col-12 col-sm-6 col-lg-3">
+                <StatCard label="Pesanan menunggu verifikasi" :value="7" subtitle="Merchandise · dikelola Danus" color="amber" />
             </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-12 col-xl-6">
-        <div class="card-panel h-100">
-          <div class="mb-3">
-            <h6 class="fw-bold mb-0">Aktivitas terbaru</h6>
-          </div>
-
-          <div class="d-flex flex-column gap-3">
-            <div v-for="(act, i) in activities" :key="i" class="d-flex align-items-start gap-3">
-              <div class="act-avatar" :class="act.badgeClass">
-                {{ act.initials }}
-              </div>
-              <div>
-                <div style="font-size: 13.5px; color: #111827;">
-                  <span class="fw-bold">{{ act.actor }}</span> {{ act.action }}
-                </div>
-                <div class="text-secondary" style="font-size: 12px;">{{ act.time }}</div>
-              </div>
+            <div class="col-12 col-sm-6 col-lg-3">
+                <StatCard label="Penyewaan menunggu konfirmasi" :value="4" subtitle="9 alat sedang disewa · dikelola Manset" color="blue" />
             </div>
-          </div>
+            <div class="col-12 col-sm-6 col-lg-3">
+                <StatCard label="Kegiatan mendatang" :value="3" subtitle="Dalam 30 hari ke depan" color="teal" />
+            </div>
+            <div class="col-12 col-sm-6 col-lg-3">
+                <StatCard label="Artikel Formatif" :value="18" subtitle="Terbit · 2 masih draf" color="teal" />
+            </div>
         </div>
-      </div>
-    </div>
-  </AdminLayout>
+
+        <!-- Tables Row -->
+        <div class="row g-4 mb-4">
+            <!-- Penyewaan Menunggu Konfirmasi -->
+            <div class="col-12 col-lg-6">
+                <div class="card-panel">
+                    <div class="d-flex align-items-center justify-content-between mb-3">
+                        <h6 class="fw-semibold mb-0">Penyewaan menunggu konfirmasi</h6>
+                        <Link href="/admin/inventaris" style="font-size: 13px; color: var(--primary-green); text-decoration: none; font-weight: 500;">
+                            Lihat semua
+                        </Link>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-sm align-middle mb-0" style="font-size: 13.5px;">
+                            <thead>
+                                <tr style="color: #6B7280; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px;">
+                                    <th class="fw-medium border-bottom py-2">Penyewa</th>
+                                    <th class="fw-medium border-bottom py-2">Alat</th>
+                                    <th class="fw-medium border-bottom py-2">Tanggal pakai</th>
+                                    <th class="fw-medium border-bottom py-2">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="item in penyewaanPending" :key="item.id">
+                                    <td class="fw-medium py-2">{{ item.nama_penyewa }}</td>
+                                    <td class="py-2" style="color: #6B7280;">{{ item.nama_alat }}</td>
+                                    <td class="py-2" style="color: #6B7280;">{{ formatTanggalRange(item.tanggal_mulai, item.tanggal_selesai) }}</td>
+                                    <td class="py-2">
+                                        <button class="btn btn-himatif" style="font-size: 12px; padding: 4px 12px;">
+                                            Konfirmasi
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr v-if="penyewaanPending.length === 0">
+                                    <td colspan="4" class="text-center py-4" style="color: #9CA3AF;">
+                                        Tidak ada penyewaan menunggu konfirmasi
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pesanan Merchandise Terbaru -->
+            <div class="col-12 col-lg-6">
+                <div class="card-panel">
+                    <div class="d-flex align-items-center justify-content-between mb-3">
+                        <h6 class="fw-semibold mb-0">Pesanan merchandise terbaru</h6>
+                        <Link href="/admin/shop" style="font-size: 13px; color: var(--primary-green); text-decoration: none; font-weight: 500;">
+                            Lihat semua
+                        </Link>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-sm align-middle mb-0" style="font-size: 13.5px;">
+                            <thead>
+                                <tr style="color: #6B7280; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px;">
+                                    <th class="fw-medium border-bottom py-2">No. Pesanan</th>
+                                    <th class="fw-medium border-bottom py-2">Produk</th>
+                                    <th class="fw-medium border-bottom py-2">Total</th>
+                                    <th class="fw-medium border-bottom py-2">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="item in pesananTerbaru" :key="item.id">
+                                    <td class="fw-medium py-2">{{ item.no_pesanan }}</td>
+                                    <td class="py-2" style="color: #6B7280;">{{ item.nama_produk }}</td>
+                                    <td class="fw-medium py-2">{{ formatRupiah(item.total) }}</td>
+                                    <td class="py-2">
+                                        <span
+                                            class="badge rounded-pill"
+                                            :class="{
+                                                'bg-warning bg-opacity-10 text-warning': item.status === 'Menunggu verifikasi',
+                                                'bg-success bg-opacity-10 text-success': item.status === 'Terverifikasi',
+                                                'bg-secondary bg-opacity-10 text-secondary': item.status === 'Sudah diambil',
+                                                'bg-danger bg-opacity-10 text-danger': item.status === 'Dibatalkan',
+                                            }"
+                                            style="font-size: 11.5px; font-weight: 500; padding: 4px 10px;"
+                                        >
+                                            {{ item.status }}
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr v-if="pesananTerbaru.length === 0">
+                                    <td colspan="4" class="text-center py-4" style="color: #9CA3AF;">
+                                        Belum ada pesanan
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bottom Row -->
+        <div class="row g-4">
+            <!-- Kegiatan Mendatang -->
+            <div class="col-12 col-lg-6">
+                <div class="card-panel">
+                    <div class="d-flex align-items-center justify-content-between mb-3">
+                        <h6 class="fw-semibold mb-0">Kegiatan mendatang</h6>
+                        <Link href="/admin/kegiatan" style="font-size: 13px; color: var(--primary-green); text-decoration: none; font-weight: 500;">
+                            Kelola
+                        </Link>
+                    </div>
+                    <div>
+                        <div
+                            v-for="(item, idx) in kegiatanMendatang"
+                            :key="item.id"
+                            class="d-flex align-items-center gap-3 py-3"
+                            :class="{ 'border-top': idx > 0 }"
+                            style="border-color: #F3F4F6 !important;"
+                        >
+                            <!-- Date Badge -->
+                            <div
+                                class="d-flex flex-column align-items-center justify-content-center flex-shrink-0"
+                                style="width: 48px; height: 48px; border-radius: 50%; border: 2px solid var(--primary-green);"
+                            >
+                                <span style="font-size: 16px; font-weight: 700; line-height: 1; color: #111827;">
+                                    {{ new Date(item.tanggal_mulai).getDate() }}
+                                </span>
+                                <span style="font-size: 10px; font-weight: 600; text-transform: uppercase; line-height: 1; color: var(--primary-green); margin-top: 2px;">
+                                    {{ bulanPendek[new Date(item.tanggal_mulai).getMonth()] }}
+                                </span>
+                            </div>
+                            <!-- Event Info -->
+                            <div class="flex-grow-1" style="min-width: 0;">
+                                <div class="fw-medium" style="color: #111827;">{{ item.nama_kegiatan }}</div>
+                                <div style="font-size: 13px; color: #6B7280;">{{ item.lokasi }}</div>
+                            </div>
+                            <!-- Status -->
+                            <span
+                                style="font-size: 13px; font-weight: 500; white-space: nowrap;"
+                                :style="{ color: item.status === 'Akan datang' ? 'var(--primary-green)' : '#9CA3AF' }"
+                            >
+                                {{ item.status }}
+                            </span>
+                        </div>
+                        <div v-if="kegiatanMendatang.length === 0" class="text-center py-4" style="color: #9CA3AF; font-size: 13.5px;">
+                            Tidak ada kegiatan mendatang
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Aktivitas Terbaru -->
+            <div class="col-12 col-lg-6">
+                <div class="card-panel">
+                    <h6 class="fw-semibold mb-3">Aktivitas terbaru</h6>
+                    <div>
+                        <div
+                            v-for="(item, idx) in aktivitasTerbaru"
+                            :key="item.id"
+                            class="d-flex align-items-start gap-3 py-3"
+                            :class="{ 'border-top': idx > 0 }"
+                            style="border-color: #F3F4F6 !important;"
+                        >
+                            <!-- Avatar -->
+                            <div
+                                class="d-flex align-items-center justify-content-center flex-shrink-0 text-white fw-semibold"
+                                :style="{
+                                    width: '36px',
+                                    height: '36px',
+                                    borderRadius: '50%',
+                                    fontSize: '12px',
+                                    backgroundColor: item.avatarBg || '#0F765E',
+                                }"
+                            >
+                                {{ item.inisial }}
+                            </div>
+                            <!-- Content -->
+                            <div class="flex-grow-1">
+                                <div style="font-size: 13.5px; color: #111827;">
+                                    <span class="fw-medium">{{ item.pelaku }}</span>
+                                    {{ item.aksi }}
+                                </div>
+                                <div style="font-size: 12px; color: #9CA3AF; margin-top: 2px;">{{ item.waktu }}</div>
+                            </div>
+                        </div>
+                        <div v-if="aktivitasTerbaru.length === 0" class="text-center py-4" style="color: #9CA3AF; font-size: 13.5px;">
+                            Belum ada aktivitas
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </AdminLayout>
 </template>
-
-<style scoped>
-.notif-btn {
-  width: 38px;
-  height: 38px;
-  border-radius: 8px;
-  background: #ffffff;
-  border: 1px solid #E5E7EB;
-  color: #374151;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.panel-link {
-  font-size: 12.5px;
-  font-weight: 600;
-  color: #0F765E;
-  text-decoration: none;
-}
-
-.custom-table th {
-  font-size: 11px;
-  font-weight: 600;
-  color: #6B7280;
-  letter-spacing: 0.4px;
-  border-bottom: 1px solid #E5E7EB;
-  padding-bottom: 10px;
-}
-
-.custom-table td {
-  font-size: 13px;
-  padding: 12px 8px;
-  border-bottom: 1px solid #F3F4F6;
-}
-
-.custom-table tbody tr:last-child td {
-  border-bottom: none;
-}
-
-.btn-confirm {
-  background-color: #0F765E;
-  color: #ffffff;
-  border: none;
-  border-radius: 6px;
-  padding: 5px 12px;
-  font-size: 12px;
-  font-weight: 600;
-}
-
-.status-pill {
-  display: inline-block;
-  padding: 3px 10px;
-  border-radius: 999px;
-  font-size: 11.5px;
-  font-weight: 600;
-}
-
-.pill-warning { background-color: #FEF3C7; color: #B45309; }
-.pill-success { background-color: #D1FAE5; color: #0F765E; }
-.pill-info { background-color: #E0E7FF; color: #3730A3; }
-.pill-neutral { background-color: #F3F4F6; color: #4B5563; }
-
-.date-badge {
-  width: 42px;
-  height: 42px;
-  border-radius: 8px;
-  background-color: #E6F4F1;
-  color: #0F765E;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-}
-
-.act-avatar {
-  width: 34px;
-  height: 34px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 11.5px;
-  font-weight: 700;
-  flex-shrink: 0;
-}
-
-.act-blue { background-color: #E0E7FF; color: #3730A3; }
-.act-amber { background-color: #FEF3C7; color: #B45309; }
-.act-green { background-color: #D1FAE5; color: #0F765E; }
-</style>
