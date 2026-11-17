@@ -46,7 +46,7 @@ class UserService extends BaseService
     public function byRole(int|string $roleId)
     {
         return $this->paginate(
-            fn (User $q) => $q->where('role_id', $roleId)
+            fn (\Illuminate\Database\Eloquent\Builder|User $q) => $q->where('role_id', $roleId)
         );
     }
 }

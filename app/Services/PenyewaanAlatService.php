@@ -49,7 +49,7 @@ class PenyewaanAlatService extends BaseService
                 throw new \DomainException('Stok alat tidak mencukupi');
             }
 
-            $record = app($this->model)->create(array_only($data, $this->fillableColumns));
+            $record = app($this->model)->create(\Illuminate\Support\Arr::only($data, $this->fillableColumns));
 
             $this->afterCreate($record, $data);
 

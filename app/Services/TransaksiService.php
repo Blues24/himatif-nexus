@@ -14,7 +14,7 @@ class TransaksiService extends BaseService
         'status_transaksi',
     ];
 
-    protected array $withRelations = ['user', 'productLines'];
+    protected array $withRelations = ['user'];
 
     /**
      * Create transaction inside a DB transaction scope.
@@ -30,7 +30,7 @@ class TransaksiService extends BaseService
     public function byStatus(string $status)
     {
         return $this->paginate(
-            fn (Transaksi $q) => $q->where('status_transaksi', $status)
+            fn (\Illuminate\Database\Eloquent\Builder|Transaksi $q) => $q->where('status_transaksi', $status)
         );
     }
 

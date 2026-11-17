@@ -18,7 +18,9 @@ class TransaksiFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'user_id' => \App\Models\User::factory(),
+            'total_bayar' => fake()->randomFloat(2, 1000, 500000),
+            'status_transaksi' => fake()->randomElement(['menunggu', 'selesai']),
         ];
     }
 }

@@ -12,10 +12,10 @@ class KegiatanService extends BaseService
     protected string $model = Kegiatan::class;
 
     protected array $fillableColumns = [
-        'nama_kegain',
-        'deskripsi_kegain',
-        'nama_kegain',
-        'status_kegain',
+        'nama_kegiatan',
+        'deskripsi_kegiatan',
+        'tanggal_pelaksanaan',
+        'status_kegiatan',
     ];
 
     protected array $withRelations = [];
@@ -29,7 +29,7 @@ class KegiatanService extends BaseService
     public function byStatus(string $status): \Illuminate\Pagination\LengthAwarePaginator
     {
         return $this->paginate(
-            fn (Kegiatan $q) => $q->where('status_kegain', $status)
+            fn (\Illuminate\Database\Eloquent\Builder|Kegiatan $q) => $q->where('status_kegiatan', $status)
         );
     }
 
@@ -39,8 +39,8 @@ class KegiatanService extends BaseService
     public function search(string $keyword): \Illuminate\Pagination\LengthAwarePaginator
     {
         return $this->paginate(
-            fn (Kegiatan $q) => $q->where('nama_kegain', 'like', "%{$keyword}%")
-                ->orWhere('deskripsi_kegain', 'like', "%{$keyword}%")
+            fn (\Illuminate\Database\Eloquent\Builder|Kegiatan $q) => $q->where('nama_kegiatan', 'like', "%{$keyword}%")
+                ->orWhere('deskripsi_kegiatan', 'like', "%{$keyword}%")
         );
     }
 
@@ -52,8 +52,8 @@ class KegiatanService extends BaseService
     public function upcoming(): Collection
     {
         return $this->model::query()
-            ->where('nama_kegain', '>=', now()->toDateString())
-            ->orderBy('nama_kegain', 'asc')
+            ->where('tanggal_pelaksanaan', '>=', now()->toDateString())
+            ->orderBy('tanggal_pelaksanaan', 'asc')
             ->get();
     }
 
@@ -81,13 +81,13 @@ class KegiatanService extends BaseService
         }
 
         $notification = [
-            'type' => 'kegain',
-            'title' => 'Kegiatan Baru: ' . ($record->nama_kegain ?? ''),
-            'message' => 'Kegiatan "' . ($record->nama_kegain ?? '') . '" telah ditambahkan.',
+            'type' => 'kegiatan',
+            'title' => 'Kegiatan Baru: ' . ($record->nama_kegiatan ?? ''),
+            'message' => 'Kegiatan "' . ($record->nama_kegiatan ?? '') . '" telah ditambahkan.',
             'data' => [
-                'kegain_id' => $record->kegain_id,
-                'status' => $record->status_kegain,
-                'nama_kegain' => $record->nama_kegain,
+                'kegiatan_id' => $record->kegiatan_id,
+                'status' => $record->status_kegiatan,
+                'nama_kegiatan' => $record->nama_kegiatan,
             ],
         ];
 
@@ -99,12 +99,12 @@ class KegiatanService extends BaseService
      */
     protected function afterUpdate(object $record, array $data): void
     {
-        if (! isset($data['status_kegain'])) {
+        if (! isset($data['status_kegiatan'])) {
             return;
         }
 
-        $oldStatus = $record->getOriginal('status_kegain');
-        $newStatus = $data['status_kegain'];
+        $oldStatus = $record->getOriginal('status_kegiatan');
+        $newStatus = $data['status_kegiatan'];
 
         if ($oldStatus === $newStatus) {
             return;
@@ -116,14 +116,14 @@ class KegiatanService extends BaseService
         }
 
         $notification = [
-            'type' => 'kegain',
+            'type' => 'kegiatan',
             'title' => 'Status Kegiatan Diperbarui',
-            'message' => "Kegiatan \"{$record->nama_kegain}\" berubah dari {$oldStatus} ke {$newStatus}.",
+            'message' => "Kegiatan \"{$record->nama_kegiatan}\" berubah dari {$oldStatus} ke {$newStatus}.",
             'data' => [
-                'kegain_id' => $record->kegain_id,
+                'kegiatan_id' => $record->kegiatan_id,
                 'old_status' => $oldStatus,
                 'new_status' => $newStatus,
-                'nama_kegain' => $record->nama_kegain,
+                'nama_kegiatan' => $record->nama_kegiatan,
             ],
         ];
 
