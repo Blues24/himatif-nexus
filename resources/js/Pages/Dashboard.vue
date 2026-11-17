@@ -121,69 +121,76 @@ onUnmounted(() => {
     stopAutoScroll();
 });
 
-// Data Layanan HIMATIF (Fitur Yang Tersedia)
+// Data Layanan HIMATIF (Fitur Yang Tersedia - Sesuai Mockup Referensi)
 const himatifServices = [
     {
-        category: 'INVENTARIS HIMPUNAN',
-        title: 'Peminjaman Inventaris',
-        desc: 'Ajukan permohonan peminjaman HT, Kamera dan Inventaris HIMATIF lainnya.',
-        btnText: 'Booking Sekarang',
-        href: '#inventaris',
-        iconType: 'inventory',
+        category: 'MANAJEMEN SEKRETARIAT',
+        title: 'Penyewaan Inventaris',
+        desc: 'Layanan penyewaan proyektor, sound system, kamera, hingga perlengkapan kepanitiaan kampus.',
+        btnText: 'Ajukan Penyewaan',
+        href: route('penyewaan-inventaris'),
+        iconType: 'box',
     },
     {
-        category: 'OFFICIAL MERCHANDISE',
+        category: 'DANA USAHA (DANUS)',
         title: 'HIMATIF – Merch Shop',
-        desc: 'Pesan PDH resmi jurusan, hoodie angkatan, lanyard eksklusif HIMA, tech stickers, dan kaos edisi khusus Techfest.',
+        desc: 'Katalog t-shirt eksklusif, hoodie, lanyard, stiker, dan aksesoris identitas mahasiswa Teknik Informatika.',
         btnText: 'Kunjungi Katalog',
-        href: '#shop',
-        iconType: 'shop',
+        href: route('produk.index'),
+        iconType: 'bag',
     },
     {
-        category: 'PRESTASI & DELEGASI',
+        category: 'KOMPETISI & PRESTASI',
         title: 'Info Seputar Lomba',
-        desc: 'Pusat informasi lomba yang bisa diikuti oleh Mahasiswa Teknik Informatika.',
-        btnText: 'Lihat Kompetisi',
-        href: '#lomba',
-        iconType: 'trophy',
+        desc: 'Kurasi informasi lomba Hackathon, UI/UX, Competitive Programming, dan pendampingan delegasi tim mahasiswa.',
+        btnText: 'Lihat Info Lomba',
+        href: route('informasi'),
+        iconType: 'sparkles',
     },
     {
-        category: 'ARSIP AKADEMIK',
-        title: 'Materi dan Bank Soal Study Club',
-        desc: 'Akses modul praktikum Algoritma, Basis Data, Jaringan Komputer, hingga arsip soal UTS/UAS 5 tahun terakhir.',
-        btnText: 'Lihat Materi',
-        href: '#materi',
-        iconType: 'academic',
+        category: 'EDUKASI & LITERASI',
+        title: 'Materi & Bank Soal Study Club',
+        desc: 'Akses gratis modul pembelajaran pemrograman, arsip soal UTS/UAS, dan rekaman materi Study Club HIMATIF.',
+        btnText: 'Buka Modul Belajar',
+        href: route('informasi'),
+        iconType: 'book',
     },
 ];
 
-// Data Aktivitas / Program Kerja Terkini
+// Data Aktivitas / Program Kerja Terkini (4 Kolom Sesuai Mockup)
 const activities = [
     {
-        title: 'Workshop Laravel 13: Laravel 13 Integrated with AI',
-        desc: 'Pelatihan intensif terkait Laravel 13 yang digabungkan dengan fitur AI',
-        date: '20 Oktober 2026',
-        location: 'GSC Polindra',
-        status: 'Selesai Terlaksana',
-        image: '/images/aktivitas-workshop.png',
-    },
-    {
-        title: 'ICONFEST 2026: Hackathon & UI/UX',
-        desc: 'Ajang adu kreasi solusi software berskala nasional dengan total hadiah 45 Juta..',
-        date: '15 Nov 2026',
-        location: 'Politeknik Negeri Indramayu',
-        status: 'Sisa 8 Hari',
+        title: 'Seminar Teknologi: The Rise of AI & Modern Software Engineering',
+        desc: 'Seminar nasional mengupas tren AI, cloud architecture, dan strategi karir tech.',
+        date: '15 Des 2026',
+        location: 'Auditorium POLINDRA',
+        status: 'Akan Datang',
         image: '/images/aktivitas-iconfest.png',
     },
     {
-        title: 'Informatics Care: Donor Darah & Donasi Laptop...',
-        desc: 'Kolaborasi HIMATIF bersama Kampus',
-        date: '02 Des 2026',
-        location: 'Pleno POLINDRA',
+        title: 'Workshop Hands-On: Web Development & Cloud Deployment',
+        desc: 'Pelatihan intensif live-coding web modern dan deployment praktis server cloud.',
+        date: '22 Des 2026',
+        location: 'Lab Komputer 2',
         status: 'Akan Datang',
+        image: '/images/aktivitas-workshop.png',
+    },
+    {
+        title: 'IT Cast: Podcast & Tech Talk Series Mahasiswa',
+        desc: 'Bincang santai inspiratif seputar tips magang industri software dan tech career.',
+        date: '12 Okt 2026',
+        location: 'YouTube HIMATIF',
+        status: 'Selesai Terlaksana',
         image: '/images/aktivitas-itcast.png',
     },
-    
+    {
+        title: 'LKMM-D: Latihan Kepemimpinan Mahasiswa Dasar 2026',
+        desc: 'Kaderisasi kepemimpinan formal, manajemen organisasi, dan perancangan proker.',
+        date: '18 - 20 Okt 2026',
+        location: 'Kampus POLINDRA',
+        status: 'Selesai Terlaksana',
+        image: '/images/galeri-3.png',
+    },
 ];
 </script>
 
@@ -251,12 +258,12 @@ const activities = [
                                     <span>Jelajahi Program</span>
                                     <span>→</span>
                                 </a>
-                                <a
-                                    href="#agenda"
+                                <Link
+                                    :href="route('kegiatan.index')"
                                     class="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-xs sm:text-sm text-slate-800 bg-white hover:bg-slate-50 border border-slate-200/90 shadow-xs hover:shadow transition transform active:scale-95"
                                 >
                                     <span>📅 Daftar Kegiatan</span>
-                                </a>
+                                </Link>
                             </div>
                         </div>
 
@@ -271,77 +278,85 @@ const activities = [
                     </div>
                 </div>
 
-                <!-- 2. Orange Stats Banner (Seperti di Desain) -->
+                <!-- 2. Orange Stats Banner (Sesuai Desain Mockup) -->
                 <div class="relative z-10 -mt-2 sm:-mt-4">
-                    <div class="bg-gradient-to-r from-[#F95700] via-[#F95900] to-[#FF6A00] rounded-2xl sm:rounded-3xl shadow-xl shadow-orange-500/25 p-5 sm:p-7 text-slate-900">
-                        <div class="grid grid-cols-2 md:grid-cols-4 gap-6 sm:gap-4 divide-y sm:divide-y-0 sm:divide-x divide-white/20">
+                    <div class="bg-gradient-to-r from-[#FF5500] via-[#F95700] to-[#FF5E00] rounded-2xl sm:rounded-3xl shadow-xl shadow-orange-500/25 p-5 sm:py-6 sm:px-8">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-6 lg:gap-0 lg:divide-x lg:divide-white/25">
                             <!-- 1. 500+ Anggota Mahasiswa -->
-                            <div class="flex items-center gap-3.5 sm:gap-4">
-                                <div class="w-12 h-12 rounded-xl bg-white shadow-xs flex items-center justify-center shrink-0 text-slate-800">
-                                    <svg class="w-6 h-6 text-slate-900" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+                            <div class="flex items-center gap-3.5 sm:gap-4 lg:pr-6">
+                                <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-white shadow-md flex items-center justify-center shrink-0">
+                                    <svg class="w-6 h-6 sm:w-7 sm:h-7 text-[#F95700]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <circle cx="12" cy="7" r="3"/>
+                                        <circle cx="5" cy="10" r="2.5"/>
+                                        <circle cx="19" cy="10" r="2.5"/>
+                                        <path d="M7 20v-2a5 5 0 0 1 10 0v2"/>
+                                        <path d="M2 20v-1.5a4 4 0 0 1 3.5-3.9"/>
+                                        <path d="M22 20v-1.5a4 4 0 0 0-3.5-3.9"/>
                                     </svg>
                                 </div>
                                 <div>
-                                    <div class="text-xl sm:text-2xl font-black text-slate-950 tracking-tight leading-none">
+                                    <div class="text-xl sm:text-2xl font-black text-white tracking-tight leading-none drop-shadow-xs">
                                         500+
                                     </div>
-                                    <div class="text-xs sm:text-sm font-semibold text-slate-900/90 mt-1">
-                                        Anggota Mahasiswa
+                                    <div class="text-xs sm:text-sm font-medium text-white/90 mt-1 sm:mt-1.5 leading-tight">
+                                        Mahasiswa Aktif
                                     </div>
                                 </div>
                             </div>
 
                             <!-- 2. 12 Program Kerja Tahunan -->
-                            <div class="flex items-center gap-3.5 sm:gap-4 pt-4 sm:pt-0 sm:pl-6">
-                                <div class="w-12 h-12 rounded-xl bg-white shadow-xs flex items-center justify-center shrink-0 text-slate-800">
-                                    <svg class="w-6 h-6 text-slate-900" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M15.59 14.37a6 6 0 01-5.84 7.38v-4.8m5.84-2.58a14.98 14.98 0 006.16-12.12A14.98 14.98 0 009.63 8.41m5.96 5.96a14.926 14.926 0 01-5.841 2.58m-.119-8.54a6 6 0 00-7.381 5.84h4.8m2.58-5.84a14.927 14.927 0 00-2.58 5.84m2.699 2.7a3 3 0 114.243-4.243 3 3 0 01-4.243 4.243z"/>
+                            <div class="flex items-center gap-3.5 sm:gap-4 lg:px-6">
+                                <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-white shadow-md flex items-center justify-center shrink-0">
+                                    <svg class="w-6 h-6 sm:w-7 sm:h-7 text-[#F95700]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/>
+                                        <path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/>
+                                        <path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/>
+                                        <path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/>
                                     </svg>
                                 </div>
                                 <div>
-                                    <div class="text-xl sm:text-2xl font-black text-slate-950 tracking-tight leading-none">
+                                    <div class="text-xl sm:text-2xl font-black text-white tracking-tight leading-none drop-shadow-xs">
                                         12 Program
                                     </div>
-                                    <div class="text-xs sm:text-sm font-semibold text-slate-900/90 mt-1">
+                                    <div class="text-xs sm:text-sm font-medium text-white/90 mt-1 sm:mt-1.5 leading-tight">
                                         Kerja Tahunan
                                     </div>
                                 </div>
                             </div>
 
                             <!-- 3. 3 Divisi Pilar Organisasi -->
-                            <div class="flex items-center gap-3.5 sm:gap-4 pt-4 sm:pt-0 sm:pl-6">
-                                <div class="w-12 h-12 rounded-xl bg-white shadow-xs flex items-center justify-center shrink-0 text-slate-800">
-                                    <svg class="w-6 h-6 text-slate-900" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <rect x="9" y="3" width="6" height="4" rx="1"/>
-                                        <rect x="2" y="17" width="6" height="4" rx="1"/>
-                                        <rect x="16" y="17" width="6" height="4" rx="1"/>
-                                        <path d="M12 7v5m0 0H5v5m7-5h7v5"/>
+                            <div class="flex items-center gap-3.5 sm:gap-4 lg:px-6">
+                                <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-white shadow-md flex items-center justify-center shrink-0">
+                                    <svg class="w-6 h-6 sm:w-7 sm:h-7 text-[#F95700]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <rect x="9" y="3" width="6" height="5" rx="1"/>
+                                        <rect x="3" y="16" width="6" height="5" rx="1"/>
+                                        <rect x="15" y="16" width="6" height="5" rx="1"/>
+                                        <path d="M12 8v4m-6 4v-4h12v4"/>
                                     </svg>
                                 </div>
                                 <div>
-                                    <div class="text-xl sm:text-2xl font-black text-slate-950 tracking-tight leading-none">
+                                    <div class="text-xl sm:text-2xl font-black text-white tracking-tight leading-none drop-shadow-xs">
                                         3 Divisi
                                     </div>
-                                    <div class="text-xs sm:text-sm font-semibold text-slate-900/90 mt-1">
+                                    <div class="text-xs sm:text-sm font-medium text-white/90 mt-1 sm:mt-1.5 leading-tight">
                                         Pilar Organisasi
                                     </div>
                                 </div>
                             </div>
 
-                            <!-- 4. Sangat Baik Akreditasi Jurusan -->
-                            <div class="flex items-center gap-3.5 sm:gap-4 pt-4 sm:pt-0 sm:pl-6">
-                                <div class="w-12 h-12 rounded-xl bg-white shadow-xs flex items-center justify-center shrink-0 text-slate-800">
-                                    <svg class="w-6 h-6 text-slate-900" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <circle cx="12" cy="8" r="6"/>
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M8.21 13.89L7 22l5-3 5 3-1.21-8.11"/>
+                            <!-- 4. Baik Sekali Akreditasi Prodi -->
+                            <div class="flex items-center gap-3.5 sm:gap-4 lg:pl-6">
+                                <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-white shadow-md flex items-center justify-center shrink-0">
+                                    <svg class="w-6 h-6 sm:w-7 sm:h-7 text-[#F95700]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <circle cx="12" cy="8" r="5"/>
+                                        <path d="M8.21 12.89L7 21l5-3 5 3-1.21-8.11"/>
                                     </svg>
                                 </div>
                                 <div>
-                                    <div class="text-xl sm:text-2xl font-black text-slate-950 tracking-tight leading-none">
+                                    <div class="text-xl sm:text-2xl font-black text-white tracking-tight leading-none drop-shadow-xs">
                                         Baik Sekali
                                     </div>
-                                    <div class="text-xs sm:text-sm font-semibold text-slate-900/90 mt-1">
+                                    <div class="text-xs sm:text-sm font-medium text-white/90 mt-1 sm:mt-1.5 leading-tight">
                                         Akreditasi Prodi
                                     </div>
                                 </div>
@@ -487,13 +502,13 @@ const activities = [
                                 Program Kerja & Informasi Terkini
                             </h2>
                         </div>
-                        <a
-                            href="#agenda"
+                        <Link
+                            :href="route('kegiatan.index')"
                             class="inline-flex items-center gap-1.5 text-xs sm:text-sm font-bold text-[#F95700] hover:text-orange-700 transition group"
                         >
                             <span>Lihat Semua Agenda</span>
                             <span class="group-hover:translate-x-1 transition-transform">→</span>
-                        </a>
+                        </Link>
                     </div>
 
                     <!-- 4 Cards Grid -->
@@ -557,8 +572,8 @@ const activities = [
                         </h2>
                     </div>
 
-                    <!-- 3 Kolom Grid untuk Layanan HIMATIF -->
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- 4 Kolom Grid untuk Layanan HIMATIF (Sesuai Mockup Referensi) -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                         <div
                             v-for="service in himatifServices"
                             :key="service.title"
@@ -567,78 +582,75 @@ const activities = [
                             <div>
                                 <!-- Kotak Ikon Peach/Oranye -->
                                 <div class="w-12 h-12 rounded-2xl bg-orange-100/70 border border-orange-200/50 flex items-center justify-center mb-5 group-hover:scale-110 transition duration-300">
-                                    <!-- Icon 1: Inventaris (Device / Console) -->
+                                    <!-- Icon 1: Manajemen Sekretariat (Isometric Box / Cube) -->
                                     <svg
-                                        v-if="service.iconType === 'inventory'"
+                                        v-if="service.iconType === 'box'"
                                         class="w-6 h-6 text-[#F95700]"
                                         fill="none"
                                         viewBox="0 0 24 24"
                                         stroke="currentColor"
                                     >
-                                        <rect x="3" y="6" width="18" height="12" rx="2" stroke-width="2"/>
-                                        <circle cx="15.5" cy="12" r="2" stroke-width="2"/>
-                                        <line x1="9" y1="9" x2="9" y2="15" stroke-width="2"/>
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
                                     </svg>
 
-                                    <!-- Icon 2: Official Merchandise (Shop) -->
+                                    <!-- Icon 2: Dana Usaha (Shopping Bag) -->
                                     <svg
-                                        v-else-if="service.iconType === 'shop'"
+                                        v-else-if="service.iconType === 'bag'"
                                         class="w-6 h-6 text-[#F95700]"
                                         fill="none"
                                         viewBox="0 0 24 24"
                                         stroke="currentColor"
                                     >
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9l1-5h16l1 5M3 9a3 3 0 006 0 3 3 0 006 0 3 3 0 006 0M3 9v11a1 1 0 001 1h16a1 1 0 001-1V9m-7 11v-6h-4v6"/>
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
                                     </svg>
 
-                                    <!-- Icon 3: Prestasi & Delegasi (Trophy) -->
+                                    <!-- Icon 3: Kompetisi & Prestasi (Sparkles) -->
                                     <svg
-                                        v-else-if="service.iconType === 'trophy'"
+                                        v-else-if="service.iconType === 'sparkles'"
                                         class="w-6 h-6 text-[#F95700]"
                                         fill="none"
                                         viewBox="0 0 24 24"
                                         stroke="currentColor"
                                     >
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3h14v3a7 7 0 01-14 0V3zM5 5H2v2a4 4 0 004 4h1M19 5h3v2a4 4 0 01-4 4h-1M12 14v4m-4 3h8"/>
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
                                     </svg>
 
-                                    <!-- Icon 4: Arsip Akademik (Folder with Star) -->
+                                    <!-- Icon 4: Edukasi & Literasi (Open Book) -->
                                     <svg
-                                        v-else-if="service.iconType === 'academic'"
+                                        v-else-if="service.iconType === 'book'"
                                         class="w-6 h-6 text-[#F95700]"
                                         fill="none"
                                         viewBox="0 0 24 24"
                                         stroke="currentColor"
                                     >
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/>
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 11l.9 1.8 2 .3-1.5 1.4.3 2-1.7-.9-1.7.9.3-2-1.5-1.4 2-.3.9-1.8z"/>
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
                                     </svg>
                                 </div>
 
                                 <!-- Kategori Tag Kecil Oranye -->
-                                <span class="text-[11px] font-bold tracking-wider text-[#F95700] uppercase block">
+                                <span class="text-[11px] font-black tracking-wider text-[#F95700] uppercase block">
                                     {{ service.category }}
                                 </span>
 
                                 <!-- Judul Layanan -->
-                                <h3 class="text-base sm:text-lg font-black text-slate-900 group-hover:text-[#F95700] transition mt-1.5">
+                                <h3 class="text-base sm:text-lg font-black text-slate-900 group-hover:text-[#F95700] transition mt-1.5 leading-snug">
                                     {{ service.title }}
                                 </h3>
 
                                 <!-- Deskripsi Layanan -->
-                                <p class="text-xs sm:text-sm text-slate-600 mt-2 leading-relaxed">
+                                <p class="text-xs sm:text-[13px] text-slate-600 mt-2 leading-relaxed">
                                     {{ service.desc }}
                                 </p>
                             </div>
 
                             <!-- Tombol / Tautan Aksi Bawah -->
-                            <a
+                            <Link
                                 :href="service.href"
-                                class="mt-6 inline-flex items-center gap-2 text-xs sm:text-sm font-bold text-slate-900 group-hover:text-[#F95700] transition select-none"
+                                class="mt-6 inline-flex items-center gap-1.5 text-xs sm:text-sm font-bold text-slate-900 group-hover:text-[#F95700] transition select-none"
                             >
                                 <span>{{ service.btnText }}</span>
                                 <span class="group-hover:translate-x-1 transition-transform">→</span>
-                            </a>
+                            </Link>
                         </div>
                     </div>
                 </div>

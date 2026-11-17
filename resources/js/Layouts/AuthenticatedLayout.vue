@@ -1,6 +1,7 @@
 <script setup>
 import { ref } from 'vue';
 import ApplicationLogo from '@/Components/ApplicationLogo.vue';
+import AppFooter from '@/Components/AppFooter.vue';
 import Dropdown from '@/Components/Dropdown.vue';
 import DropdownLink from '@/Components/DropdownLink.vue';
 import NavLink from '@/Components/NavLink.vue';
@@ -11,8 +12,8 @@ const showingNavigationDropdown = ref(false);
 </script>
 
 <template>
-    <div>
-        <div class="min-h-screen bg-gray-100">
+    <div class="min-h-screen flex flex-col justify-between bg-slate-50 text-slate-800 antialiased selection:bg-[#F95700] selection:text-white">
+        <div class="flex-grow flex flex-col">
             <nav
                 class="sticky top-0 z-50 border-b border-slate-200/80 bg-white/95 backdrop-blur-md shadow-xs transition-all"
             >
@@ -49,63 +50,32 @@ const showingNavigationDropdown = ref(false);
                         <nav
                             class="hidden md:flex flex-1 items-center justify-center space-x-6 lg:space-x-8"
                         >
-                            <!-- 1. Beranda (Aktif - Oranye) -->
+                            <!-- 1. Beranda -->
                             <Link
                                 :href="route('dashboard')"
-                                class="inline-flex items-center px-1 pt-1 text-sm font-bold text-orange-600 transition"
+                                class="inline-flex items-center px-1 pt-1 text-sm font-semibold transition"
+                                :class="route().current('dashboard') || route().current('beranda') ? 'font-bold text-orange-600' : 'text-slate-700 hover:text-orange-600'"
                             >
                                 Beranda
                             </Link>
 
-                            <!-- 2. Informasi Dropdown -->
-                            <div class="relative">
-                                <Dropdown align="left" width="48">
-                                    <template #trigger>
-                                        <button
-                                            type="button"
-                                            class="inline-flex items-center gap-1 px-1 pt-1 text-sm font-semibold text-slate-700 hover:text-orange-600 transition focus:outline-none"
-                                        >
-                                            <span>Informasi</span>
-                                            <svg class="h-4 w-4 text-slate-400" viewBox="0 0 20 20" fill="currentColor">
-                                                <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
-                                            </svg>
-                                        </button>
-                                    </template>
-                                    <template #content>
-                                        <DropdownLink :href="route('dashboard') + '#informasi'">
-                                            Formatif & Artikel
-                                        </DropdownLink>
-                                        <DropdownLink :href="route('dashboard') + '#layanan'">
-                                            Materi & Bank Soal
-                                        </DropdownLink>
-                                    </template>
-                                </Dropdown>
-                            </div>
+                            <!-- 2. Informasi (Direct Link, bukan Dropdown) -->
+                            <Link
+                                :href="route('informasi')"
+                                class="inline-flex items-center px-1 pt-1 text-sm font-semibold transition"
+                                :class="route().current('informasi*') ? 'font-bold text-orange-600' : 'text-slate-700 hover:text-orange-600'"
+                            >
+                                Informasi
+                            </Link>
 
-                            <!-- 3. Kegiatan Dropdown -->
-                            <div class="relative">
-                                <Dropdown align="left" width="48">
-                                    <template #trigger>
-                                        <button
-                                            type="button"
-                                            class="inline-flex items-center gap-1 px-1 pt-1 text-sm font-semibold text-slate-700 hover:text-orange-600 transition focus:outline-none"
-                                        >
-                                            <span>Kegiatan</span>
-                                            <svg class="h-4 w-4 text-slate-400" viewBox="0 0 20 20" fill="currentColor">
-                                                <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
-                                            </svg>
-                                        </button>
-                                    </template>
-                                    <template #content>
-                                        <DropdownLink :href="route('dashboard') + '#agenda'">
-                                            Agenda Terdekat
-                                        </DropdownLink>
-                                        <DropdownLink :href="route('dashboard') + '#agenda'">
-                                            Workshop & Pelatihan
-                                        </DropdownLink>
-                                    </template>
-                                </Dropdown>
-                            </div>
+                            <!-- 3. Kegiatan (Direct Link, bukan Dropdown) -->
+                            <Link
+                                :href="route('kegiatan.index')"
+                                class="inline-flex items-center px-1 pt-1 text-sm font-semibold transition"
+                                :class="route().current('kegiatan*') ? 'font-bold text-orange-600' : 'text-slate-700 hover:text-orange-600'"
+                            >
+                                Kegiatan
+                            </Link>
 
                             <!-- 4. Lainnya Dropdown -->
                             <div class="relative">
@@ -113,7 +83,8 @@ const showingNavigationDropdown = ref(false);
                                     <template #trigger>
                                         <button
                                             type="button"
-                                            class="inline-flex items-center gap-1 px-1 pt-1 text-sm font-semibold text-slate-700 hover:text-orange-600 transition focus:outline-none"
+                                            class="inline-flex items-center gap-1 px-1 pt-1 text-sm font-semibold transition focus:outline-none"
+                                            :class="route().current('penyewaan-inventaris') || route().current('produk*') ? 'font-bold text-orange-600' : 'text-slate-700 hover:text-orange-600'"
                                         >
                                             <span>Lainnya</span>
                                             <svg class="h-4 w-4 text-slate-400" viewBox="0 0 20 20" fill="currentColor">
@@ -122,14 +93,11 @@ const showingNavigationDropdown = ref(false);
                                         </button>
                                     </template>
                                     <template #content>
-                                        <DropdownLink :href="route('dashboard') + '#layanan'">
+                                        <DropdownLink :href="route('penyewaan-inventaris')">
                                             Penyewaan Alat
                                         </DropdownLink>
-                                        <DropdownLink :href="route('dashboard') + '#layanan'">
+                                        <DropdownLink :href="route('produk.index')">
                                             Merch Shop
-                                        </DropdownLink>
-                                        <DropdownLink :href="route('dashboard') + '#layanan'">
-                                            Iuran Kas
                                         </DropdownLink>
                                     </template>
                                 </Dropdown>
@@ -250,18 +218,33 @@ const showingNavigationDropdown = ref(false);
                     <div class="space-y-1 pb-3 pt-2">
                         <ResponsiveNavLink
                             :href="route('dashboard')"
-                            :active="route().current('dashboard')"
+                            :active="route().current('dashboard') || route().current('beranda')"
                         >
                             Beranda
                         </ResponsiveNavLink>
-                        <ResponsiveNavLink :href="route('dashboard') + '#informasi'">
+                        <ResponsiveNavLink
+                            :href="route('informasi')"
+                            :active="route().current('informasi*')"
+                        >
                             Informasi
                         </ResponsiveNavLink>
-                        <ResponsiveNavLink :href="route('dashboard') + '#agenda'">
+                        <ResponsiveNavLink
+                            :href="route('kegiatan.index')"
+                            :active="route().current('kegiatan*')"
+                        >
                             Kegiatan
                         </ResponsiveNavLink>
-                        <ResponsiveNavLink :href="route('dashboard') + '#layanan'">
-                            Lainnya
+                        <ResponsiveNavLink
+                            :href="route('penyewaan-inventaris')"
+                            :active="route().current('penyewaan-inventaris')"
+                        >
+                            Penyewaan Alat
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink
+                            :href="route('produk.index')"
+                            :active="route().current('produk*')"
+                        >
+                            Merch Shop
                         </ResponsiveNavLink>
                     </div>
 
@@ -319,9 +302,12 @@ const showingNavigationDropdown = ref(false);
             </header>
 
             <!-- Page Content -->
-            <main>
+            <main class="flex-grow">
                 <slot />
             </main>
         </div>
+
+        <!-- Footer di Setiap Halaman -->
+        <AppFooter />
     </div>
 </template>
