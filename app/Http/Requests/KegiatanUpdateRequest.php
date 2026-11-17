@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Kegiatan;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -9,7 +10,7 @@ class KegiatanUpdateRequest extends FormRequest
 {
     public function authorize(): bool
     {
-        return true;
+        return $this->user()?->can('update', $this->route('id'));
     }
 
     /** @return array<string, ValidationRule|array<mixed>|string> */

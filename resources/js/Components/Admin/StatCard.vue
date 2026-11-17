@@ -18,11 +18,20 @@ defineProps({
     },
 });
 
+<<<<<<< HEAD
 const dotColors = {
     teal: '#0F765E',
     blue: '#3B82F6',
     amber: '#F59E0B',
     rose: '#F43F5E',
+=======
+const colorClasses = {
+    teal: 'bg-teal-500',
+    blue: 'bg-blue-500',
+    amber: 'bg-amber-500',
+    rose: 'bg-rose-500',
+
+>>>>>>> fab86bbb382cab306062fc6b7fa821021c0172ed
 };
 </script>
 
@@ -41,3 +50,8 @@ const dotColors = {
         </div>
     </div>
 </template>
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> fab86bbb382cab306062fc6b7fa821021c0172ed

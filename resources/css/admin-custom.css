@@ -1,7 +1,11 @@
 /* resources/css/admin-custom.css */
 :root {
   --sidebar-bg: #101C24;
+<<<<<<< HEAD
   --sidebar-width: 16rem;
+=======
+  --sidebar-width: 245px;
+>>>>>>> fab86bbb382cab306062fc6b7fa821021c0172ed
   --primary-green: #0F765E;
   --primary-green-hover: #0B5E4B;
   --bg-canvas: #F4F6F8;
@@ -15,7 +19,10 @@ body {
 
 .admin-wrapper {
   display: flex;
+<<<<<<< HEAD
   flex-direction: column;
+=======
+>>>>>>> fab86bbb382cab306062fc6b7fa821021c0172ed
   min-height: 100vh;
   background-color: var(--bg-canvas);
 }
@@ -35,11 +42,15 @@ body {
 
 .admin-main {
   flex-grow: 1;
+<<<<<<< HEAD
   min-width: 0;
+=======
+>>>>>>> fab86bbb382cab306062fc6b7fa821021c0172ed
   padding: 28px 32px;
   overflow-x: hidden;
 }
 
+<<<<<<< HEAD
 @media (min-width: 768px) {
   .admin-wrapper {
     flex-direction: row;
@@ -51,6 +62,8 @@ body {
   }
 }
 
+=======
+>>>>>>> fab86bbb382cab306062fc6b7fa821021c0172ed
 .btn-himatif {
   background-color: var(--primary-green);
   color: #ffffff;
