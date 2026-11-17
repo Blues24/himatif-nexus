@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\DanusSHop\ProdukController;
 use App\Http\Controllers\Infokom\FormatifController;
 use App\Http\Controllers\Infokom\KegiatanController;
+use App\Http\Controllers\NotificationStreamController;
 use App\Http\Controllers\Portal\InventarisController;
 use App\Http\Controllers\Portal\PenyewaanAlatController;
 use App\Http\Controllers\ProfileController;
@@ -13,9 +14,9 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 /*
-|--------------------------------------------------------------------------
+|--------------------------------------------------------------------------|
 | Public Routes
-|--------------------------------------------------------------------------
+|--------------------------------------------------------------------------|
 */
 
 Route::get('/', function () {
@@ -24,6 +25,35 @@ Route::get('/', function () {
 
 Route::get('/beranda', function () {
     return Inertia::render('Dashboard');
+})->name('beranda.alt');
+
+/*
+|--------------------------------------------------------------------------|
+| Authenticated Routes
+|--------------------------------------------------------------------------|
+*/
+
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/dashboard', function () {
+        return Inertia::render('Dashboard');
+    })->name('dashboard');
+
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    /*
+    |--------------------------------------------------------------------------|
+    | Notification SSE + JSON
+    |--------------------------------------------------------------------------|
+    */
+    Route::get('/notifications', [NotificationStreamController::class, 'index'])
+        ->middleware(EnsureSseAuth::class)
+        ->name('notifications.index');
+
+    Route::get('/notifications/stream', [NotificationStreamController::class, 'stream'])
+        ->middleware(EnsureSseAuth::class)
+        ->name('notifications.stream');
 });
 
 Route::get('/dashboard', function () {
@@ -57,6 +87,7 @@ Route::get('/kegiatan/{id}', [KegiatanController::class, 'show'])->whereNumber('
 // Danus Shop: public browse, auth-restricted writes
 Route::controller(ProdukController::class)->group(function () {
     Route::get('/produk', 'index')->name('produk.index');
+
     Route::middleware('auth')->group(function () {
         Route::get('/produk/create', 'create')->name('produk.create');
         Route::post('/produk', 'store')->name('produk.store');
@@ -64,14 +95,20 @@ Route::controller(ProdukController::class)->group(function () {
         Route::patch('/produk/{id}', 'update')->name('produk.update');
         Route::delete('/produk/{id}', 'destroy')->name('produk.destroy');
     });
-    // Declared last so the literal /produk/create segments win against {id}
+
     Route::get('/produk/{id}', 'show')->whereNumber('id')->name('produk.show');
 });
 
-// Formatif (Blog): public browse, auth-restricted writes
+/*
+|--------------------------------------------------------------------------|
+| Formatif (Blog) - public browse, auth-restricted writes
+|--------------------------------------------------------------------------|
+*/
+
 Route::controller(FormatifController::class)->group(function () {
     Route::get('/formatif', 'index')->name('formatif.index');
     Route::get('/formatif/published', 'published')->name('formatif.published');
+
     Route::middleware('auth')->group(function () {
         Route::get('/formatif/create', 'create')->name('formatif.create');
         Route::post('/formatif', 'store')->name('formatif.store');
@@ -79,14 +116,14 @@ Route::controller(FormatifController::class)->group(function () {
         Route::patch('/formatif/{id}', 'update')->name('formatif.update');
         Route::delete('/formatif/{id}', 'destroy')->name('formatif.destroy');
     });
-    // Declared last so the literal /formatif/create segments win against {id}
+
     Route::get('/formatif/{id}', 'show')->whereNumber('id')->name('formatif.show');
 });
 
 /*
-|--------------------------------------------------------------------------
-| Authenticated Routes
-|--------------------------------------------------------------------------
+|--------------------------------------------------------------------------|
+| Penyewaan Alat - public browse, auth-restricted writes
+|--------------------------------------------------------------------------|
 */
 
 Route::middleware(['auth', 'verified'])->group(function () {
@@ -119,9 +156,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
 });
 
 /*
- |--------------------------------------------------------------------------
- | Admin Routes
- |--------------------------------------------------------------------------
+|--------------------------------------------------------------------------|
+| Admin Routes
+|--------------------------------------------------------------------------|
 */
 
 Route::prefix('admin')->name('admin.')->middleware([EnsureAdminRole::class])->group(function () {

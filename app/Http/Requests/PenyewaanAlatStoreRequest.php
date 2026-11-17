@@ -16,6 +16,7 @@ class PenyewaanAlatStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'user_id' => ['required', 'exists:users,user_uuid'],
             'inventaris_alat_id' => ['required', 'integer', 'exists:inventaris_alat,inventaris_id'],
             'jumlah_pinjam' => ['required', 'integer', 'min:1'],
             'tanggal_pinjam' => ['required', 'date'],

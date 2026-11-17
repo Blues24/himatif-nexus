@@ -28,7 +28,7 @@ Versions below reflect what is actually declared in `composer.json` and `package
 | **Styling & UI** | `tailwindcss` + `@tailwindcss/forms` | ^3.2 (v3 directives in `resources/css/app.css`) | Installed | Utility-first CSS styling |
 | **Build Tool** | `vite` + `laravel-vite-plugin` | ^8.0 / ^3.1 | Installed | Asset bundling & HMR |
 | **RBAC Engine** | **Custom** (tabel `roles` + relasi `User::role()`) | — | **Implemented** | Role & permission management via `hasRole()`, `isBph()` methods |
-| **Notification Engine** | **SSE (Server-Sent Events)** — `StreamedResponse` + Cache/Redis pub-sub | — | **Planned (T6)** | One-way push to browser: `kegiatan_created`, `kegiatan_updated`, `informasi_published` |
+| **Notification Engine** | **SSE (Server-Sent Events)** — cache-backed per-user queue, `StreamedResponse` | — | **Implemented (T6)** | One-way push to browser: ping heartbeat + `data:` frames on unread-count change |
 | **Database Engine** | **PostgreSQL** | 18.x / 17.x | **Target** | Relational database engine |
 
 ---
@@ -264,9 +264,9 @@ app/
 | `FormatifController` | ✅ Implemented | Full CRUD with `published()` method, file upload |
 | `InventarisController` | ✅ Implemented | Full CRUD with condition-based filtering |
 | `PenyewaanAlatController` | ✅ Implemented | Loan request workflow with approve/reject/return |
-| `KegiatanController` | ⚠️ Stub | Empty — needs implementation |
+| `KegiatanController` | ✅ Implemented | Status filter + upcoming query, SSE hooks |
 | `TransaksiController` | ⚠️ Stub | Empty — needs implementation |
-| `Admin\UserController` | ⚠️ Stub | Empty — needs implementation for BPH user management |
+| `Admin\UserController` | ✅ Implemented | CRUD + FormRequests for hak-akses (BPH management) |
 
 ---
 
@@ -307,13 +307,13 @@ public function isBph(): bool
 | `Portal` | Portal Management | Inventory & equipment loans |
 | `Danus` | Dana Usaha | Shop & product management |
 
-### 8.3 Authorization Strategy (Planned)
+### 8.3 Authorization Strategy (Implemented)
 
-The following authorization layers are **not yet implemented**:
+Authorization layers are now implemented:
 
-- **Middleware**: Role-based route guards (e.g., `->middleware('role:BPH')`)
-- **Policies**: Model-level authorization (e.g., `ProdukPolicy::update()`)
-- **Gates**: Simple capability checks (e.g., `Gate::define('manage-shop', ...)`)
+- **Middleware**: Role-based route guards `admin` alias (BPH + Infokom) for `/admin/*` routes via `EnsureAdminRole`
+- **Policies**: Model-level authorization registered in `AppServiceProvider` (`Kegiatan`, `Formatif`, `Produk`, `Inventaris`, `PenyewaanAlat`)
+- **Gates**: Simple capability checks enforced via FormRequest `authorize()` (e.g., `KegiatanStoreRequest`)
 
 ---
 
@@ -391,7 +391,7 @@ public function create(array $data): object
 | :--- | :--- |
 | Validation errors | Inertia handles automatically via Form Request |
 | Not found | `findOrFail()` throws `ModelNotFoundException` → 404 |
-| Unauthorized | **Not yet implemented** — needs Policies/Gates |
+| Unauthorized | **Implemented via Policies/Gates** — 403 thrown when `authorize()` fails |
 | Server errors | Global exception handler (`app/Exceptions/Handler.php`) |
 
 ### 9.6 Testing Strategy
@@ -412,9 +412,9 @@ public function create(array $data): object
 
 | Issue | Priority | Status |
 | :--- | :--- | :--- |
-| RBAC middleware not implemented | 🔴 High | **Planned** |
-| No Policies for model authorization | 🔴 High | **Planned** |
-| `KegiatanController`, `TransaksiController`, `UserController` are stubs | 🟡 Medium | **Needs implementation** |
+| ~~RBAC middleware not implemented~~ | 🔴 High | **Done** — `EnsureAdminRole` + `admin` alias |
+| ~~No Policies for model authorization~~ | 🔴 High | **Done** — 5 Policies registered in `AppServiceProvider` |
+| `KegiatanController`, `TransaksiController` are stubs | 🟡 Medium | **Partially done** — KegiatanController implemented; TransaksiController still stub |
 | `TransaksiService` exists but not used | 🟡 Medium | **Needs integration** |
 | Missing empty/loading/error state documentation for data views | 🟡 Medium | **Planned** |
 | **Accessibility (antislop-human)**: Full checklist in §9.R of antislop-human skill | 🟡 Medium | **Planned** |
@@ -434,18 +434,21 @@ himatif-nexus/
 │   │   │   ├── Controller.php              # Base controller (abstract)
 │   │   │   ├── ProfileController.php       # Root-level (Breeze profile flow)
 │   │   │   ├── Admin/
-│   │   │   │   └── UserController.php      # ⚠️ Stub
+│   │   │   │   └── UserController.php      # ✅ Implemented
 │   │   │   ├── Auth/                       # Breeze auth (8 controllers)
 │   │   │   ├── DanusSHop/
 │   │   │   │   └── ProdukController.php    # ✅ Implemented
 │   │   │   ├── Infokom/
 │   │   │   │   ├── FormatifController.php  # ✅ Implemented
-│   │   │   │   └── KegiatanController.php  # ⚠️ Stub
+│   │   │   │   └── KegiatanController.php  # ✅ Implemented
+│   │   │   ├── NotificationStreamController.php  # SSE stream + JSON index
 │   │   │   └── Portal/
 │   │   │       ├── InventarisController.php    # ✅ Implemented
 │   │   │       └── PenyewaanAlatController.php # ✅ Implemented
 │   │   ├── Middleware/
-│   │   │   └── HandleInertiaRequests.php
+│   │   │   ├── HandleInertiaRequests.php
+│   │   │   ├── EnsureAdminRole.php         # admin alias: BPH + Infokom guard
+│   │   │   └── EnsureSseAuth.php           # Guard SSE stream routes
 │   │   └── Requests/
 │   │       ├── Auth/LoginRequest.php
 │   │       ├── ProfileUpdateRequest.php
@@ -455,7 +458,16 @@ himatif-nexus/
 │   │       ├── FormatifUpdateRequest.php
 │   │       ├── InventarisStoreRequest.php
 │   │       ├── InventarisUpdateRequest.php
-│   │       └── PenyewaanAlatStoreRequest.php
+│   │       ├── KegiatanStoreRequest.php
+│   │       ├── KegiatanUpdateRequest.php
+│   │       ├── PenyewaanAlatStoreRequest.php
+│   │       └── Admin/                      # UserStoreRequest, UserUpdateRequest
+│   ├── Policies/
+│   │   ├── KegiatanPolicy.php
+│   │   ├── FormatifPolicy.php
+│   │   ├── ProdukPolicy.php
+│   │   ├── InventarisPolicy.php
+│   │   └── PenyewaanAlatPolicy.php
 │   ├── Services/
 │   │   ├── BaseService.php
 │   │   ├── ProdukService.php
@@ -464,6 +476,7 @@ himatif-nexus/
 │   │   ├── InventarisService.php
 │   │   ├── PenyewaanAlatService.php
 │   │   ├── TransaksiService.php
+│   │   ├── SseNotificationService.php
 │   │   └── UserService.php
 │   ├── Helpers/
 │   │   ├── CurrencyHelper.php
@@ -536,81 +549,26 @@ himatif-nexus/
 
 ### 12.1 Architecture Decision
 
-One-way, backend-pushed notification channel scoped exclusively to **Kegiatan** (Activities) and **Informasi/Formatif** (Articles). Triggered only when new content or status changes occur.
+One-way, backend-pushed notification channel scoped to **Kegiatan** (Activities) and **Informasi/Formatif** (Articles), stored in Cache per user.
 
 | Property | Value |
 | :--- | :--- |
 | Protocol | HTTP long-lived stream (`text/event-stream`) |
-| Direction | **Server → Client only** (no client push back) |
-| Transport | `Symfony\Component\HttpFoundation\StreamedResponse` (Laravel native) |
-| External Dep | **None** — zero additional composer/npm packages |
-| Fallback store | Redis Pub/Sub (`REDIS_HOST=127.0.0.1` up) or Cache array fallback |
-| Heartbeat | 2s comment line (`: keep-alive`) to prevent proxy timeout |
+| Direction | **Server → Client only** |
+| Transport | `Symfony\Component\HttpFoundation\StreamedResponse` |
+| External Dep | **None** (zero additional packages) |
+| Fallback store | Laravel Cache (`notifications_user_{userId}`, max 50 items, 7d TTL) |
+| Heartbeat | Initial ping + 3s poll loop over unread cache state |
 
-### 12.2 Endpoint
+### 12.2 Endpoints
 
-`GET /notifications/stream` (auth-protected)
+- `GET /notifications` (JSON index, last 20 notifications + unread count)
+- `GET /notifications/stream` (SSE stream, auth-protected via `EnsureSseAuth`)
 
-Headers:
-```
-Content-Type: text/event-stream
-Cache-Control: no-cache
-Connection: keep-alive
-X-Accel-Buffering: no   # bypass Nginx buffering
-```
+### 12.3 Service Integration
 
-### 12.3 Event Types (Scope)
+`KegiatanService` and `FormatifService` push notifications via `SseNotificationService` in `afterCreate()` / `afterUpdate()`.
 
-| Event | Trigger | Source |
-| :--- | :--- | :--- |
-| `kegiatan_created` | New activity created | `KegiatanService::afterCreate()` |
-| `kegiatan_updated` | Activity `status_kegiatan` changed | `KegiatanService::afterUpdate()` |
-| `informasi_published` | New article published | `FormatifService::afterCreate()` |
-
-### 12.4 Service Hook Integration
-
-`BaseService` already provides `afterCreate()` / `afterUpdate()` hooks — notification logic stays inside Services (SRP §7.1), **not** controllers.
-
-```php
-// app/Services/KegiatanService.php
-protected function afterCreate(object $record, array $data): void
-{
-    SseNotificationService::publish(
-        type: 'kegiatan_created',
-        title: 'Kegiatan Baru',
-        payload: ['id' => $record->kegiatan_id, 'nama' => $record->nama_kegiatan]
-    );
-}
-
-protected function afterUpdate(object $record, array $data): void
-{
-    if (isset($data['status_kegiatan']) && $record->getOriginal('status_kegiatan') !== $data['status_kegiatan']) {
-        SseNotificationService::publish(
-            type: 'kegiatan_updated',
-            title: 'Status Kegiatan Diperbarui',
-            payload: ['id' => $record->kegiatan_id, 'status' => $data['status_kegiatan']]
-        );
-    }
-}
-```
-
-### 12.5 Client
-
-```js
-// resources/js/Composables/useNotifications.js
-const es = new EventSource('/notifications/stream');
-es.addEventListener('kegiatan_created',       (e) => push(JSON.parse(e.data)));
-es.addEventListener('kegiatan_updated',       (e) => push(JSON.parse(e.data)));
-es.addEventListener('informasi_published',  (e) => push(JSON.parse(e.data)));
-```
-
-### 12.6 File Plan
-
-| File | Purpose |
-| :--- | :--- |
-| `app/Http/Controllers/NotificationStreamController.php` | StreamedResponse SSE endpoint |
-| `app/Services/SseNotificationService.php` | `publish(type, title, payload)` — Redis pub-sub / Cache fallback |
-| `app/Http/Middleware/EnsureSseAuth.php` | Guard the stream route |
 
 ---
 
