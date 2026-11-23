@@ -1,89 +1,53 @@
 <script setup>
+import { Link } from '@inertiajs/vue3';
 import AdminLayout from '@/Layouts/AdminLayout.vue';
 import StatCard from '@/Components/Admin/StatCard.vue';
-import { Link } from '@inertiajs/vue3';
-
-defineProps({
-    stats: {
-        type: Object,
-        default: () => ({
-            pesananMenungguVerifikasi: 0,
-            penyewaanMenungguKonfirmasi: 0,
-            kegiatanMendatang: 0,
-            artikelFormatif: 0,
-        }),
-    },
-    penyewaanPending: {
-        type: Array,
-        default: () => [],
-    },
-    pesananTerbaru: {
-        type: Array,
-        default: () => [],
-    },
-    kegiatanMendatang: {
-        type: Array,
-        default: () => [],
-    },
-    aktivitasTerbaru: {
-        type: Array,
-        default: () => [],
-    },
-    subtitleStats: {
-        type: Object,
-        default: () => ({
-            pesanan: '',
-            penyewaan: '',
-            kegiatan: '',
-            artikel: '',
-        }),
-    },
-});
 
 const today = new Date();
-const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-const formattedDate = today.toLocaleDateString('id-ID', options);
+const hari = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+const bulan = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+const bulanPendek = ['JAN', 'FEB', 'MAR', 'APR', 'MEI', 'JUN', 'JUL', 'AGU', 'SEP', 'OKT', 'NOV', 'DES'];
+const formattedDate = `${hari[today.getDay()]}, ${today.getDate()} ${bulan[today.getMonth()]} ${today.getFullYear()}`;
 
-function statusClass(status) {
-    const classes = {
-        'Menunggu verifikasi': 'bg-amber-100 text-amber-700',
-        'Terverifikasi': 'bg-teal-100 text-teal-700',
-        'Sudah diambil': 'bg-gray-100 text-gray-600',
-        'Dibatalkan': 'bg-red-100 text-red-700',
-    };
-    return classes[status] ?? 'bg-gray-100 text-gray-600';
+const penyewaanPending = [
+    { id: 1, nama_penyewa: 'Dina Putri', nama_alat: 'Proyektor', tanggal_mulai: '2026-10-15', tanggal_selesai: '2026-10-16' },
+    { id: 2, nama_penyewa: 'Raka Mahendra', nama_alat: 'Tripod + Kamera', tanggal_mulai: '2026-10-17', tanggal_selesai: '2026-10-17' },
+    { id: 3, nama_penyewa: 'Salsa Nurul', nama_alat: 'Terminal kabel', tanggal_mulai: '2026-10-18', tanggal_selesai: '2026-10-19' },
+    { id: 4, nama_penyewa: 'Fajar Ramadhan', nama_alat: 'Mikrofon nirkabel', tanggal_mulai: '2026-10-20', tanggal_selesai: '2026-10-20' },
+];
+
+const pesananTerbaru = [
+    { id: 1, no_pesanan: 'ORD-0142', nama_produk: 'Kaos HIMATIF x2', total: 170000, status: 'Menunggu verifikasi' },
+    { id: 2, no_pesanan: 'ORD-0141', nama_produk: 'Hoodie HIMATIF', total: 185000, status: 'Menunggu verifikasi' },
+    { id: 3, no_pesanan: 'ORD-0140', nama_produk: 'Paket stiker A', total: 15000, status: 'Terverifikasi' },
+    { id: 4, no_pesanan: 'ORD-0139', nama_produk: 'Ganci', total: 45000, status: 'Sudah diambil' },
+    { id: 5, no_pesanan: 'ORD-0138', nama_produk: 'Tumbler HIMATIF', total: 45000, status: 'Sudah diambil' },
+];
+
+const kegiatanMendatang = [
+    { id: 1, nama_kegiatan: 'Pelatihan Dasar Laravel', lokasi: 'Lab Komputer · 09.00 WIB', tanggal_mulai: '2026-10-18', status: 'Akan datang' },
+    { id: 2, nama_kegiatan: 'Lomba Desain Web', lokasi: 'Pendaftaran dibuka', tanggal_mulai: '2026-10-25', status: 'Akan datang' },
+    { id: 3, nama_kegiatan: 'Rapat Kerja Pengurus', lokasi: 'Internal BPH', tanggal_mulai: '2026-11-02', status: 'Draf' },
+];
+
+const aktivitasTerbaru = [
+    { id: 1, inisial: 'IK', avatarBg: '#3B82F6', pelaku: 'Infokom', aksi: 'menerbitkan artikel "Dasar Git untuk Pemula"', waktu: 'Hari ini, 09.12' },
+    { id: 2, inisial: 'DN', avatarBg: '#F59E0B', pelaku: 'Danus', aksi: 'menambah produk "Lanyard HIMATIF"', waktu: 'Kemarin, 16.40' },
+    { id: 3, inisial: 'MS', avatarBg: '#0F765E', pelaku: 'Manset', aksi: 'mengonfirmasi pengembalian Proyektor', waktu: 'Kemarin, 11.05' },
+];
+
+function formatTanggalRange(mulai, selesai) {
+    const d1 = new Date(mulai);
+    const d2 = new Date(selesai);
+    const h1 = d1.getDate();
+    const h2 = d2.getDate();
+    const b = bulanPendek[d1.getMonth()];
+    if (h1 === h2) return `${h1} ${b}`;
+    return `${h1} – ${h2} ${b}`;
 }
 
-function kegiatanStatusClass(status) {
-    const classes = {
-        'Akan datang': 'text-teal-600',
-        'Draf': 'text-gray-400',
-        'Selesai': 'text-gray-500',
-    };
-    return classes[status] ?? 'text-gray-400';
-}
-
-const bulanPendek = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agt', 'Sep', 'Okt', 'Nov', 'Des'];
-
-function formatTanggal(dateStr) {
-    if (!dateStr) return '';
-    const date = new Date(dateStr);
-    return `${date.getDate()} ${bulanPendek[date.getMonth()]}`;
-}
-
-function formatTanggalRange(start, end) {
-    if (!start) return '';
-    const s = formatTanggal(start);
-    if (!end || start === end) return s;
-    return `${s} – ${formatTanggal(end)}`;
-}
-
-function formatRupiah(amount) {
-    return new Intl.NumberFormat('id-ID', {
-        style: 'currency',
-        currency: 'IDR',
-        minimumFractionDigits: 0,
-    }).format(amount);
+function formatRupiah(n) {
+    return 'Rp' + n.toLocaleString('id-ID');
 }
 </script>
 
@@ -114,36 +78,16 @@ function formatRupiah(amount) {
         <!-- Stat Cards -->
         <div class="row g-3 mb-4">
             <div class="col-12 col-sm-6 col-lg-3">
-                <StatCard
-                    label="Pesanan menunggu verifikasi"
-                    :value="stats.pesananMenungguVerifikasi"
-                    :subtitle="subtitleStats.pesanan"
-                    color="amber"
-                />
+                <StatCard label="Pesanan menunggu verifikasi" :value="7" subtitle="Merchandise · dikelola Danus" color="amber" />
             </div>
             <div class="col-12 col-sm-6 col-lg-3">
-                <StatCard
-                    label="Penyewaan menunggu konfirmasi"
-                    :value="stats.penyewaanMenungguKonfirmasi"
-                    :subtitle="subtitleStats.penyewaan"
-                    color="blue"
-                />
+                <StatCard label="Penyewaan menunggu konfirmasi" :value="4" subtitle="9 alat sedang disewa · dikelola Manset" color="blue" />
             </div>
             <div class="col-12 col-sm-6 col-lg-3">
-                <StatCard
-                    label="Kegiatan mendatang"
-                    :value="stats.kegiatanMendatang"
-                    :subtitle="subtitleStats.kegiatan"
-                    color="teal"
-                />
+                <StatCard label="Kegiatan mendatang" :value="3" subtitle="Dalam 30 hari ke depan" color="teal" />
             </div>
             <div class="col-12 col-sm-6 col-lg-3">
-                <StatCard
-                    label="Artikel Formatif"
-                    :value="stats.artikelFormatif"
-                    :subtitle="subtitleStats.artikel"
-                    color="teal"
-                />
+                <StatCard label="Artikel Formatif" :value="18" subtitle="Terbit · 2 masih draf" color="teal" />
             </div>
         </div>
 
@@ -195,7 +139,7 @@ function formatRupiah(amount) {
                 <div class="card-panel">
                     <div class="d-flex align-items-center justify-content-between mb-3">
                         <h6 class="fw-semibold mb-0">Pesanan merchandise terbaru</h6>
-                        <Link href="/admin/danus" style="font-size: 13px; color: var(--primary-green); text-decoration: none; font-weight: 500;">
+                        <Link href="/admin/shop" style="font-size: 13px; color: var(--primary-green); text-decoration: none; font-weight: 500;">
                             Lihat semua
                         </Link>
                     </div>
@@ -273,7 +217,7 @@ function formatRupiah(amount) {
                                 </span>
                             </div>
                             <!-- Event Info -->
-                            <div class="flex-grow-1 min-width-0">
+                            <div class="flex-grow-1" style="min-width: 0;">
                                 <div class="fw-medium" style="color: #111827;">{{ item.nama_kegiatan }}</div>
                                 <div style="font-size: 13px; color: #6B7280;">{{ item.lokasi }}</div>
                             </div>
