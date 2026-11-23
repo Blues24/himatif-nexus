@@ -1,58 +1,35 @@
 <script setup>
 defineProps({
-    label: {
-        type: String,
-        required: true,
-    },
-    value: {
-        type: [Number, String],
-        required: true,
-    },
-    subtitle: {
-        type: String,
-        default: '',
-    },
-    color: {
-        type: String,
-        default: 'teal',
-        validator: (val) => ['teal', 'blue', 'amber', 'rose'].includes(val),
-    },
+    title: { type: String, default: '' },
+    label: { type: String, default: '' },
+    value: { type: [Number, String], required: true },
+    subtitle: { type: String, default: '' },
+    variant: { type: String, default: 'teal' },
+    icon: { type: String, default: '' },
+    color: { type: String, default: '' },
 });
 
-const dotColors = {
+const iconColors = {
     teal: '#0F765E',
+    green: '#0F765E',
     blue: '#3B82F6',
     amber: '#F59E0B',
+    gray: '#6B7280',
     rose: '#F43F5E',
-<<<<<<< HEAD
-=======
-};
-
-const colorClasses = {
-    teal: 'bg-teal-500',
-    blue: 'bg-blue-500',
-    amber: 'bg-amber-500',
-    rose: 'bg-rose-500',
->>>>>>> 5c571288dd6c1222c1443c1a40c892120308937b
 };
 </script>
 
 <template>
-<<<<<<< HEAD
     <div class="card-panel">
         <div class="d-flex align-items-start justify-content-between">
-=======
-    <div class="card-panel rounded-xl border border-gray-200 bg-white p-5">
-        <div class="flex items-start justify-between">
->>>>>>> 5c571288dd6c1222c1443c1a40c892120308937b
             <div>
-                <p class="mb-2" style="font-size: 13px; color: #6B7280;">{{ label }}</p>
-                <p class="mb-1 font-bold" style="font-size: 28px; line-height: 1; color: #111827;">{{ value }}</p>
+                <p class="mb-2" style="font-size: 13px; color: #6B7280;">{{ title || label }}</p>
+                <p class="mb-1 fw-bold" style="font-size: 28px; line-height: 1; color: #111827;">{{ value }}</p>
                 <p v-if="subtitle" class="mb-0" style="font-size: 12px; color: #9CA3AF;">{{ subtitle }}</p>
             </div>
             <div
-                style="width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0;"
-                :style="{ backgroundColor: dotColors[color] || dotColors.teal }"
+                style="width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; margin-top: 4px;"
+                :style="{ backgroundColor: iconColors[variant || color] || iconColors.teal }"
             />
         </div>
     </div>
