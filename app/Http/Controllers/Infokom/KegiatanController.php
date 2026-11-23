@@ -53,7 +53,7 @@ class KegiatanController extends Controller
     {
         $this->service->create($request->validated());
 
-        return redirect()->route('kegain.index')
+        return redirect()->route('kegiatan.index')
             ->with('success', 'Kegiatan berhasil ditambahkan.');
     }
 
@@ -76,7 +76,7 @@ class KegiatanController extends Controller
     {
         $this->service->update($id, $request->validated());
 
-        return redirect()->route('kegain.index')
+        return redirect()->route('kegiatan.index')
             ->with('success', 'Kegiatan berhasil diperbarui.');
     }
 
@@ -84,7 +84,7 @@ class KegiatanController extends Controller
     {
         $this->service->delete($id);
 
-        return redirect()->route('kegain.index')
+        return redirect()->route('kegiatan.index')
             ->with('success', 'Kegiatan berhasil dihapus.');
     }
 }

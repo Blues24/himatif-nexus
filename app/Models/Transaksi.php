@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Transaksi extends Model
 {
@@ -36,5 +37,13 @@ class Transaksi extends Model
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id', 'user_uuid');
+    }
+
+    /** @return BelongsToMany<Produk, self> */
+    public function produk()
+    {
+        return $this->belongsToMany(Produk::class, 'shop_details', 'transaksi_id', 'produk_id')
+            ->withPivot('quantity', 'harga_satuan')
+            ->withTimestamps();
     }
 }

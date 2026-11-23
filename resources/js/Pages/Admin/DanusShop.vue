@@ -3,6 +3,12 @@ import { ref, computed } from 'vue';
 import { Head } from '@inertiajs/vue3';
 import AdminLayout from '@/Layouts/AdminLayout.vue';
 
+// Props from backend
+const props = defineProps({
+    products: { type: Array, default: () => [] },
+    orders: { type: Array, default: () => [] },
+});
+
 // Tab aktif: 'produk' atau 'pesanan'
 const activeTab = ref('produk');
 
@@ -10,8 +16,13 @@ const activeTab = ref('produk');
 const searchQuery = ref('');
 const statusFilter = ref('Semua status');
 
+<<<<<<< Updated upstream
 // Data Produk (Sesuai referensi desain 3 · Manajemen Danus Shop)
 const products = ref([
+=======
+// Data Produk — gunakan prop jika ada, fallback ke dummy
+const products = ref(props.products.length ? props.products : [
+>>>>>>> Stashed changes
   { id: 1, code: 'KS', name: 'Kaos HIMATIF', desc: 'Katun combed 30s', price: 85000, stock: 42 },
   { id: 2, code: 'HD', name: 'Hoodie HIMATIF', desc: 'Fleece tebal', price: 185000, stock: 6 },
   { id: 3, code: 'TB', name: 'Tote bag', desc: 'Kanvas', price: 45000, stock: 18 },
@@ -20,8 +31,8 @@ const products = ref([
   { id: 6, code: 'GC', name: 'Gantungan kunci', desc: 'Akrilik', price: 12000, stock: 35 }
 ]);
 
-// Data Pesanan Masuk (Untuk tab ke-2)
-const incomingOrders = ref([
+// Data Pesanan Masuk
+const incomingOrders = ref(props.orders.length ? props.orders : [
   { id: 'ORD-0142', buyer: 'Dimas Pratama', nim: '2403012', item: 'Kaos HIMATIF x2', total: 170000, status: 'Menunggu verifikasi' },
   { id: 'ORD-0141', buyer: 'Nabila Putri', nim: '2403045', item: 'Hoodie HIMATIF x1', total: 185000, status: 'Menunggu verifikasi' },
   { id: 'ORD-0140', buyer: 'Rizky Fauzan', nim: '2303019', item: 'Paket stiker x1', total: 15000, status: 'Terverifikasi' },

@@ -8,14 +8,14 @@
 
 | Layer | Technology |
 |---|---|
-| **Backend** | Laravel 13 (PHP 8.3+) |
+| **Backend** | Laravel 13 (PHP 8.5+) |
 | **Frontend** | Vue 3 + Inertia.js v2 |
 | **Styling** | Tailwind CSS |
 | **Build** | Vite + Laravel Vite Plugin |
-| **Database** | PostgreSQL (target) / SQLite (development) |
+| **Database** | PostgreSQL |
 | **Auth** | Laravel Breeze + Sanctum |
+| **RBAC** | Custom (`app/Models/Role` + `User::hasRole()`) — no Spatie dependency |
 | **Page Builder** | Puck (planned) — drag-and-drop content editor for Infokom |
-| **RBAC** | `spatie/laravel-permission` (planned) |
 
 ## Modules
 
@@ -24,7 +24,7 @@ The application is divided into four functional modules, each owned by a dedicat
 | Module | Team | Description |
 |---|---|---|
 | **BPH** | Admin | Organization management — user accounts, roles, permissions |
-| **Infokom** | Content | Blog articles with a visual page builder (Puck) and activity/event listings |
+| **Infokom** | Content | Blog articles and activity/event listings |
 | **Danus Shop** | Commerce | Product catalog, transactions, and merchandise management |
 | **Portal** | Asset | Equipment inventory and rental request workflow |
 
@@ -39,14 +39,14 @@ npm install
 cp .env.example .env
 php artisan key:generate
 
-# Database (ensure DB_CONNECTION is set correctly in .env)
+# Database (PostgreSQL required; ensure PDO pgsql extension is loaded)
 php artisan migrate --seed
 
 # Build assets
 npm run dev
 ```
 
-For the full setup script (installs dependencies, generates key, runs migrations, builds assets):
+For the full setup script:
 
 ```bash
 composer run setup
@@ -54,22 +54,20 @@ composer run setup
 
 ## Database
 
-The project targets **PostgreSQL** as its production database. The default `.env` uses SQLite for local development.
+The project uses **PostgreSQL** for both development and production. The `.env.example` contains MySQL defaults as a fallback for XAMPP/Laragon users.
 
-### Switching to PostgreSQL
+### Production (PostgreSQL)
 
 ```env
 DB_CONNECTION=pgsql
 DB_HOST=127.0.0.1
 DB_PORT=5432
 DB_DATABASE=himatif_nexus
-DB_USERNAME=your_username
-DB_PASSWORD=your_password
+DB_USERNAME=himatif
+DB_PASSWORD=<secret>
 ```
 
-### Switching to MySQL (XAMPP / Laragon)
-
-For developers using XAMPP or Laragon, MySQL is also supported:
+### Local development (MySQL / XAMPP / Laragon)
 
 ```env
 DB_CONNECTION=mysql
@@ -80,11 +78,11 @@ DB_USERNAME=root
 DB_PASSWORD=
 ```
 
-> **Note:** Several migration blockers exist. See [ARCHITECTURE.md](./ARCHITECTURE.md) §3.3 for details.
+> **Note:** The test suite in `phpunit.xml` hard-codes `pgsql`. Contributors without PostgreSQL must either install the `pdo_pgsql` extension or temporarily switch the test config to SQLite.
 
 ## Documentation
 
-- [**ARCHITECTURE.md**](./ARCHITECTURE.md) — Full system architecture, technical stack, database schema, Puck integration, team folder ownership, and directory structure (also available in [Bahasa Indonesia](./ARCHITECTURE.id-ID.md)).
+- [**ARCHITECTURE.md**](./ARCHITECTURE.md) — Full system architecture, technical stack, database schema, team folder ownership, and directory structure (also available in [Bahasa Indonesia](./ARCHITECTURE.id-ID.md)).
 
 ## Project Conventions
 
