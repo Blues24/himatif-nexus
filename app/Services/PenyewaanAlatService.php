@@ -3,6 +3,8 @@
 namespace App\Services;
 
 use App\Models\PenyewaanAlat;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
 class PenyewaanAlatService extends BaseService
@@ -49,7 +51,7 @@ class PenyewaanAlatService extends BaseService
                 throw new \DomainException('Stok alat tidak mencukupi');
             }
 
-            $record = app($this->model)->create(\Illuminate\Support\Arr::only($data, $this->fillableColumns));
+            $record = app($this->model)->create(Arr::only($data, $this->fillableColumns));
 
             $this->afterCreate($record, $data);
 
@@ -105,5 +107,35 @@ class PenyewaanAlatService extends BaseService
     private function getKey(): string
     {
         return app(PenyewaanAlat::class)->getKeyName();
+    }
+
+    /**
+     * Count or paginate pending rental requests.
+     */
+    public function pending(int $perPage = 15)
+    {
+        return $this->paginate(
+            fn (\Illuminate\Database\Eloquent\Builder|PenyewaanAlat $q) => $q->where('status', 'pending')
+        );
+    }
+
+    /**
+     * Pending requests with equipment and borrower details for the dashboard view.
+     *
+     * @return Collection<int, array{id:int, nama_penyewa:string, nama_alat:string, tanggal_mulai:string, tanggal_selesai:string}>
+     */
+    public function pendingWithRelations(): Collection
+    {
+        return PenyewaanAlat::query()
+            ->where('status', 'pending')
+            ->with(['user', 'inventarisAlat'])
+            ->get()
+            ->map(fn (PenyewaanAlat $p) => [
+                'id' => $p->id,
+                'nama_penyewa' => $p->user?->nama ?? 'Unknown',
+                'nama_alat' => $p->inventarisAlat?->nama_barang ?? 'Unknown',
+                'tanggal_mulai' => $p->tanggal_pinjam?->format('Y-m-d'),
+                'tanggal_selesai' => $p->tanggal_kembali?->format('Y-m-d'),
+            ]);
     }
 }

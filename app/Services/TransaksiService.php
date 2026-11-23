@@ -3,6 +3,8 @@
 namespace App\Services;
 
 use App\Models\Transaksi;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Collection;
 
 class TransaksiService extends BaseService
 {
@@ -27,7 +29,7 @@ class TransaksiService extends BaseService
     /**
      * Filter by payment status.
      */
-    public function byStatus(string $status)
+    public function byStatus(string $status): LengthAwarePaginator
     {
         return $this->paginate(
             fn (\Illuminate\Database\Eloquent\Builder|Transaksi $q) => $q->where('status_transaksi', $status)
@@ -49,5 +51,30 @@ class TransaksiService extends BaseService
         return $transaction->update([
             'status_transaksi' => 'selesai',
         ]);
+    }
+
+    /**
+     * Recent transactions ordered by created_at desc, limited to $limit rows.
+     *
+     * @return Collection<int, object>
+     */
+    public function recent(int $limit = 5): Collection
+    {
+        return app(Transaksi::class)
+            ->with('user')
+            ->latest()
+            ->take($limit)
+            ->get()
+            ->map(fn (Transaksi $t) => (object) [
+                'id' => $t->transaksi_id,
+                'no_pesanan' => 'ORD-'.str_pad((string) $t->transaksi_id, 6, '0', STR_PAD_LEFT),
+                'nama_produk' => $t->user?->nama ?? 'Pelanggan',
+                'total' => $t->total_bayar,
+                'status' => match ($t->status_transaksi) {
+                    'menunggu' => 'Menunggu verifikasi',
+                    'selesai' => 'Sudah diambil',
+                    default => ucfirst($t->status_transaksi),
+                },
+            ]);
     }
 }

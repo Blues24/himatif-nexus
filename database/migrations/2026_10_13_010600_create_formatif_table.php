@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('judul');
             $table->string('slug')->unique();
             $table->string('kategori');
-            $table->longText('text_konten');
+            $table->jsonb('text_konten')->default('{}');
             $table->string('thumbnail_path')->nullable();
             $table->string('status')->default('draft');
             $table->timestamps();

@@ -99,6 +99,16 @@ Route::controller(ProdukController::class)->group(function () {
     Route::get('/produk/{id}', 'show')->whereNumber('id')->name('produk.show');
 });
 
+// Danus Shop: transaction history (auth required)
+use App\Http\Controllers\DanusSHop\TransaksiController;
+use App\Services\ProdukService;
+
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/transaksi', [TransaksiController::class, 'index'])->name('transaksi.index');
+    Route::get('/transaksi/{id}', [TransaksiController::class, 'show'])->name('transaksi.show');
+    Route::post('/transaksi/{id}/confirm', [TransaksiController::class, 'confirm'])->name('transaksi.confirm');
+});
+
 /*
 |--------------------------------------------------------------------------|
 | Formatif (Blog) - public browse, auth-restricted writes
@@ -153,6 +163,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/penyewaan/{penyewaan}/edit', [PenyewaanAlatController::class, 'edit'])->name('penyewaan.edit');
     Route::put('/penyewaan/{penyewaan}', [PenyewaanAlatController::class, 'update'])->name('penyewaan.update');
     Route::delete('/penyewaan/{penyewaan}', [PenyewaanAlatController::class, 'destroy'])->name('penyewaan.destroy');
+    Route::post('/penyewaan/{penyewaan}/approve', [PenyewaanAlatController::class, 'approve'])->name('penyewaan.approve');
+    Route::post('/penyewaan/{penyewaan}/reject', [PenyewaanAlatController::class, 'reject'])->name('penyewaan.reject');
+    Route::post('/penyewaan/{penyewaan}/return', [PenyewaanAlatController::class, 'markReturned'])->name('penyewaan.return');
 });
 
 /*
@@ -163,7 +176,21 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
 Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', fn () => Inertia::render('Admin/Dashboard'))->name('dashboard.index');
-    Route::get('/shop', fn () => Inertia::render('Admin/DanusShop'))->name('shop.index');
+    Route::get('/shop', function () {
+        $service = app(ProdukService::class);
+
+        return Inertia::render('Admin/DanusShop', [
+            'products' => $service->all()->map(fn ($p) => [
+                'id' => $p->produk_id,
+                'code' => substr(strtoupper($p->nama_produk), 0, 2),
+                'name' => $p->nama_produk,
+                'desc' => $p->deskripsi_produk ?? '-',
+                'price' => (float) $p->harga_produk,
+                'stock' => (int) $p->stok_produk,
+            ])->toArray(),
+            'orders' => [],
+        ]);
+    })->name('shop.index');
     Route::get('/formatif', fn () => Inertia::render('Admin/Formatif'))->name('formatif.index');
     Route::get('/informasi', fn () => Inertia::render('Admin/Dashboard'))->name('informasi.index');
     Route::get('/inventaris', fn () => Inertia::render('Admin/Inventaris'))->name('inventaris.index');
