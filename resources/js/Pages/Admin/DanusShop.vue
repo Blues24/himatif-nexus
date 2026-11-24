@@ -16,13 +16,8 @@ const activeTab = ref('produk');
 const searchQuery = ref('');
 const statusFilter = ref('Semua status');
 
-<<<<<<< Updated upstream
-// Data Produk (Sesuai referensi desain 3 · Manajemen Danus Shop)
-const products = ref([
-=======
 // Data Produk — gunakan prop jika ada, fallback ke dummy
 const products = ref(props.products.length ? props.products : [
->>>>>>> Stashed changes
   { id: 1, code: 'KS', name: 'Kaos HIMATIF', desc: 'Katun combed 30s', price: 85000, stock: 42 },
   { id: 2, code: 'HD', name: 'Hoodie HIMATIF', desc: 'Fleece tebal', price: 185000, stock: 6 },
   { id: 3, code: 'TB', name: 'Tote bag', desc: 'Kanvas', price: 45000, stock: 18 },
@@ -153,14 +148,14 @@ const verifyOrder = (order) => {
 </script>
 
 <template>
-  <Head title="Danus / Shop - Panel Admin" />
+  <Head title="Shop - Panel Admin HIMATIF" />
 
   <AdminLayout
-    title="Danus / Shop"
+    title="Shop"
     subtitle="Kelola produk merchandise resmi HIMATIF dan verifikasi pesanan."
   >
     <template #actions>
-      <button class="btn-himatif" @click="resetForm(); activeTab = 'produk'">
+      <button class="btn-cyan" @click="resetForm(); activeTab = 'produk'">
         + Tambah produk
       </button>
     </template>
@@ -345,7 +340,7 @@ const verifyOrder = (order) => {
                   <path d="M12 19V5M5 12l7-7 7 7" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
                 <div style="font-size: 12.5px;">
-                  <span class="fw-semibold" style="color: #0F765E;">Pilih file</span>
+                  <span class="fw-semibold" style="color: #00A3FF;">Pilih file</span>
                   <span class="text-secondary"> atau seret ke sini</span>
                 </div>
                 <div class="text-secondary" style="font-size: 11px;">
@@ -355,7 +350,7 @@ const verifyOrder = (order) => {
             </div>
 
             <div class="d-flex align-items-center gap-2 mb-3">
-              <button type="submit" class="btn-himatif flex-grow-1">
+              <button type="submit" class="btn-cyan flex-grow-1">
                 Simpan produk
               </button>
               <button type="button" class="btn-cancel" @click="resetForm">
@@ -431,6 +426,25 @@ const verifyOrder = (order) => {
 </template>
 
 <style scoped>
+.btn-cyan {
+  background-color: #00A3FF;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 16px;
+  font-size: 13.5px;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.15s ease;
+}
+
+.btn-cyan:hover {
+  background-color: #008be5;
+  color: #ffffff;
+}
+
 .tab-switcher {
   display: inline-flex;
   background-color: #E8ECEF;
