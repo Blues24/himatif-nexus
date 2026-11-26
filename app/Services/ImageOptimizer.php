@@ -35,7 +35,7 @@ class ImageOptimizer
 
         $result = Process::timeout(30)
             ->env($env)
-            ->run(static fn () => exec("node '{$script}' ".escapeshellarg($inputPath)));
+            ->run(['node', $script, $inputPath]);
 
         if ($result->failed()) {
             report(new \RuntimeException('Image compression failed: '.$result->errorOutput()));

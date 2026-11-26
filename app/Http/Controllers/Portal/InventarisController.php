@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Portal;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\InventarisStoreRequest;
 use App\Http\Requests\InventarisUpdateRequest;
+use App\Models\Inventaris;
 use App\Services\InventarisService;
 use Illuminate\Http\RedirectResponse;
 use Inertia\Inertia;
@@ -35,6 +36,8 @@ class InventarisController extends Controller
 
     public function store(InventarisStoreRequest $request): RedirectResponse
     {
+        $this->authorize('create', Inventaris::class);
+
         $this->service->create($request->validated());
 
         return redirect()->route('inventaris.index')
@@ -52,6 +55,9 @@ class InventarisController extends Controller
 
     public function update(InventarisUpdateRequest $request, int $id): RedirectResponse
     {
+        $inventaris = $this->service->findOrFail($id);
+        $this->authorize('update', $inventaris);
+
         $this->service->update($id, $request->validated());
 
         return redirect()->route('inventaris.edit', $id)
@@ -60,6 +66,9 @@ class InventarisController extends Controller
 
     public function destroy(int $id): RedirectResponse
     {
+        $inventaris = $this->service->findOrFail($id);
+        $this->authorize('delete', $inventaris);
+
         $this->service->delete($id);
 
         return back()->with('success', 'Inventaris berhasil dihapus.');

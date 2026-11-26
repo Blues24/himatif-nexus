@@ -6,6 +6,7 @@ use App\Helpers\CurrencyHelper;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ProdukStoreRequest;
 use App\Http\Requests\ProdukUpdateRequest;
+use App\Models\Produk;
 use App\Services\ProdukService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -53,6 +54,8 @@ class ProdukController extends Controller
 
     public function store(ProdukStoreRequest $request): RedirectResponse
     {
+        $this->authorize('create', Produk::class);
+
         $data = $request->validated();
 
         if ($request->hasFile('gambar_produk')) {
@@ -79,14 +82,16 @@ class ProdukController extends Controller
 
     public function update(ProdukUpdateRequest $request, int $id): RedirectResponse
     {
+        $produk = $this->service->findOrFail($id);
+        $this->authorize('update', $produk);
+
         $data = $request->validated();
 
         if ($request->hasFile('gambar_produk')) {
             $data['gambar_produk'] = $request->file('gambar_produk')->store('produk', 'public');
 
-            $existing = $this->service->findOrFail($id);
-            if ($existing->gambar_produk && \Storage::disk('public')->exists($existing->gambar_produk)) {
-                \Storage::disk('public')->delete($existing->gambar_produk);
+            if ($produk->gambar_produk && \Storage::disk('public')->exists($produk->gambar_produk)) {
+                \Storage::disk('public')->delete($produk->gambar_produk);
             }
         }
 
@@ -98,6 +103,9 @@ class ProdukController extends Controller
 
     public function destroy(int $id): RedirectResponse
     {
+        $produk = $this->service->findOrFail($id);
+        $this->authorize('delete', $produk);
+
         $this->service->delete($id);
 
         return back()->with('success', 'Produk berhasil dihapus.');

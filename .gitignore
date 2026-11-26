@@ -27,4 +27,5 @@ Homestead.yaml
 Thumbs.db
 /graphify-out/*
 /.claude
-
+routes_map.json
+strix_runs/
