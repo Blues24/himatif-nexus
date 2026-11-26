@@ -94,8 +94,9 @@ class FormatifController extends Controller
 
     public function published(): Response
     {
-        return Inertia::render('Blog/Show', [
+        return Inertia::render('Blog/Index', [
             'formatifs' => fn () => $this->service->published()->items(),
+            'filters' => ['q' => ''],
         ]);
     }
 }
