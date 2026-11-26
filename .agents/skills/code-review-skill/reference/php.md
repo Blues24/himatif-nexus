@@ -476,14 +476,14 @@ Check logs, exception messages, the debug toolbar, error pages, and failed-queue
 
 ```json
 {
-  "require": {
-    "php": "^8.2",
-    "monolog/monolog": "^3.0"
-  },
-  "require-dev": {
-    "phpunit/phpunit": "^11.0",
-    "phpstan/phpstan": "^1.10"
-  }
+    "require": {
+        "php": "^8.2",
+        "monolog/monolog": "^3.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^11.0",
+        "phpstan/phpstan": "^1.10"
+    }
 }
 ```
 

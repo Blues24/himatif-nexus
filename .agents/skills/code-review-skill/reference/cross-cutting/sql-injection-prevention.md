@@ -8,11 +8,11 @@ Language-agnostic SQL injection prevention strategies with cross-language code e
 
 SQL injection (SQLi) is ranked #3 in the OWASP Top 10 (2021). Three common variants:
 
-| Type | Description | Risk |
-|------|-------------|------|
-| **Classic (In-band)** | Attacker receives results directly in the HTTP response | Data exfiltration, authentication bypass |
+| Type                           | Description                                              | Risk                                        |
+| ------------------------------ | -------------------------------------------------------- | ------------------------------------------- |
+| **Classic (In-band)**          | Attacker receives results directly in the HTTP response  | Data exfiltration, authentication bypass    |
 | **Blind (Boolean/Time-based)** | Attacker infers data from response differences or timing | Slower but still viable for data extraction |
-| **Out-of-band** | Attacker uses DNS/HTTP callbacks to exfiltrate data | Less common but harder to detect |
+| **Out-of-band**                | Attacker uses DNS/HTTP callbacks to exfiltrate data      | Less common but harder to detect            |
 
 ## Universal Prevention Strategy
 
@@ -131,10 +131,9 @@ const query = `SELECT * FROM users WHERE id = ${userId}`;
 const result = await client.query(query);
 
 // ✅ pg parameterized ($1, $2, ...)
-const result = await client.query(
-    "SELECT * FROM users WHERE id = $1",
-    [userId]
-);
+const result = await client.query("SELECT * FROM users WHERE id = $1", [
+    userId,
+]);
 
 // ✅ Prisma ORM (parameterized by default)
 const user = await prisma.user.findUnique({
@@ -142,9 +141,7 @@ const user = await prisma.user.findUnique({
 });
 
 // ❌ Prisma $queryRawUnsafe with string interpolation
-await prisma.$queryRawUnsafe(
-    `SELECT * FROM users WHERE id = ${userId}`
-);
+await prisma.$queryRawUnsafe(`SELECT * FROM users WHERE id = ${userId}`);
 
 // ✅ Prisma $queryRaw with tagged template (safe)
 await prisma.$queryRaw`

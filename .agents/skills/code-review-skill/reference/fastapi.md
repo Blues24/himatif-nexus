@@ -1,6 +1,6 @@
 # FastAPI Code Review Guide
 
-> FastAPI code review guide covering dependency injection (`Depends`), Pydantic v2 validation boundaries, async correctness, database session lifecycle and N+1, security, and a test-driven verification workflow that turns the reviewer's in-process test client into a tool for *proving* bugs rather than guessing at them.
+> FastAPI code review guide covering dependency injection (`Depends`), Pydantic v2 validation boundaries, async correctness, database session lifecycle and N+1, security, and a test-driven verification workflow that turns the reviewer's in-process test client into a tool for _proving_ bugs rather than guessing at them.
 
 ## Table of Contents
 
@@ -99,7 +99,7 @@ async def list_items(session: SessionDep): ...
 
 ### Use dependencies to validate existence and permissions — they're cached per request
 
-A dependency is the natural place to answer "does this resource exist and may this caller touch it?" Pydantic validates *shape*; a dependency validates against the database. FastAPI caches each dependency's result within a single request, so chaining small dependencies costs nothing extra and removes duplicated lookups.
+A dependency is the natural place to answer "does this resource exist and may this caller touch it?" Pydantic validates _shape_; a dependency validates against the database. FastAPI caches each dependency's result within a single request, so chaining small dependencies costs nothing extra and removes duplicated lookups.
 
 ```python
 # ✅ Good — small dependencies chain; valid_post is resolved once per request
@@ -191,7 +191,7 @@ async def add_to_cart(line: CartLine):
 
 ## Async Correctness
 
-This is the axis on which FastAPI differs most from Django and Flask, and the one most worth a reviewer's attention. FastAPI's throughput comes from a single event loop interleaving many concurrent requests. That model only holds if the loop is **never blocked**: one synchronous call on the loop stalls *every* in-flight request, not just its own. Get this wrong across the codebase and FastAPI does not just lose its edge — it performs *worse* than a sync framework like Flask, because Flask's worker-per-request model has no shared loop to choke. The reviewer's job is to keep work on the loop genuinely non-blocking and to treat every escape hatch as a cost, not a fix.
+This is the axis on which FastAPI differs most from Django and Flask, and the one most worth a reviewer's attention. FastAPI's throughput comes from a single event loop interleaving many concurrent requests. That model only holds if the loop is **never blocked**: one synchronous call on the loop stalls _every_ in-flight request, not just its own. Get this wrong across the codebase and FastAPI does not just lose its edge — it performs _worse_ than a sync framework like Flask, because Flask's worker-per-request model has no shared loop to choke. The reviewer's job is to keep work on the loop genuinely non-blocking and to treat every escape hatch as a cost, not a fix.
 
 ### Never call blocking code inside an `async def` route
 
@@ -214,15 +214,15 @@ async def report(client: httpx.AsyncClient = Depends(get_http)):
 
 The right fix for blocking I/O is almost always a library that speaks `async` natively — not wrapping a sync one. Reach for the async client first; the threadpool is the last resort, not the default.
 
-| Sync (blocks the loop) | Native-async replacement |
-|------------------------|--------------------------|
-| `requests`             | `httpx.AsyncClient`, `aiohttp` |
+| Sync (blocks the loop) | Native-async replacement           |
+| ---------------------- | ---------------------------------- |
+| `requests`             | `httpx.AsyncClient`, `aiohttp`     |
 | `psycopg2` (sync)      | `asyncpg`, SQLAlchemy async engine |
-| `redis-py` (sync)      | `redis.asyncio` |
-| `pymongo`              | `motor` |
-| `boto3`                | `aioboto3` |
+| `redis-py` (sync)      | `redis.asyncio`                    |
+| `pymongo`              | `motor`                            |
+| `boto3`                | `aioboto3`                         |
 
-If you find `asyncio.run(...)`, a new event loop, or a manually started thread *inside* a route, that is a red flag — it's an attempt to bolt sync code onto the loop. `asyncio.run()` inside a running loop raises `RuntimeError` outright; the rest quietly burns the performance you adopted FastAPI for.
+If you find `asyncio.run(...)`, a new event loop, or a manually started thread _inside_ a route, that is a red flag — it's an attempt to bolt sync code onto the loop. `asyncio.run()` inside a running loop raises `RuntimeError` outright; the rest quietly burns the performance you adopted FastAPI for.
 
 ```python
 # ❌ Bad — spinning up a loop/thread to call an async SDK from a sync context
@@ -359,7 +359,7 @@ totals = dict((await session.execute(stmt)).all())
 
 ### A declared auth dependency is not an enforced authorization check
 
-This is the highest-value thing to look for. `Depends(get_current_user)` proves *who* the caller is — it does **not** prove they may touch *this* resource.
+This is the highest-value thing to look for. `Depends(get_current_user)` proves _who_ the caller is — it does **not** prove they may touch _this_ resource.
 
 ```python
 # ❌ Bad — any authenticated user can delete any other user's document
@@ -415,13 +415,13 @@ Also check: secrets read from config/env (not hard-coded), `HTTPException` detai
 
 ## Test-Driven Verification
 
-> Inspired by the test-driven development discipline: *if you didn't watch the test fail, you don't know it tests the right thing.* This matters even more for a coding agent than for a human reviewer. An agent's reading and reasoning are fallible — it can misread control flow, hallucinate a guarantee that isn't there, or rationalize a comfortable conclusion — so a prose verdict like "this looks safe" carries little weight on its own. An executable test is the one piece of **objective ground truth** the agent fully controls: it either passes or it doesn't, regardless of how confident the reasoning felt. That is what makes tests the agent's anchor of confidence. Reviewing the same way the discipline writes code — reproduce, don't assert — turns a hunch into proof.
+> Inspired by the test-driven development discipline: _if you didn't watch the test fail, you don't know it tests the right thing._ This matters even more for a coding agent than for a human reviewer. An agent's reading and reasoning are fallible — it can misread control flow, hallucinate a guarantee that isn't there, or rationalize a comfortable conclusion — so a prose verdict like "this looks safe" carries little weight on its own. An executable test is the one piece of **objective ground truth** the agent fully controls: it either passes or it doesn't, regardless of how confident the reasoning felt. That is what makes tests the agent's anchor of confidence. Reviewing the same way the discipline writes code — reproduce, don't assert — turns a hunch into proof.
 
 A natural-language review comment ("this might let users delete each other's data") is exactly that kind of fallible hypothesis. FastAPI makes the ground truth cheap to obtain: an in-process client (`httpx.AsyncClient` over `ASGITransport`) runs the whole app, and `app.dependency_overrides` swaps out auth and the database without patching internals. So instead of trusting its own read of the code, the agent settles the question by reproduction.
 
 ### Reproduce a suspected bug with a failing test (Verify RED)
 
-Suppose the reviewer suspects the `DELETE /documents/{doc_id}` route above never checks ownership. Write the test that asserts the *secure* behavior, then run it and **watch it fail** — the failure is the proof.
+Suppose the reviewer suspects the `DELETE /documents/{doc_id}` route above never checks ownership. Write the test that asserts the _secure_ behavior, then run it and **watch it fail** — the failure is the proof.
 
 ```python
 # test_document_authorization.py
@@ -495,7 +495,7 @@ The reproduction above uses `httpx.AsyncClient` over `ASGITransport` with `@pyte
 
 ### Critique the PR's own tests, not just its source
 
-A PR that ships tests is not automatically safe. Apply these checks to the *tests* in the diff:
+A PR that ships tests is not automatically safe. Apply these checks to the _tests_ in the diff:
 
 ```python
 # ❌ Bad — happy-path only. Proves the route works when everything is correct,

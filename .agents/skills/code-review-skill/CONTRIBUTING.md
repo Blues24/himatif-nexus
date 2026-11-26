@@ -66,28 +66,29 @@ SKILL.md 必须包含 YAML frontmatter：
 ---
 name: skill-name
 description: |
-  功能描述。触发条件说明。
-  Use when [具体使用场景]。
-allowed-tools: ["Read", "Grep", "Glob"]  # 可选：限制工具访问
+    功能描述。触发条件说明。
+    Use when [具体使用场景]。
+allowed-tools: ["Read", "Grep", "Glob"] # 可选：限制工具访问
 ---
 ```
 
 #### 必需字段
 
-| 字段 | 说明 | 约束 |
-|------|------|------|
-| `name` | Skill 标识符 | 小写字母、数字、连字符；最多 64 字符 |
-| `description` | 功能和激活条件 | 最多 1024 字符；必须包含 "Use when" |
+| 字段          | 说明           | 约束                                 |
+| ------------- | -------------- | ------------------------------------ |
+| `name`        | Skill 标识符   | 小写字母、数字、连字符；最多 64 字符 |
+| `description` | 功能和激活条件 | 最多 1024 字符；必须包含 "Use when"  |
 
 #### 可选字段
 
-| 字段 | 说明 | 示例 |
-|------|------|------|
+| 字段            | 说明         | 示例                       |
+| --------------- | ------------ | -------------------------- |
 | `allowed-tools` | 限制工具访问 | `["Read", "Grep", "Glob"]` |
 
 ### 命名约定
 
 **Skill 名称规则**：
+
 - 仅使用小写字母、数字和连字符（kebab-case）
 - 最多 64 个字符
 - 避免下划线或大写字母
@@ -98,6 +99,7 @@ allowed-tools: ["Read", "Grep", "Glob"]  # 可选：限制工具访问
 ```
 
 **文件命名规则**：
+
 - reference 文件使用小写：`react.md`, `vue.md`
 - 多词文件使用连字符：`common-bugs-checklist.md`
 
@@ -111,15 +113,15 @@ Description 必须包含两部分：
 ```yaml
 # ✅ 正确示例
 description: |
-  Provides comprehensive code review guidance for React 19, Vue 3, Rust,
-  TypeScript, Java, Python, and C/C++.
-  Helps catch bugs, improve code quality, and give constructive feedback.
-  Use when reviewing pull requests, conducting PR reviews, establishing
-  review standards, or mentoring developers through code reviews.
+    Provides comprehensive code review guidance for React 19, Vue 3, Rust,
+    TypeScript, Java, Python, and C/C++.
+    Helps catch bugs, improve code quality, and give constructive feedback.
+    Use when reviewing pull requests, conducting PR reviews, establishing
+    review standards, or mentoring developers through code reviews.
 
 # ❌ 错误示例（太模糊，缺少触发条件）
 description: |
-  Helps with code review.
+    Helps with code review.
 ```
 
 ### Progressive Disclosure（渐进式披露）
@@ -128,22 +130,24 @@ Claude 只在需要时加载支持文件，不会一次性加载所有内容。
 
 #### 文件职责划分
 
-| 文件 | 加载时机 | 内容 |
-|------|----------|------|
-| `SKILL.md` | 始终加载 | 核心原则、快速索引、何时使用 |
-| `reference/*.md` | 按需加载 | 语言/框架的详细指南 |
-| `assets/*.md` | 明确需要时 | 模板、清单 |
-| `scripts/*.py` | 明确指引时 | 工具脚本 |
+| 文件             | 加载时机   | 内容                         |
+| ---------------- | ---------- | ---------------------------- |
+| `SKILL.md`       | 始终加载   | 核心原则、快速索引、何时使用 |
+| `reference/*.md` | 按需加载   | 语言/框架的详细指南          |
+| `assets/*.md`    | 明确需要时 | 模板、清单                   |
+| `scripts/*.py`   | 明确指引时 | 工具脚本                     |
 
 #### 内容组织原则
 
 **SKILL.md**（~200 行以内）：
+
 - 简述：2-3 句话说明用途
 - 核心原则和方法论
 - 语言/框架索引表（链接到 reference/）
 - 何时使用此 Skill
 
-**reference/*.md**（详细内容）：
+**reference/\*.md**（详细内容）：
+
 - 完整的代码示例
 - 所有最佳实践
 - Review Checklist
@@ -155,16 +159,19 @@ Claude 只在需要时加载支持文件，不会一次性加载所有内容。
 
 ```markdown
 # ✅ 正确：使用 Markdown 链接格式
+
 | **React** | [React Guide](reference/react.md) | Hooks, React 19, RSC |
 | **Vue 3** | [Vue Guide](reference/vue.md) | Composition API |
 
 详见 [React Guide](reference/react.md) 获取完整指南。
 
 # ❌ 错误：使用代码块格式
+
 参考 `reference/react.md` 文件。
 ```
 
 **路径规则**：
+
 - 使用相对路径（相对于 Skill 目录）
 - 使用正斜杠 `/`，不使用反斜杠
 - 不需要 `./` 前缀
@@ -190,12 +197,13 @@ Claude 只在需要时加载支持文件，不会一次性加载所有内容。
 1. 在 `reference/` 目录创建新文件（如 `go.md`）
 2. 遵循以下结构：
 
-```markdown
+````markdown
 # [Language] Code Review Guide
 
 > 简短描述，一句话说明覆盖内容。
 
 ## 目录
+
 - [主题1](#主题1)
 - [主题2](#主题2)
 - [Review Checklist](#review-checklist)
@@ -213,15 +221,18 @@ bad_code_example()
 // ✅ Good pattern - 说明为什么好
 good_code_example()
 ```
+````
 
 ---
 
 ## Review Checklist
 
 ### 类别1
+
 - [ ] 检查项 1
 - [ ] 检查项 2
-```
+
+````
 
 3. 在 `SKILL.md` 的索引表中添加链接
 4. 更新 `README.md` 的统计信息
@@ -252,7 +263,7 @@ problematic_code()
 
 // ✅ 推荐做法 - 解释为什么这样做更好
 recommended_code()
-```
+````
 
 ### 质量标准
 
@@ -292,6 +303,7 @@ recommended_code()
 ```
 
 **类型**：
+
 - `feat`: 新功能或新内容
 - `fix`: 修复错误
 - `docs`: 仅文档变更
@@ -299,6 +311,7 @@ recommended_code()
 - `chore`: 维护性工作
 
 **示例**：
+
 ```
 feat: 添加 Go 语言代码审查指南
 
@@ -314,6 +327,7 @@ feat: 添加 Go 语言代码审查指南
 ### 单一职责
 
 每个 Skill 专注一个核心能力。本 Skill 专注于**代码审查**，不应扩展到：
+
 - 代码生成
 - 项目初始化
 - 部署配置
@@ -337,6 +351,7 @@ feat: 添加 Go 语言代码审查指南
 ### Q: 如何测试我的更改？
 
 将修改后的 Skill 复制到 `~/.claude/skills/` 目录，然后在 Claude Code 中测试：
+
 ```bash
 cp -r code-review-skill ~/.claude/skills/code-review-skill
 ```
@@ -344,7 +359,7 @@ cp -r code-review-skill ~/.claude/skills/code-review-skill
 ### Q: 我应该更新 SKILL.md 还是 reference 文件？
 
 - **SKILL.md**：只修改索引表或核心原则
-- **reference/*.md**：添加/更新具体的语言或框架内容
+- **reference/\*.md**：添加/更新具体的语言或框架内容
 
 ### Q: 如何处理过时的内容？
 

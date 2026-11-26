@@ -5,6 +5,7 @@ Security-focused code review checklist based on OWASP Top 10 and best practices.
 ## Authentication & Authorization
 
 ### Authentication
+
 - [ ] Passwords hashed with strong algorithm (bcrypt, argon2)
 - [ ] Password complexity requirements enforced
 - [ ] Account lockout after failed attempts
@@ -14,6 +15,7 @@ Security-focused code review checklist based on OWASP Top 10 and best practices.
 - [ ] Session timeout implemented
 
 ### Authorization
+
 - [ ] Authorization checks on every request
 - [ ] Principle of least privilege applied
 - [ ] Role-based access control (RBAC) properly implemented
@@ -22,26 +24,27 @@ Security-focused code review checklist based on OWASP Top 10 and best practices.
 - [ ] API endpoints protected appropriately
 
 ### JWT Security
+
 ```typescript
 // ❌ Insecure JWT configuration
-jwt.sign(payload, 'weak-secret');
+jwt.sign(payload, "weak-secret");
 
 // ✅ Secure JWT configuration
 jwt.sign(payload, process.env.JWT_SECRET, {
-  algorithm: 'RS256',
-  expiresIn: '15m',
-  issuer: 'your-app',
-  audience: 'your-api'
+    algorithm: "RS256",
+    expiresIn: "15m",
+    issuer: "your-app",
+    audience: "your-api",
 });
 
 // ❌ Not verifying JWT properly
-const decoded = jwt.decode(token);  // No signature verification!
+const decoded = jwt.decode(token); // No signature verification!
 
 // ✅ Verify signature and claims
 const decoded = jwt.verify(token, publicKey, {
-  algorithms: ['RS256'],
-  issuer: 'your-app',
-  audience: 'your-api'
+    algorithms: ["RS256"],
+    issuer: "your-app",
+    audience: "your-api",
 });
 ```
 
@@ -52,6 +55,7 @@ const decoded = jwt.verify(token, publicKey, {
 **The #1 rule**: Always use parameterized queries. Never concatenate user input into SQL strings.
 
 Every major language and framework has a parameterized query mechanism:
+
 - Python: `cursor.execute("SELECT ...", params)` / ORM filter methods
 - Java: `PreparedStatement` / JPA `@Query` with `@Param`
 - Go: `db.Query("SELECT ...", args...)`
@@ -66,6 +70,7 @@ Every major language and framework has a parameterized query mechanism:
 **The #1 rule**: Rely on framework auto-escaping. Audit every escape hatch.
 
 Every major framework auto-escapes by default:
+
 - React: JSX auto-escapes. Audit `dangerouslySetInnerHTML`.
 - Vue: `{{ }}` auto-escapes. Audit `v-html`.
 - Angular: Interpolation auto-escapes. Audit `bypassSecurityTrustHtml`.
@@ -79,26 +84,28 @@ For defense-in-depth, configure Content Security Policy (CSP) with nonce-based `
 ### CSRF Prevention
 
 **CSRF Token Implementation**
+
 ```typescript
 // ✅ Server: generate and validate CSRF token
-import crypto from 'node:crypto';
+import crypto from "node:crypto";
 
 function generateCsrfToken(): string {
-  return crypto.randomBytes(32).toString('hex');
+    return crypto.randomBytes(32).toString("hex");
 }
 
 // Middleware: validate token on state-changing requests
-app.post('/api/data', (req, res) => {
-  const token = req.headers['x-csrf-token'];
-  const sessionToken = req.session.csrfToken;
-  if (!token || token !== sessionToken) {
-    return res.status(403).json({ error: 'Invalid CSRF token' });
-  }
-  // ...handle request
+app.post("/api/data", (req, res) => {
+    const token = req.headers["x-csrf-token"];
+    const sessionToken = req.session.csrfToken;
+    if (!token || token !== sessionToken) {
+        return res.status(403).json({ error: "Invalid CSRF token" });
+    }
+    // ...handle request
 });
 ```
 
 **Python (Django)**
+
 ```python
 # ✅ Django: built-in CSRF protection
 # settings.py
@@ -118,6 +125,7 @@ def my_view(request):
 ```
 
 **Java (Spring Boot)**
+
 ```java
 // ✅ Spring Security: CSRF enabled by default
 @Configuration
@@ -134,13 +142,14 @@ public class SecurityConfig {
 ```
 
 **SameSite Cookie**
+
 ```typescript
 // ✅ Set SameSite cookie as additional defense
-res.cookie('session', sessionId, {
-  httpOnly: true,
-  secure: true,
-  sameSite: 'strict',  // 或 'lax' 用于允许导航 GET 请求
-  maxAge: 3600000,
+res.cookie("session", sessionId, {
+    httpOnly: true,
+    secure: true,
+    sameSite: "strict", // 或 'lax' 用于允许导航 GET 请求
+    maxAge: 3600000,
 });
 ```
 
@@ -170,22 +179,29 @@ const url = req.query.url;
 const response = await fetch(url);
 
 // ✅ Validate URL before fetching
-const ALLOWED_DOMAINS = ['api.internal.com'];
+const ALLOWED_DOMAINS = ["api.internal.com"];
 
 function isSafeUrl(url: string): boolean {
-  try {
-    const parsed = new URL(url);
-    // Block internal IPs
-    if (parsed.hostname === 'localhost' || parsed.hostname === '127.0.0.1') {
-      return false;
+    try {
+        const parsed = new URL(url);
+        // Block internal IPs
+        if (
+            parsed.hostname === "localhost" ||
+            parsed.hostname === "127.0.0.1"
+        ) {
+            return false;
+        }
+        if (
+            parsed.hostname.match(
+                /^10\.|^172\.(1[6-9]|2\d|3[01])\.|^192\.168\./,
+            )
+        ) {
+            return false; // Block private IP ranges
+        }
+        return ALLOWED_DOMAINS.includes(parsed.hostname);
+    } catch {
+        return false;
     }
-    if (parsed.hostname.match(/^10\.|^172\.(1[6-9]|2\d|3[01])\.|^192\.168\./)) {
-      return false; // Block private IP ranges
-    }
-    return ALLOWED_DOMAINS.includes(parsed.hostname);
-  } catch {
-    return false;
-  }
 }
 ```
 
@@ -228,23 +244,23 @@ def get_order(request, order_id):
 
 ```typescript
 // ❌ Vulnerable: no authorization check
-app.get('/api/orders/:id', async (req, res) => {
-  const order = await db.order.findUnique({
-    where: { id: Number(req.params.id) }
-  });
-  res.json(order);
+app.get("/api/orders/:id", async (req, res) => {
+    const order = await db.order.findUnique({
+        where: { id: Number(req.params.id) },
+    });
+    res.json(order);
 });
 
 // ✅ Include user context in query
-app.get('/api/orders/:id', async (req, res) => {
-  const order = await db.order.findFirst({
-    where: {
-      id: Number(req.params.id),
-      userId: req.user.id,  // Scope to current user
-    }
-  });
-  if (!order) return res.status(404).json({ error: 'Not found' });
-  res.json(order);
+app.get("/api/orders/:id", async (req, res) => {
+    const order = await db.order.findFirst({
+        where: {
+            id: Number(req.params.id),
+            userId: req.user.id, // Scope to current user
+        },
+    });
+    if (!order) return res.status(404).json({ error: "Not found" });
+    res.json(order);
 });
 ```
 
@@ -258,6 +274,7 @@ public Order getOrder(@PathVariable Long id) {
 ```
 
 **UUID vs 自增 ID**
+
 ```typescript
 // ❌ 自增 ID 可被枚举
 // GET /api/users/1, /api/users/2, /api/users/3 ...
@@ -272,6 +289,7 @@ public Order getOrder(@PathVariable Long id) {
 ### Command Injection Prevention
 
 **Python**
+
 ```python
 # ❌ Vulnerable: shell=True
 import subprocess
@@ -286,26 +304,28 @@ safe_filename = shlex.quote(filename)
 ```
 
 **Node.js**
+
 ```typescript
 // ❌ Vulnerable: exec with string interpolation
-import { exec } from 'node:child_process';
+import { exec } from "node:child_process";
 exec(`convert ${filename} output.png`);
 
 // ✅ Use execFile with array arguments
-import { execFile } from 'node:child_process';
-execFile('convert', [filename, 'output.png'], (error, stdout) => {
-  if (error) throw error;
+import { execFile } from "node:child_process";
+execFile("convert", [filename, "output.png"], (error, stdout) => {
+    if (error) throw error;
 });
 
 // ❌ Never pass user input to shell
-exec(`echo ${userInput}`);  // userInput = "; rm -rf /"
+exec(`echo ${userInput}`); // userInput = "; rm -rf /"
 
 // ✅ Sanitize or use non-shell alternatives
-import { writeFile } from 'node:fs/promises';
-await writeFile('output.txt', userInput);  // No shell involved
+import { writeFile } from "node:fs/promises";
+await writeFile("output.txt", userInput); // No shell involved
 ```
 
 **Go**
+
 ```go
 // ❌ Vulnerable: shell command with user input
 cmd := exec.Command("sh", "-c", "echo " + userInput)
@@ -321,6 +341,7 @@ data, err := os.ReadFile(filename)
 ```
 
 **Java**
+
 ```java
 // ❌ Vulnerable: Runtime.exec with string concatenation
 Runtime.getRuntime().exec("convert " + filename + " output.png");
@@ -336,6 +357,7 @@ Runtime.getRuntime().exec(new String[]{"sh", "-c", "echo " + userInput});
 ## Data Protection
 
 ### Sensitive Data Handling
+
 - [ ] No secrets in source code
 - [ ] Secrets stored in environment variables or secret manager
 - [ ] Sensitive data encrypted at rest
@@ -345,17 +367,19 @@ Runtime.getRuntime().exec(new String[]{"sh", "-c", "echo " + userInput});
 - [ ] Secure data deletion when required
 
 ### Configuration Security
+
 ```yaml
 # ❌ Secrets in config files
 database:
-  password: "super-secret-password"
+    password: "super-secret-password"
 
 # ✅ Reference environment variables
 database:
-  password: ${DATABASE_PASSWORD}
+    password: ${DATABASE_PASSWORD}
 ```
 
 ### Error Messages
+
 ```typescript
 // ❌ Leaking sensitive information
 catch (error) {
@@ -377,45 +401,53 @@ catch (error) {
 ## API Security
 
 ### Rate Limiting
+
 - [ ] Rate limiting on all public endpoints
 - [ ] Stricter limits on authentication endpoints
 - [ ] Per-user and per-IP limits
 - [ ] Graceful handling when limits exceeded
 
 ### CORS Configuration
+
 ```typescript
 // ❌ Overly permissive CORS
-app.use(cors({ origin: '*' }));
+app.use(cors({ origin: "*" }));
 
 // ✅ Restrictive CORS
-app.use(cors({
-  origin: ['https://your-app.com'],
-  methods: ['GET', 'POST'],
-  credentials: true
-}));
+app.use(
+    cors({
+        origin: ["https://your-app.com"],
+        methods: ["GET", "POST"],
+        credentials: true,
+    }),
+);
 ```
 
 ### HTTP Headers
+
 ```typescript
 // Security headers to set
-app.use(helmet({
-  contentSecurityPolicy: {
-    directives: {
-      defaultSrc: ["'self'"],
-      scriptSrc: ["'self'"],
-      styleSrc: ["'self'", "'unsafe-inline'"],
-    }
-  },
-  hsts: { maxAge: 31536000, includeSubDomains: true },
-  noSniff: true,
-  xssFilter: true,
-  frameguard: { action: 'deny' }
-}));
+app.use(
+    helmet({
+        contentSecurityPolicy: {
+            directives: {
+                defaultSrc: ["'self'"],
+                scriptSrc: ["'self'"],
+                styleSrc: ["'self'", "'unsafe-inline'"],
+            },
+        },
+        hsts: { maxAge: 31536000, includeSubDomains: true },
+        noSniff: true,
+        xssFilter: true,
+        frameguard: { action: "deny" },
+    }),
+);
 ```
 
 ## Cryptography
 
 ### Secure Practices
+
 - [ ] Using well-established algorithms (AES-256, RSA-2048+)
 - [ ] Not implementing custom cryptography
 - [ ] Using cryptographically secure random number generation
@@ -423,25 +455,27 @@ app.use(helmet({
 - [ ] Secure key storage (HSM, KMS)
 
 ### Common Mistakes
+
 ```typescript
 // ❌ Weak random generation
 const token = Math.random().toString(36);
 
 // ✅ Cryptographically secure random
-const crypto = require('crypto');
-const token = crypto.randomBytes(32).toString('hex');
+const crypto = require("crypto");
+const token = crypto.randomBytes(32).toString("hex");
 
 // ❌ MD5/SHA1 for passwords
-const hash = crypto.createHash('md5').update(password).digest('hex');
+const hash = crypto.createHash("md5").update(password).digest("hex");
 
 // ✅ Use bcrypt or argon2
-const bcrypt = require('bcrypt');
+const bcrypt = require("bcrypt");
 const hash = await bcrypt.hash(password, 12);
 ```
 
 ## Dependency Security
 
 ### Checklist
+
 - [ ] Dependencies from trusted sources only
 - [ ] No known vulnerabilities (npm audit, cargo audit)
 - [ ] Dependencies kept up to date
@@ -450,6 +484,7 @@ const hash = await bcrypt.hash(password, 12);
 - [ ] License compliance verified
 
 ### Audit Commands
+
 ```bash
 # Node.js
 npm audit
@@ -469,6 +504,7 @@ snyk test
 ## Logging & Monitoring
 
 ### Secure Logging
+
 - [ ] No sensitive data in logs (passwords, tokens, PII)
 - [ ] Logs protected from tampering
 - [ ] Appropriate log retention
@@ -480,15 +516,15 @@ snyk test
 logger.info(`User login: ${email}, password: ${password}`);
 
 // ✅ Safe logging
-logger.info('User login attempt', { email, success: true });
+logger.info("User login attempt", { email, success: true });
 ```
 
 ## Security Review Severity Levels
 
-| Severity | Description | Action |
-|----------|-------------|--------|
-| **Critical** | Immediate exploitation possible, data breach risk | Block merge, fix immediately |
-| **High** | Significant vulnerability, requires specific conditions | Block merge, fix before release |
-| **Medium** | Moderate risk, defense in depth concern | Should fix, can merge with tracking |
-| **Low** | Minor issue, best practice violation | Nice to fix, non-blocking |
-| **Info** | Suggestion for improvement | Optional enhancement |
+| Severity     | Description                                             | Action                              |
+| ------------ | ------------------------------------------------------- | ----------------------------------- |
+| **Critical** | Immediate exploitation possible, data breach risk       | Block merge, fix immediately        |
+| **High**     | Significant vulnerability, requires specific conditions | Block merge, fix before release     |
+| **Medium**   | Moderate risk, defense in depth concern                 | Should fix, can merge with tracking |
+| **Low**      | Minor issue, best practice violation                    | Nice to fix, non-blocking           |
+| **Info**     | Suggestion for improvement                              | Optional enhancement                |

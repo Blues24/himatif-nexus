@@ -6,10 +6,10 @@
 
 **HIMATIF Nexus** dibangun menggunakan pendekatan **Monolith-SPA (Single Page Application)** dengan memadukan **Laravel (PHP 8.3+)** di sisi backend dan **Vue 3 + Inertia.js** di sisi frontend.
 
-* **Backend:** Laravel menangani authentication, RBAC middleware, Eloquent ORM, validasi bisnis, serta pengelolaan database.
-* **Frontend:** Vue 3 + Tailwind CSS menangani antarmuka pengguna yang reaktif tanpa memerlukan pembentukan REST API terpisah.
-* **Database:** **PostgreSQL** sebagai relational database management system (engine target — lihat [§3](#3-database-engine--postgresql)).
-* **Content Builder (Infokom):** **Puck (`@measured/puck`)** dipadukan dengan **`vue3-colorpicker`** untuk kebutuhan visual drag-and-drop page builder beserta kustomisasi skema warna (Preset Brand & Custom Color Wheel Hex/RGB).
+- **Backend:** Laravel menangani authentication, RBAC middleware, Eloquent ORM, validasi bisnis, serta pengelolaan database.
+- **Frontend:** Vue 3 + Tailwind CSS menangani antarmuka pengguna yang reaktif tanpa memerlukan pembentukan REST API terpisah.
+- **Database:** **PostgreSQL** sebagai relational database management system (engine target — lihat [§3](#3-database-engine--postgresql)).
+- **Content Builder (Infokom):** **Puck (`@measured/puck`)** dipadukan dengan **`vue3-colorpicker`** untuk kebutuhan visual drag-and-drop page builder beserta kustomisasi skema warna (Preset Brand & Custom Color Wheel Hex/RGB).
 
 ---
 
@@ -17,19 +17,19 @@
 
 Versi di bawah mencerminkan apa yang benar-benar dideklarasikan di `composer.json` dan `package.json`. Item bertanda **(rencana)** adalah target teknologi yang **belum terpasang**.
 
-| Layer | Teknologi / Paket | Versi | Status | Fungsi |
-| :--- | :--- | :--- | :--- | :--- |
-| **Backend Framework** | `laravel/framework` | ^13.17 (PHP ^8.3) | Terpasang | Core application, routing, controllers, ORM |
-| **Frontend Framework** | `vue` (Composition API, `<script setup>`) | ^3.4 | Terpasang | Antarmuka pengguna yang reaktif (UI) |
-| **Perekat Monolith-SPA** | `inertiajs/inertia-laravel` + `@inertiajs/vue3` | ^2.0 | Terpasang | Pengiriman data/props tanpa REST API manual |
-| **Scaffolding Auth** | `laravel/breeze` (+ `laravel/sanctum`, `tightenco/ziggy`) | ^2.4 / ^4.0 / ^2.0 | Terpasang | Alur login, registrasi, reset sandi & profil; named route di JS |
-| **Page & Blog Builder** | `@measured/puck` | — | **(rencana)** | Editor blok visual drag-and-drop |
-| **Color Picker** | `vue3-colorpicker` | — | **(rencana)** | Color wheel & input hex untuk style kustom |
-| **Styling & UI** | `tailwindcss` + `@tailwindcss/forms` | ^3.2 (direktif v3 di `resources/css/app.css`) | Terpasang | Styling CSS utility-first |
-| **Build Tool** | `vite` + `laravel-vite-plugin` | ^8.0 / ^3.1 | Terpasang | Bundling aset & HMR |
-| **RBAC Engine** | **Custom** (tabel `roles` + relasi `User::role()`) | — | **Terpasang** | Manajemen Role & Permission via method `hasRole()`, `isBph()` |
-| **Notification Engine** | **SSE (Server-Sent Events)** — cache queue per-user | — | **Terpasang (T6)** | Push notifikasi real-time via `StreamedResponse` & Cache |
-| **Database Engine** | **PostgreSQL** | 18.x / 17.x | **(target)** | Relational database engine |
+| Layer                    | Teknologi / Paket                                         | Versi                                         | Status             | Fungsi                                                          |
+| :----------------------- | :-------------------------------------------------------- | :-------------------------------------------- | :----------------- | :-------------------------------------------------------------- |
+| **Backend Framework**    | `laravel/framework`                                       | ^13.17 (PHP ^8.3)                             | Terpasang          | Core application, routing, controllers, ORM                     |
+| **Frontend Framework**   | `vue` (Composition API, `<script setup>`)                 | ^3.4                                          | Terpasang          | Antarmuka pengguna yang reaktif (UI)                            |
+| **Perekat Monolith-SPA** | `inertiajs/inertia-laravel` + `@inertiajs/vue3`           | ^2.0                                          | Terpasang          | Pengiriman data/props tanpa REST API manual                     |
+| **Scaffolding Auth**     | `laravel/breeze` (+ `laravel/sanctum`, `tightenco/ziggy`) | ^2.4 / ^4.0 / ^2.0                            | Terpasang          | Alur login, registrasi, reset sandi & profil; named route di JS |
+| **Page & Blog Builder**  | `@measured/puck`                                          | —                                             | **(rencana)**      | Editor blok visual drag-and-drop                                |
+| **Color Picker**         | `vue3-colorpicker`                                        | —                                             | **(rencana)**      | Color wheel & input hex untuk style kustom                      |
+| **Styling & UI**         | `tailwindcss` + `@tailwindcss/forms`                      | ^3.2 (direktif v3 di `resources/css/app.css`) | Terpasang          | Styling CSS utility-first                                       |
+| **Build Tool**           | `vite` + `laravel-vite-plugin`                            | ^8.0 / ^3.1                                   | Terpasang          | Bundling aset & HMR                                             |
+| **RBAC Engine**          | **Custom** (tabel `roles` + relasi `User::role()`)        | —                                             | **Terpasang**      | Manajemen Role & Permission via method `hasRole()`, `isBph()`   |
+| **Notification Engine**  | **SSE (Server-Sent Events)** — cache queue per-user       | —                                             | **Terpasang (T6)** | Push notifikasi real-time via `StreamedResponse` & Cache        |
+| **Database Engine**      | **PostgreSQL**                                            | 18.x / 17.x                                   | **(target)**       | Relational database engine                                      |
 
 ---
 
@@ -54,15 +54,15 @@ Ekstensi PHP yang dibutuhkan: `pdo_pgsql` (dan `pgsql` untuk akses pdo langsung)
 
 ### 3.2 Perbedaan dialek yang berdampak pada proyek ini
 
-| Permasalahan | MySQL / MariaDB / SQLite | PostgreSQL — penggunaan pengganti |
-| :--- | :--- | :--- |
-| Konten panjang (`text_konten`) | `LONGTEXT` | **`jsonb`** (lebih diutamakan) atau `text` — **PostgreSQL tidak mengenal `LONGTEXT`** |
-| Pencarian layout tree Puck | scan `LIKE` | `jsonb` + GIN index: `$table->jsonb('text_konten')->default('{}')` |
-| Identifier | Campuran case-sensitive | Identifier tanpa tanda kuti dilipat ke **huruf kecil** — pakai kolom/tabel `snake_case`, jangan camelCase |
-| Kolom enum | `enum()` native | `$table->string('status')->check(DB::raw(...))` atau `CREATE TYPE ... AS ENUM` native lewat `DB::statement` |
-| Boolean / JSON | `tinyint(1)` / `json` blob teks | `boolean` native, `jsonb` native dengan operator containment sungguhan (`@>`, `?`) |
-| Sequence | `AUTO_INCREMENT` | `$table->id()` dipetakan ke `bigint generated ... as identity` — tidak perlu penanganan khusus |
-| Panjang nama index | 64 karakter, dipotong diam-diam | **Batas 63 byte, memunculkan error** — jaga nama index komposit tetap pendek |
+| Permasalahan                   | MySQL / MariaDB / SQLite        | PostgreSQL — penggunaan pengganti                                                                           |
+| :----------------------------- | :------------------------------ | :---------------------------------------------------------------------------------------------------------- |
+| Konten panjang (`text_konten`) | `LONGTEXT`                      | **`jsonb`** (lebih diutamakan) atau `text` — **PostgreSQL tidak mengenal `LONGTEXT`**                       |
+| Pencarian layout tree Puck     | scan `LIKE`                     | `jsonb` + GIN index: `$table->jsonb('text_konten')->default('{}')`                                          |
+| Identifier                     | Campuran case-sensitive         | Identifier tanpa tanda kuti dilipat ke **huruf kecil** — pakai kolom/tabel `snake_case`, jangan camelCase   |
+| Kolom enum                     | `enum()` native                 | `$table->string('status')->check(DB::raw(...))` atau `CREATE TYPE ... AS ENUM` native lewat `DB::statement` |
+| Boolean / JSON                 | `tinyint(1)` / `json` blob teks | `boolean` native, `jsonb` native dengan operator containment sungguhan (`@>`, `?`)                          |
+| Sequence                       | `AUTO_INCREMENT`                | `$table->id()` dipetakan ke `bigint generated ... as identity` — tidak perlu penanganan khusus              |
+| Panjang nama index             | 64 karakter, dipotong diam-diam | **Batas 63 byte, memunculkan error** — jaga nama index komposit tetap pendek                                |
 
 ### 3.3 Hambatan migrasi yang masih terbuka
 
@@ -76,18 +76,18 @@ Terverifikasi terhadap working tree — hal-hal ini harus diselesaikan sebelum `
 
 ## 4. Skema Database (Ringkasan Entitas)
 
-Tabel sebagaimana dibuat oleh migration yang ada di `database/migrations/`. Kolom *Tujuan* adalah niat desain; kolom *Kolom saat ini* adalah kondisi nyata terverifikasi.
+Tabel sebagaimana dibuat oleh migration yang ada di `database/migrations/`. Kolom _Tujuan_ adalah niat desain; kolom _Kolom saat ini_ adalah kondisi nyata terverifikasi.
 
-| Tabel | Model | Tujuan | Kolom saat ini |
-| :--- | :--- | :--- | :--- |
-| `users` | `User` | Akun untuk keempat tim | `user_id`, `role_id`, `name`, `email`, `timestamps` |
-| `roles` | `Role` | Role RBAC (BPH / Infokom / Portal / Danus Shop) | `role_id`, `nama_role`, `timestamps` |
-| `formatifs` | `Formatif` | Artikel Formatif & konten Puck | `formatif_id`, `judul`, `konten`, `status`, `timestamps` |
-| `kegiatans` | `Kegiatan` | Kegiatan/acara organisasi | `kegiatan_id`, `nama_kegiatan`, `deskripsi`, `status_kegiatan`, `timestamps` |
-| `transaksis` | `Transaksi` | Transaksi lintas modul | `transaksi_id`, `timestamps` *(stub)* |
-| `produks` | `Produk` (+ `ShopDetail`) | Katalog produk Danus Shop | `produk_id`, `nama_produk`, `harga`, `stok`, `timestamps` |
-| `inventaris` | `Inventaris` | Inventaris alat/aset HM | `inventaris_id`, `nama_alat`, `jumlah`, `kondisi`, `timestamps` |
-| `penyewaan_alats` | `PenyewaanAlat` | Pengajuan peminjaman alat | `penyewaan_id`, `user_id`, `inventaris_id`, `tanggal_pinjam`, `status`, `timestamps` |
+| Tabel             | Model                     | Tujuan                                          | Kolom saat ini                                                                       |
+| :---------------- | :------------------------ | :---------------------------------------------- | :----------------------------------------------------------------------------------- |
+| `users`           | `User`                    | Akun untuk keempat tim                          | `user_id`, `role_id`, `name`, `email`, `timestamps`                                  |
+| `roles`           | `Role`                    | Role RBAC (BPH / Infokom / Portal / Danus Shop) | `role_id`, `nama_role`, `timestamps`                                                 |
+| `formatifs`       | `Formatif`                | Artikel Formatif & konten Puck                  | `formatif_id`, `judul`, `konten`, `status`, `timestamps`                             |
+| `kegiatans`       | `Kegiatan`                | Kegiatan/acara organisasi                       | `kegiatan_id`, `nama_kegiatan`, `deskripsi`, `status_kegiatan`, `timestamps`         |
+| `transaksis`      | `Transaksi`               | Transaksi lintas modul                          | `transaksi_id`, `timestamps` _(stub)_                                                |
+| `produks`         | `Produk` (+ `ShopDetail`) | Katalog produk Danus Shop                       | `produk_id`, `nama_produk`, `harga`, `stok`, `timestamps`                            |
+| `inventaris`      | `Inventaris`              | Inventaris alat/aset HM                         | `inventaris_id`, `nama_alat`, `jumlah`, `kondisi`, `timestamps`                      |
+| `penyewaan_alats` | `PenyewaanAlat`           | Pengajuan peminjaman alat                       | `penyewaan_id`, `user_id`, `inventaris_id`, `tanggal_pinjam`, `status`, `timestamps` |
 
 > **Catatan penamaan:** `Pluralizer` bawaan Laravel menghasilkan `kegiatans`, `transaksis`, dan `produks`. Bentuk ini salah secara kaidah bahasa Indonesia, tetapi konsisten dengan model dan migration yang di-generate — biarkan apa adanya daripada mengubah nama `$table` secara manual, yang akan merusak inferensi `Model::$table`.
 
@@ -95,38 +95,38 @@ Tabel sebagaimana dibuat oleh migration yang ada di `database/migrations/`. Kolo
 
 ## 5. Arsitektur Visual Page Builder (Integrasi Puck)
 
-1. **Developer Config:** Mendefinisikan registrasi komponen Vue templat (`BannerBlock`, `CardLomba`, `GridBlock`) dan skema *props* di `resources/js/Builder/puckConfig.js` *(direktori belum dibuat)*.
+1. **Developer Config:** Mendefinisikan registrasi komponen Vue templat (`BannerBlock`, `CardLomba`, `GridBlock`) dan skema _props_ di `resources/js/Builder/puckConfig.js` _(direktori belum dibuat)_.
 2. **Infokom Editor Mode:**
-   * Melakukan *drag-and-drop* komponen ke kanvas.
-   * Mengatur teks, opsi layout, dan skema warna via *sidebar control*.
-   * Memilih warna via **Preset Brand HIMATIF** atau **Custom Color Picker Wheel (`vue3-colorpicker`)**.
-3. **Storage Engine:** Hasil *layout* berwujud JSON tree disimpan secara bersih di kolom `text_konten` pada tabel `formatifs` — bertipe **`jsonb`** di PostgreSQL (dokumen lama menyebut `LONGTEXT`, yang tidak didukung PostgreSQL).
+    - Melakukan _drag-and-drop_ komponen ke kanvas.
+    - Mengatur teks, opsi layout, dan skema warna via _sidebar control_.
+    - Memilih warna via **Preset Brand HIMATIF** atau **Custom Color Picker Wheel (`vue3-colorpicker`)**.
+3. **Storage Engine:** Hasil _layout_ berwujud JSON tree disimpan secara bersih di kolom `text_konten` pada tabel `formatifs` — bertipe **`jsonb`** di PostgreSQL (dokumen lama menyebut `LONGTEXT`, yang tidak didukung PostgreSQL).
 4. **Public Render Mode:** Halaman `Blog/Show.vue` membaca JSON dan meloop komponen menggunakan dynamic component Vue: `<component :is="block.component" v-bind="block.props" />`.
 
 ---
 
 ## 6. Matriks Kepemilikan Folder & Batas Akses Tim
 
-Untuk menghindari terjadinya *merge conflict* pada saat kolaborasi tim:
+Untuk menghindari terjadinya _merge conflict_ pada saat kolaborasi tim:
 
-| Folder / File Path | Tim Backend | Tim Frontend | Deskripsi & Batasan Akses |
-| :--- | :--- | :--- | :--- |
-| `app/Http/Controllers/` | **Full Access** | Read Only | Backend mengatur logika bisnis & merender Inertia View |
-| `app/Http/Requests/` | **Full Access** | No Access | Backend mengatur kelas validasi Form Request |
-| `app/Models/` | **Full Access** | No Access | Backend mengelola Eloquent ORM & relasi database |
-| `app/Http/Middleware/` | **Full Access** | Read Only | Backend mengelola middleware RBAC & share Inertia |
-| `database/migrations/` | **Full Access** | No Access | Backend mengelola skema DDL **PostgreSQL** |
-| `database/factories/` & `database/seeders/` | **Full Access** | Read Only | Backend menyiapkan data fake & seed |
-| `routes/` | **Full Access** | Read Only | Backend mendaftarkan endpoint rute & RBAC middleware |
-| `resources/js/Pages/` | Read Only | **Full Access** | Frontend menyusun tampilan halaman Vue per modul |
-| `resources/js/Components/` | Read Only | **Full Access** | Frontend membuat re-usable UI (Navbar, Modal, Table) |
-| `resources/js/Layouts/` | Read Only | **Full Access** | Frontend mengelola kerangka layout halaman |
-| `resources/js/Builder/` | Read Only | **Full Access** | Frontend mengelola Puck Page Builder + Color Picker *(rencana)* |
-| `resources/css/` | Read Only | **Full Access** | Frontend mengelola Tailwind CSS styling |
-| `resources/views/app.blade.php` | **Full Access** | Read Only | Backend mengelola root template Inertia |
-| `config/` | **Full Access** | No Access | Backend mengelola konfigurasi sistem, koneksi database & RBAC |
+| Folder / File Path                          | Tim Backend     | Tim Frontend    | Deskripsi & Batasan Akses                                       |
+| :------------------------------------------ | :-------------- | :-------------- | :-------------------------------------------------------------- |
+| `app/Http/Controllers/`                     | **Full Access** | Read Only       | Backend mengatur logika bisnis & merender Inertia View          |
+| `app/Http/Requests/`                        | **Full Access** | No Access       | Backend mengatur kelas validasi Form Request                    |
+| `app/Models/`                               | **Full Access** | No Access       | Backend mengelola Eloquent ORM & relasi database                |
+| `app/Http/Middleware/`                      | **Full Access** | Read Only       | Backend mengelola middleware RBAC & share Inertia               |
+| `database/migrations/`                      | **Full Access** | No Access       | Backend mengelola skema DDL **PostgreSQL**                      |
+| `database/factories/` & `database/seeders/` | **Full Access** | Read Only       | Backend menyiapkan data fake & seed                             |
+| `routes/`                                   | **Full Access** | Read Only       | Backend mendaftarkan endpoint rute & RBAC middleware            |
+| `resources/js/Pages/`                       | Read Only       | **Full Access** | Frontend menyusun tampilan halaman Vue per modul                |
+| `resources/js/Components/`                  | Read Only       | **Full Access** | Frontend membuat re-usable UI (Navbar, Modal, Table)            |
+| `resources/js/Layouts/`                     | Read Only       | **Full Access** | Frontend mengelola kerangka layout halaman                      |
+| `resources/js/Builder/`                     | Read Only       | **Full Access** | Frontend mengelola Puck Page Builder + Color Picker _(rencana)_ |
+| `resources/css/`                            | Read Only       | **Full Access** | Frontend mengelola Tailwind CSS styling                         |
+| `resources/views/app.blade.php`             | **Full Access** | Read Only       | Backend mengelola root template Inertia                         |
+| `config/`                                   | **Full Access** | No Access       | Backend mengelola konfigurasi sistem, koneksi database & RBAC   |
 
-> Disesuaikan dari revisi sebelumnya: folder frontend hasil Breeze (`resources/js/Layouts/`, `resources/js/Pages/Auth`, `resources/js/Pages/Profile`) sudah ikut ter-commit oleh scaffolding, sehingga `resources/js/Components/` dan `resources/css/` diubah dari *No Access* menjadi *Read Only* bagi backend — backend harus tetap bisa menambal kode scaffold yang dihasilkannya sendiri.
+> Disesuaikan dari revisi sebelumnya: folder frontend hasil Breeze (`resources/js/Layouts/`, `resources/js/Pages/Auth`, `resources/js/Pages/Profile`) sudah ikut ter-commit oleh scaffolding, sehingga `resources/js/Components/` dan `resources/css/` diubah dari _No Access_ menjadi _Read Only_ bagi backend — backend harus tetap bisa menambal kode scaffold yang dihasilkannya sendiri.
 
 ---
 
@@ -136,13 +136,13 @@ Kontroler harus tetap tipis — mereka hanyalah gerbang HTTP, bukan mesin logika
 
 ### 7.1 Single Responsibility Principle (SRP)
 
-| Layer | Tanggung Jawab Tunggal | Contoh |
-|---|---|---|
-| **Controller** | Validasi input → panggil service → kembalikan respons | `ProdukController@store` menerima request, memanggil `ProdukService::create`, redirect |
-| **Model** | Definisi data + relasi | `Produk::$fillable`, `User::role()` |
-| **Service** | Aturan bisnis & operasi lintas-model | `ProdukService::adjustStock()`, `PenyewaanAlatService::handleRequest()` |
-| **Form Request** | Hanya validasi | `ProfileUpdateRequest`, custom domain Requests |
-| **Helper** | Utilitas murni, stateless | `CurrencyHelper::format()`, `AutoSlugHelper::generate()` |
+| Layer            | Tanggung Jawab Tunggal                                | Contoh                                                                                 |
+| ---------------- | ----------------------------------------------------- | -------------------------------------------------------------------------------------- |
+| **Controller**   | Validasi input → panggil service → kembalikan respons | `ProdukController@store` menerima request, memanggil `ProdukService::create`, redirect |
+| **Model**        | Definisi data + relasi                                | `Produk::$fillable`, `User::role()`                                                    |
+| **Service**      | Aturan bisnis & operasi lintas-model                  | `ProdukService::adjustStock()`, `PenyewaanAlatService::handleRequest()`                |
+| **Form Request** | Hanya validasi                                        | `ProfileUpdateRequest`, custom domain Requests                                         |
+| **Helper**       | Utilitas murni, stateless                             | `CurrencyHelper::format()`, `AutoSlugHelper::generate()`                               |
 
 ```text
 Client → Controller → Service → Model ← Helper
@@ -215,13 +215,13 @@ app/
 
 #### Tanggung Jawab Controller (Yang Harus Dilakukan)
 
-| Metode | Apa Yang Dilakukan |
-|---|---|
-| `index()` | Memanggil `$service->paginate($filter)` → kembalikan respons Inertia |
-| `store(Request $request)` | Validasi → `$service->create($validated)` → redirect |
-| `show($id)` | Memanggil `$service->findOrFail($id)` → kembalikan respons Inertia |
-| `update(Request $request, $id)` | Validasi → `$service->update($id, $validated)` → redirect |
-| `destroy($id)` | Memanggil `$service->delete($id)` → redirect |
+| Metode                          | Apa Yang Dilakukan                                                   |
+| ------------------------------- | -------------------------------------------------------------------- |
+| `index()`                       | Memanggil `$service->paginate($filter)` → kembalikan respons Inertia |
+| `store(Request $request)`       | Validasi → `$service->create($validated)` → redirect                 |
+| `show($id)`                     | Memanggil `$service->findOrFail($id)` → kembalikan respons Inertia   |
+| `update(Request $request, $id)` | Validasi → `$service->update($id, $validated)` → redirect            |
+| `destroy($id)`                  | Memanggil `$service->delete($id)` → redirect                         |
 
 **Apa JANGAN diletakkan di controller:** pengecekan stok, perhitungan harga, traversal relasi, notifikasi, pencatatan audit, query kondisional kompleks — semuanya masuk ke Services.
 
@@ -336,6 +336,7 @@ himatif-nexus/
 ├── phpunit.xml  .env.example  artisan
 └── AGENTS.md  CLAUDE.md  README.md  ARCHITECTURE.id-ID.md
 ```
+
 | Missing empty/loading/error state documentation for data views | 🟡 Medium | **Planned** |
 
 ---
@@ -346,14 +347,14 @@ himatif-nexus/
 
 Saluran notifikasi one-way, backend-push ke browser yang dikelola dalam antrean Cache per-user.
 
-| Properti | Nilai |
-| :--- | :--- |
-| Protokol | HTTP long-lived stream (`text/event-stream`) |
-| Arah | **Hanya Server → Client** |
-| Transport | `Symfony\Component\HttpFoundation\StreamedResponse` (native Laravel) |
-| Dep Luar | **Tidak ada** (tanpa package composer/npm tambahan) |
+| Properti    | Nilai                                                                   |
+| :---------- | :---------------------------------------------------------------------- |
+| Protokol    | HTTP long-lived stream (`text/event-stream`)                            |
+| Arah        | **Hanya Server → Client**                                               |
+| Transport   | `Symfony\Component\HttpFoundation\StreamedResponse` (native Laravel)    |
+| Dep Luar    | **Tidak ada** (tanpa package composer/npm tambahan)                     |
 | Penyimpanan | Laravel Cache (`notifications_user_{userId}`, maks 50 item, TTL 7 hari) |
-| Heartbeat | Ping awal + poll unread setiap 3 detik |
+| Heartbeat   | Ping awal + poll unread setiap 3 detik                                  |
 
 ### 12.2 Endpoint
 
@@ -363,4 +364,3 @@ Saluran notifikasi one-way, backend-push ke browser yang dikelola dalam antrean 
 ### 12.3 Integrasi Service
 
 `KegiatanService` dan `FormatifService` mengirimkan notifikasi lewat `SseNotificationService` di hook `afterCreate()` / `afterUpdate()`.
-

@@ -26,6 +26,7 @@ This guide targets maintained Ruby 3.4/4.0 applications and Rails 8.x. Before ap
 Do not require a newer API only because it exists. For example, Rails 8's `params.expect` is a concise strong-parameters API, while an existing explicit `require(...).permit(...)` contract can still be correct. Ruby implementation details also differ across MRI, JRuby, and TruffleRuby, so do not treat MRI's Global VM Lock as a substitute for synchronization.
 
 Review questions:
+
 - Which Ruby, Rails, database, and queue versions are actually deployed?
 - Does the change rely on a default that differs across Rails versions or adapters?
 - Are upgrade-only recommendations separated from correctness or security findings?
@@ -49,6 +50,7 @@ publish_report if relation.exists?
 ```
 
 Review questions:
+
 - Does a condition rely on `0`, an empty string, or an empty collection being falsey?
 - Would `empty?`, `any?`, `exists?`, `present?`, or an explicit comparison communicate the intent?
 - Is a database relation being loaded only to test whether a row exists?
@@ -81,6 +83,7 @@ end
 ```
 
 Review questions:
+
 - If `eql?` is overridden, is `hash` consistent so Hash and Set lookups work?
 - Is `equal?` being used accidentally where value equality is intended?
 - Does a predicate return a domain object or `nil` when callers expect `true` or `false`?
@@ -109,6 +112,7 @@ end
 Use `...` for transparent delegation only when forwarding every positional argument, keyword argument, and block is intentional.
 
 Review questions:
+
 - Are required keywords declared without defaults?
 - Does a wrapper preserve keywords and blocks correctly?
 - Would accepting arbitrary keywords turn a caller typo into delayed or silent behavior?
@@ -132,6 +136,7 @@ account.public_send(operation)
 ```
 
 Review questions:
+
 - Can external input select a method, class, constant, template, or code string?
 - Is a fixed allowlist used before `public_send` or `constantize`?
 - Is metaprogramming isolated and covered by contract tests?
@@ -158,6 +163,7 @@ system("convert", uploaded_path, "output.png")
 ```
 
 Review questions:
+
 - Can request, cache, cookie, queue, or file data reach `Marshal.load`, `YAML.load`, or unrestricted `Psych.load`?
 - Is parsed data validated before it selects a class, method, path, or database operation?
 - Are `permitted_classes` and `aliases` as restrictive as the YAML contract allows?
@@ -194,6 +200,7 @@ grouped[:failed] << 2
 ```
 
 Review questions:
+
 - Does a Hash default contain a mutable Array, Hash, or String?
 - Is the default block storing the generated value back into the hash when that is intended?
 - Could a shared constant or class attribute be mutated across requests or tests?
@@ -213,6 +220,7 @@ normalized = name.downcase
 ```
 
 Review questions:
+
 - Is code relying on a bang method's return value without checking its contract?
 - Is in-place mutation visible to every owner of the object?
 - Would a non-mutating transformation make the data flow clearer?
@@ -230,6 +238,7 @@ recipient = order.customer.email
 ```
 
 Review questions:
+
 - Is nil part of the domain, or is it evidence of a broken invariant?
 - Should the model, database, or caller guarantee presence instead?
 - Does `dig` or `&.` make an error disappear only for it to fail later?
@@ -250,6 +259,7 @@ emails = users.filter_map { |user| user.email if user.subscribed? }
 ```
 
 Review questions:
+
 - Is `map` used when its returned collection is ignored?
 - Does a long chain allocate large intermediate collections?
 - Is a relation converted to an Array before the database has applied filtering, ordering, or aggregation?
@@ -283,6 +293,7 @@ end
 ```
 
 Review questions:
+
 - Is the rescued exception expected at this boundary?
 - Is the protected block narrow enough to avoid catching unrelated bugs?
 - Does the response expose an internal exception message, SQL, path, token, or vendor detail?
@@ -305,6 +316,7 @@ Inside a `rescue` block, raising a new exception keeps the rescued exception as 
 See [Error Handling Guide](cross-cutting/error-handling-principles.md) for boundary, cause-chain, and reporting principles shared across ecosystems.
 
 Review questions:
+
 - Is structured context logged without secrets or full payment data?
 - Does the error retain a useful cause chain?
 - Is the log level appropriate, and will the error be reported exactly once?
@@ -328,6 +340,7 @@ end
 ```
 
 Review questions:
+
 - Are files, locks, temporary directories, and checked-out resources released on every path?
 - Does an `ensure` block accidentally `return` and suppress an exception?
 - Is retry logic bounded and limited to transient failures?
@@ -363,6 +376,7 @@ params.expect(order: [
 ```
 
 Review questions:
+
 - Are authorization-sensitive fields such as `user_id`, `role`, `paid`, or `admin` excluded?
 - Do nested resource arrays use the `[[...]]` form, rather than treating them as a flat nested hash?
 - Are nested hashes and arrays permitted with the exact expected shape?
@@ -395,6 +409,7 @@ Order.order(SORTS.fetch(params[:sort], SORTS.fetch("newest")))
 ```
 
 Review questions:
+
 - Does user input reach `where`, `order`, `select`, `joins`, `having`, or `find_by_sql` as a string?
 - Is `Arel.sql` used only for a developer-controlled literal?
 - Are dynamic columns and directions selected from an allowlist?
@@ -424,6 +439,7 @@ redirect_to order_path(order)
 ```
 
 Review questions:
+
 - Are secrets, password digests, tokens, internal notes, or personal data serialized?
 - Does `html_safe`, `raw`, or `safe_join` receive untrusted content?
 - Can user input control an external redirect, file download path, or response header?
@@ -441,6 +457,7 @@ order = current_user.orders.find(params[:id])
 ```
 
 Review questions:
+
 - Is every member action authorized, including newly added controller actions?
 - Is the record lookup scoped before update, destroy, download, or enqueue?
 - For browser sessions, are state-changing requests protected against CSRF?
@@ -469,6 +486,7 @@ Rails.application.config.session_store :cookie_store,
 ```
 
 Review questions:
+
 - Does any browser-authenticated `POST`, `PATCH`, `PUT`, or `DELETE` skip `protect_from_forgery`?
 - Are `secure`, `httponly`, and `same_site` cookie settings appropriate for the deployment and login flows?
 - Does an API-only endpoint avoid cookie authentication, or otherwise use a deliberate CSRF defense?
@@ -478,6 +496,7 @@ Review questions:
 For Active Storage uploads and any server-side URL fetch, verify blob ownership, content-type and size validation, and SSRF controls before accepting a user-controlled URL. Signed/expiring URLs, direct-upload limits, and variant parameters should stay under an allowlist. See the [Security Review Guide](security-review-guide.md) for broader request and asset review guidance.
 
 Review questions:
+
 - Can an attachment download, redirect, or server-side fetch access a file or URL outside the authorized scope?
 - Are content type, size, and ownership checked before persisting or transforming a blob?
 - Does a user-controlled URL used for server-side fetching enforce host allowlists and block private network ranges?
@@ -504,6 +523,7 @@ add_index :orders, [:user_id, :idempotency_key], unique: true
 When the same key is reused, return the original result only if the request fingerprint matches. Reject key reuse with different attributes instead of silently returning or mutating the wrong resource.
 
 Review questions:
+
 - Can a timeout or enqueue failure happen after the write commits?
 - Will a caller retry create, payment, invitation, or other non-idempotent work?
 - Is the required key rejected before insert and stored in a `null: false` column? A unique index permits multiple `NULL` values on many adapters.
@@ -529,6 +549,7 @@ add_check_constraint :orders, "total_cents >= 0", name: "orders_total_nonnegativ
 ```
 
 Review questions:
+
 - Do uniqueness, non-null, foreign-key, and range invariants exist in the database?
 - Does application code handle the constraint violation from a concurrent request?
 - Is a new query pattern backed by an appropriate index?
@@ -543,6 +564,7 @@ Order.where(expired: true).update_all(status: "cancelled", updated_at: Time.curr
 ```
 
 Review questions:
+
 - Is skipping validations, callbacks, timestamps, auditing, and dependent behavior intentional?
 - Would `destroy_all` be required for dependent cleanup, despite being slower?
 - Could a bulk write bypass a counter-cache callback and require `reset_counters` or another explicit reconciliation step?
@@ -555,6 +577,7 @@ Callbacks that send emails, call APIs, enqueue multiple workflows, or mutate unr
 Prefer explicit application services for orchestration. If work must happen only after a transaction commits, use `after_commit` or enqueue-after-commit behavior deliberately.
 
 Review questions:
+
 - Can saving a model unexpectedly trigger network I/O or a large cascade?
 - Could a callback run during tests, data migrations, console scripts, or retries?
 - Is callback ordering part of an undocumented correctness dependency?
@@ -575,6 +598,7 @@ enum :status, {
 Scopes should return relations consistently. A conditional scope that returns `nil` or an Array breaks composability.
 
 Review questions:
+
 - Does an enum change reinterpret existing rows?
 - Does a scope remain chainable for every input?
 - Is a `default_scope` hiding records or ordering in surprising contexts?
@@ -586,6 +610,7 @@ Counter caches are denormalized data maintained by callbacks. Bulk writes, direc
 Long-running jobs should also avoid assuming a query result remains current for the whole job. Check the query-cache scope and use an uncached block or a fresh query when later steps must observe writes or concurrent changes.
 
 Review questions:
+
 - Can `update_all`, `delete_all`, imports, or direct SQL bypass a counter-cache update?
 - Is a counter-cache repair observable and based on the current source of truth?
 - Could a cached query result become stale across phases of a long-running job?
@@ -620,6 +645,7 @@ orders = Order.eager_load(:customer).where(customers: { active: true })
 See [N+1 Queries Guide](cross-cutting/n-plus-one-queries.md) for cross-framework detection and loading strategies.
 
 Review questions:
+
 - Does a serializer, view, GraphQL resolver, or job walk unloaded associations?
 - Is the chosen eager-loading method compatible with filtering, ordering, and result cardinality?
 - Could a collection join duplicate parent rows or require `distinct`, a subquery, or a separate `preload` step?
@@ -644,6 +670,7 @@ emails = User.active.pluck(:email)
 ```
 
 Review questions:
+
 - Is `to_a`, `map`, `select`, or `sort_by` forcing work into Ruby too early?
 - Would `pluck`, `pick`, `ids`, `exists?`, `count`, `sum`, or `maximum` avoid model instantiation?
 - Does the selected column, SQL expression, adapter, or custom attribute type preserve the value type the caller expects?
@@ -662,6 +689,7 @@ end
 `find_each` and `in_batches` batch by a cursor (the primary key by default) and can ignore or replace a relation's custom `ORDER BY`. Use an explicit cursor/order supported by the current Rails version, or a dedicated query, when business ordering matters.
 
 Review questions:
+
 - Can this query grow without a bound?
 - Is batch processing compatible with its cursor, ordering, and mutation behavior?
 - Does pagination use a deterministic order and an indexed cursor or key?
@@ -671,6 +699,7 @@ Review questions:
 Caching can hide N+1 queries while introducing stale or cross-tenant data. Cache keys must include every input that changes the result.
 
 Review questions:
+
 - Does the key include tenant, locale, authorization scope, and versioned data?
 - Is invalidation tied to the records that affect the cached value?
 - Could sensitive data be served to another user or tenant?
@@ -705,6 +734,7 @@ end
 Do not rely on a version-dependent enqueue default. Rails 8.0/8.1 applications and queue adapters can enqueue immediately depending on `config.load_defaults` and deployment topology; newer Rails defaults may defer more often, but the job should declare the behavior it requires. If the enqueue itself must be durable with the state change, use an outbox or a reconciliation path.
 
 Review questions:
+
 - Which side effects are actually covered by the transaction?
 - Does the exact job class declare post-commit enqueue behavior, rather than relying on an adapter or Rails-version default?
 - Could a timeout mean "failed" or "succeeded but the response was lost"?
@@ -715,6 +745,7 @@ Review questions:
 Some adapters, notably PostgreSQL, leave a transaction unusable after a statement error until it is rolled back. Catch expected constraint errors outside the transaction boundary or restart the whole transaction deliberately.
 
 Review questions:
+
 - Is `ActiveRecord::StatementInvalid` rescued inside a transaction and then followed by more SQL?
 - Is retry limited to known transient conflicts such as deadlocks or serialization failures?
 - Does retry repeat an external side effect?
@@ -732,6 +763,7 @@ end
 ```
 
 Review questions:
+
 - Can two requests observe the same old state and both proceed?
 - Would an atomic conditional update or unique index be simpler than a lock?
 - Is lock ordering consistent to avoid deadlocks?
@@ -752,6 +784,7 @@ end
 ```
 
 Review questions:
+
 - Can a low-contention user edit use `lock_version` and a conflict response instead of holding a row lock?
 - Does pessimistic locking cover only the minimal state transition and preserve a consistent lock order?
 
@@ -760,6 +793,7 @@ Review questions:
 Class variables, class instance variables, constants containing mutable objects, memoization, and singleton clients may be shared by request threads.
 
 Review questions:
+
 - Is lazy initialization thread-safe and safe during code reload?
 - Is request-specific data stored in a global, class variable, or long-lived thread local?
 - Are shared clients documented as thread-safe by their library?
@@ -796,6 +830,7 @@ end
 The gateway idempotency key, persisted state, and reconciliation process must work together. A database flag alone cannot prove that an external charge did not already happen.
 
 Review questions:
+
 - What happens if the worker stops after the side effect but before the final update?
 - Is the idempotency key stable across retries but unique to the intended operation?
 - Are retryable and permanent failures handled differently?
@@ -808,6 +843,7 @@ Active Job can serialize Active Record objects with GlobalID. The job loads the 
 When absence is an expected business case, pass an ID and handle `ActiveRecord::RecordNotFound` narrowly inside the job. Do not use a blanket `discard_on ActiveJob::DeserializationError` unless every deserialization failure is intentionally disposable; it can also hide serializer or deployment problems.
 
 Review questions:
+
 - Is the job intentionally using current record state rather than a snapshot?
 - What should happen when the record is deleted or no longer eligible?
 - Does `discard_on ActiveJob::DeserializationError` lose work that should be investigated instead?
@@ -817,6 +853,7 @@ Review questions:
 Jobs that can run before their records commit may fail to find those records. Rails supports enqueue-after-commit behavior, but transactional guarantees depend on the exact job setting, queue adapter, Rails load defaults, and database topology.
 
 Review questions:
+
 - Can the worker run before the creating transaction commits?
 - Does the code accidentally rely on the job table sharing the application database?
 - If enqueue fails after data commits, is there an outbox, retry, or reconciliation path?
@@ -826,6 +863,7 @@ Review questions:
 Every external call needs bounded connect/read/write timeouts, structured error reporting, and enough identifiers to trace a retry without logging secrets.
 
 Review questions:
+
 - Are timeouts explicit in the client configuration?
 - Are queue latency, attempts, external request IDs, and final outcomes observable?
 - Is a long-running job split into resumable or checkpointed units when appropriate?
@@ -839,6 +877,7 @@ Review questions:
 Use model tests for domain rules, request/system tests for controller behavior, and job tests for serialization, retry, and side-effect boundaries. Avoid tests that only assert a callback or private method was invoked.
 
 High-value cases include:
+
 - unpermitted parameters cannot update protected attributes;
 - unsafe sort/filter input cannot alter SQL structure;
 - authorization scopes records before lookup;
@@ -861,6 +900,7 @@ end
 ```
 
 Review questions:
+
 - Does a test depend on wall-clock timing, global order, or previously created data?
 - Are external services replaced at a clear adapter boundary?
 - Do parallel tests share mutable constants, files, ports, or non-transactional state?
@@ -884,6 +924,7 @@ Run only tools present in the repository, and inspect their configuration before
 ## Review Checklist
 
 ### Ruby Semantics
+
 - [ ] Conditions account for Ruby truthiness (`0`, `""`, and `[]` are truthy).
 - [ ] Equality and `hash` contracts are consistent.
 - [ ] Keyword arguments and forwarding preserve the intended API contract.
@@ -893,6 +934,7 @@ Run only tools present in the repository, and inspect their configuration before
 - [ ] Bang-method and safe-navigation return semantics are understood.
 
 ### Exceptions and Resources
+
 - [ ] Rescue clauses handle specific expected failures at narrow boundaries.
 - [ ] Unexpected errors retain their cause and backtrace.
 - [ ] Client responses do not expose internal exception messages.
@@ -901,6 +943,7 @@ Run only tools present in the repository, and inspect their configuration before
 - [ ] Retries are bounded and cannot duplicate non-idempotent work.
 
 ### Controllers and Security
+
 - [ ] Strong parameters use an exact allowlist; no `permit!` or unsafe hash conversion.
 - [ ] Nested resource arrays use `params.expect(...: [[...]])` with the intended shape.
 - [ ] SQL values are parameterized and dynamic identifiers are allowlisted.
@@ -913,6 +956,7 @@ Run only tools present in the repository, and inspect their configuration before
 - [ ] Active Storage uploads and server-side URL fetches validate ownership, content, and SSRF boundaries.
 
 ### Active Record
+
 - [ ] Critical model validations are backed by database constraints and indexes.
 - [ ] Bulk APIs intentionally account for skipped callbacks, validations, and timestamps.
 - [ ] Bulk writes cannot silently drift counter caches; repair and reconciliation are explicit.
@@ -922,6 +966,7 @@ Run only tools present in the repository, and inspect their configuration before
 - [ ] Concurrency invariants use constraints, atomic updates, optimistic locking, or short database locks.
 
 ### Queries and Performance
+
 - [ ] Association access in loops is preloaded or explicitly justified.
 - [ ] `includes`, `preload`, or `eager_load` matches the query semantics.
 - [ ] Collection joins cannot duplicate parent rows or change cardinality unnoticed.
@@ -931,6 +976,7 @@ Run only tools present in the repository, and inspect their configuration before
 - [ ] Cache keys include tenant, authorization, locale, and data versions as needed.
 
 ### Jobs and External Services
+
 - [ ] Jobs are safe under retry, duplicate delivery, and worker interruption.
 - [ ] External operations use stable idempotency keys where supported.
 - [ ] GlobalID deletion and stale/current-state semantics are intentional; expected absence is handled narrowly.
@@ -940,6 +986,7 @@ Run only tools present in the repository, and inspect their configuration before
 - [ ] Network calls have timeouts, observability, and secret-safe logging.
 
 ### Tests and Automation
+
 - [ ] Request tests cover parameter filtering, authorization, status codes, and response fields.
 - [ ] Query-count or strict-loading tests protect performance-sensitive paths.
 - [ ] Job tests cover retries, duplicate execution, deletion, and partial failure.

@@ -1,20 +1,20 @@
 ---
 name: code-review-skill
 description: |
-  Provides comprehensive code review guidance for React 19, Vue 3, Angular 17+, Svelte 5,
-  Rust, TypeScript, Java, Java 8, PHP, Ruby, Rails, Python, Django, FastAPI, Go, C#/.NET, Kotlin, Swift,
-  Dart, Flutter, NestJS, C/C++, Zig, CSS/Less/Sass, Qt, and more.
-  Covers architecture review, performance review, security audit, code quality anti-patterns,
-  and common bugs across all ecosystems.
-  Use when: reviewing pull requests, conducting PR reviews, code review, reviewing code changes,
-  establishing review standards, mentoring developers, architecture reviews, security audits,
-  performance reviews, checking code quality, finding bugs, giving feedback on code.
+    Provides comprehensive code review guidance for React 19, Vue 3, Angular 17+, Svelte 5,
+    Rust, TypeScript, Java, Java 8, PHP, Ruby, Rails, Python, Django, FastAPI, Go, C#/.NET, Kotlin, Swift,
+    Dart, Flutter, NestJS, C/C++, Zig, CSS/Less/Sass, Qt, and more.
+    Covers architecture review, performance review, security audit, code quality anti-patterns,
+    and common bugs across all ecosystems.
+    Use when: reviewing pull requests, conducting PR reviews, code review, reviewing code changes,
+    establishing review standards, mentoring developers, architecture reviews, security audits,
+    performance reviews, checking code quality, finding bugs, giving feedback on code.
 allowed-tools:
-  - Read
-  - Grep
-  - Glob
-  - Bash
-  - WebFetch
+    - Read
+    - Grep
+    - Glob
+    - Bash
+    - WebFetch
 ---
 
 # Code Review Skill
@@ -37,6 +37,7 @@ Transform code reviews from gatekeeping to knowledge sharing through constructiv
 ### 1. The Review Mindset
 
 **Goals of Code Review:**
+
 - Catch bugs and edge cases
 - Ensure code maintainability
 - Share knowledge across team
@@ -45,6 +46,7 @@ Transform code reviews from gatekeeping to knowledge sharing through constructiv
 - Build team culture
 
 **Not the Goals:**
+
 - Show off knowledge
 - Nitpick formatting (use linters)
 - Block progress unnecessarily
@@ -53,6 +55,7 @@ Transform code reviews from gatekeeping to knowledge sharing through constructiv
 ### 2. Effective Feedback
 
 **Good Feedback is:**
+
 - Specific and actionable
 - Educational, not judgmental
 - Focused on the code, not the person
@@ -62,20 +65,21 @@ Transform code reviews from gatekeeping to knowledge sharing through constructiv
 ```markdown
 ❌ Bad: "This is wrong."
 ✅ Good: "This could cause a race condition when multiple users
-         access simultaneously. Consider using a mutex here."
+access simultaneously. Consider using a mutex here."
 
 ❌ Bad: "Why didn't you use X pattern?"
 ✅ Good: "Have you considered the Repository pattern? It would
-         make this easier to test. Here's an example: [link]"
+make this easier to test. Here's an example: [link]"
 
 ❌ Bad: "Rename this variable."
 ✅ Good: "[nit] Consider `userCount` instead of `uc` for
-         clarity. Not blocking if you prefer to keep it."
+clarity. Not blocking if you prefer to keep it."
 ```
 
 ### 3. Review Scope
 
 **What to Review:**
+
 - Logic correctness and edge cases
 - Security vulnerabilities
 - Performance implications
@@ -86,6 +90,7 @@ Transform code reviews from gatekeeping to knowledge sharing through constructiv
 - Architectural fit
 
 **What Not to Review Manually:**
+
 - Code formatting (use Prettier, Black, etc.)
 - Import organization
 - Linting violations
@@ -96,6 +101,7 @@ Transform code reviews from gatekeeping to knowledge sharing through constructiv
 ### Phase 1: Context Gathering (2-3 minutes)
 
 Before diving into code, understand:
+
 1. Read PR description and linked issue
 2. Check PR size (>400 lines? Ask to split)
 3. Review CI/CD status (tests passing?)
@@ -107,17 +113,18 @@ Before diving into code, understand:
 ### Phase 2: High-Level Review (5-10 minutes)
 
 1. **Architecture & Design** - Does the solution fit the problem?
-   - For significant changes, consult [Architecture Review Guide](reference/architecture-review-guide.md)
-   - Check: SOLID principles, coupling/cohesion, anti-patterns
+    - For significant changes, consult [Architecture Review Guide](reference/architecture-review-guide.md)
+    - Check: SOLID principles, coupling/cohesion, anti-patterns
 2. **Performance Assessment** - Are there performance concerns?
-   - For performance-critical code, consult [Performance Review Guide](reference/performance-review-guide.md)
-   - Check: Algorithm complexity, N+1 queries, memory usage
+    - For performance-critical code, consult [Performance Review Guide](reference/performance-review-guide.md)
+    - Check: Algorithm complexity, N+1 queries, memory usage
 3. **File Organization** - Are new files in the right places?
 4. **Testing Strategy** - Are there tests covering edge cases?
 
 ### Phase 3: Line-by-Line Review (10-20 minutes)
 
 For each file, check:
+
 - **Logic & Correctness** - Edge cases, off-by-one, null checks, race conditions
 - **Security** - Input validation, injection risks, XSS, sensitive data
 - **Performance** - N+1 queries, unnecessary loops, memory leaks
@@ -129,9 +136,9 @@ For each file, check:
 1. Summarize key concerns
 2. Highlight what you liked
 3. Make clear decision:
-   - ✅ Approve
-   - 💬 Comment (minor suggestions)
-   - 🔄 Request Changes (must address)
+    - ✅ Approve
+    - 💬 Comment (minor suggestions)
+    - 🔄 Request Changes (must address)
 4. Offer to pair if complex
 
 ## Review Techniques
@@ -181,50 +188,50 @@ Use labels to indicate priority:
 
 根据审查的代码语言，查阅对应的详细指南：
 
-| Language/Framework | Reference File | Key Topics |
-|-------------------|----------------|------------|
-| **React** | [React Guide](reference/react.md) | Hooks, useEffect, React 19 Actions, RSC, Suspense, TanStack Query v5 |
-| **Vue 3** | [Vue Guide](reference/vue.md) | Composition API, 响应性系统, Props/Emits, Watchers, Composables |
-| **Angular 17+** | [Angular Guide](reference/angular.md) | Signals, Standalone, RxJS, Zoneless, 模板优化, 测试, 路由守卫, HttpInterceptor |
-| **Rust** | [Rust Guide](reference/rust.md) | 所有权/借用, Unsafe 审查, 异步代码, 取消安全性, 错误处理 |
-| **TypeScript** | [TypeScript Guide](reference/typescript.md) | 类型安全, async/await, 不可变性, 测试, 模块解析, TS 5.x |
-| **Python** | [Python Guide](reference/python.md) | 可变默认参数, 异常处理, 类属性 |
-| **Django / DRF** | [Django Guide](reference/django.md) | 安全审查, N+1 查询, Serializer 反模式, ViewSet, 异步视图 |
-| **FastAPI** | [FastAPI Guide](reference/fastapi.md) | Depends, Pydantic v2 validation, async correctness, sessions/N+1, auth vs authorization, test-driven verification |
-| **Java** | [Java Guide](reference/java.md) | Java 17/21 新特性, Spring Boot 3, 虚拟线程, Stream/Optional |
-| **Java 8 / Legacy** | [Java 8 Guide](reference/java8.md) | Java 8, Spring Boot 2, javax.*, Stream/Optional, java.time, CompletableFuture |
-| **PHP** | [PHP Guide](reference/php.md) | PHP 8.x type system, PDO, security review, Composer, PHPUnit/PHPStan |
-| **Ruby / Rails** | [Ruby Guide](reference/ruby.md) | Ruby semantics, Rails 8, Active Record, Active Job, security, testing |
-| **C# / .NET** | [C# Guide](reference/csharp.md) | C# 12 特性, 异步编程, EF Core 性能, ASP.NET Core, LINQ |
-| **Go** | [Go Guide](reference/go.md) | 错误处理, goroutine/channel, context, 接口设计 |
-| **Kotlin / Android** | [Kotlin Guide](reference/kotlin.md) | 协程, Flow, Jetpack Compose, 空安全, 内存泄漏, 架构模式 |
-| **Swift / SwiftUI** | [Swift Guide](reference/swift.md) | Optionals, Swift Concurrency, Sendable/actors, SwiftUI property wrappers, value vs reference types, API design |
-| **Dart / Flutter** | [Dart Guide](reference/dart.md) | Widget rebuilds, const constructors, null safety, isolates, async in build, Riverpod/Bloc, platform channels, keys, disposal |
-| **NestJS** | [NestJS Guide](reference/nestjs.md) | 依赖注入, 分层架构, DTO 验证, Guard/Interceptor, 循环依赖 |
-| **Svelte / SvelteKit** | [Svelte Guide](reference/svelte.md) | Runes, Load 函数, Form Actions, Store 迁移, SSR/CSR 边界 |
-| **C** | [C Guide](reference/c.md) | 指针/缓冲区, 内存安全, UB, 安全编码, 可移植性, 测试 |
-| **C++** | [C++ Guide](reference/cpp.md) | RAII, 智能指针, C++20/23, constexpr, 测试 |
-| **Zig** | [Zig Guide](reference/zig.md) | Allocators, error unions, defer/errdefer, comptime, C interop |
-| **CSS/Less/Sass** | [CSS Guide](reference/css-less-sass.md) | 变量规范, !important, 性能优化, 响应式, 兼容性 |
-| **Qt** | [Qt Guide](reference/qt.md) | 对象模型, 信号/槽, Model/View, QML, Qt6 迁移, 测试 |
+| Language/Framework     | Reference File                              | Key Topics                                                                                                                   |
+| ---------------------- | ------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| **React**              | [React Guide](reference/react.md)           | Hooks, useEffect, React 19 Actions, RSC, Suspense, TanStack Query v5                                                         |
+| **Vue 3**              | [Vue Guide](reference/vue.md)               | Composition API, 响应性系统, Props/Emits, Watchers, Composables                                                              |
+| **Angular 17+**        | [Angular Guide](reference/angular.md)       | Signals, Standalone, RxJS, Zoneless, 模板优化, 测试, 路由守卫, HttpInterceptor                                               |
+| **Rust**               | [Rust Guide](reference/rust.md)             | 所有权/借用, Unsafe 审查, 异步代码, 取消安全性, 错误处理                                                                     |
+| **TypeScript**         | [TypeScript Guide](reference/typescript.md) | 类型安全, async/await, 不可变性, 测试, 模块解析, TS 5.x                                                                      |
+| **Python**             | [Python Guide](reference/python.md)         | 可变默认参数, 异常处理, 类属性                                                                                               |
+| **Django / DRF**       | [Django Guide](reference/django.md)         | 安全审查, N+1 查询, Serializer 反模式, ViewSet, 异步视图                                                                     |
+| **FastAPI**            | [FastAPI Guide](reference/fastapi.md)       | Depends, Pydantic v2 validation, async correctness, sessions/N+1, auth vs authorization, test-driven verification            |
+| **Java**               | [Java Guide](reference/java.md)             | Java 17/21 新特性, Spring Boot 3, 虚拟线程, Stream/Optional                                                                  |
+| **Java 8 / Legacy**    | [Java 8 Guide](reference/java8.md)          | Java 8, Spring Boot 2, javax.*, Stream/Optional, java.time, CompletableFuture                                                |
+| **PHP**                | [PHP Guide](reference/php.md)               | PHP 8.x type system, PDO, security review, Composer, PHPUnit/PHPStan                                                         |
+| **Ruby / Rails**       | [Ruby Guide](reference/ruby.md)             | Ruby semantics, Rails 8, Active Record, Active Job, security, testing                                                        |
+| **C# / .NET**          | [C# Guide](reference/csharp.md)             | C# 12 特性, 异步编程, EF Core 性能, ASP.NET Core, LINQ                                                                       |
+| **Go**                 | [Go Guide](reference/go.md)                 | 错误处理, goroutine/channel, context, 接口设计                                                                               |
+| **Kotlin / Android**   | [Kotlin Guide](reference/kotlin.md)         | 协程, Flow, Jetpack Compose, 空安全, 内存泄漏, 架构模式                                                                      |
+| **Swift / SwiftUI**    | [Swift Guide](reference/swift.md)           | Optionals, Swift Concurrency, Sendable/actors, SwiftUI property wrappers, value vs reference types, API design               |
+| **Dart / Flutter**     | [Dart Guide](reference/dart.md)             | Widget rebuilds, const constructors, null safety, isolates, async in build, Riverpod/Bloc, platform channels, keys, disposal |
+| **NestJS**             | [NestJS Guide](reference/nestjs.md)         | 依赖注入, 分层架构, DTO 验证, Guard/Interceptor, 循环依赖                                                                    |
+| **Svelte / SvelteKit** | [Svelte Guide](reference/svelte.md)         | Runes, Load 函数, Form Actions, Store 迁移, SSR/CSR 边界                                                                     |
+| **C**                  | [C Guide](reference/c.md)                   | 指针/缓冲区, 内存安全, UB, 安全编码, 可移植性, 测试                                                                          |
+| **C++**                | [C++ Guide](reference/cpp.md)               | RAII, 智能指针, C++20/23, constexpr, 测试                                                                                    |
+| **Zig**                | [Zig Guide](reference/zig.md)               | Allocators, error unions, defer/errdefer, comptime, C interop                                                                |
+| **CSS/Less/Sass**      | [CSS Guide](reference/css-less-sass.md)     | 变量规范, !important, 性能优化, 响应式, 兼容性                                                                               |
+| **Qt**                 | [Qt Guide](reference/qt.md)                 | 对象模型, 信号/槽, Model/View, QML, Qt6 迁移, 测试                                                                           |
 
 ## Cross-Cutting Guides
 
 Language-agnostic patterns applicable to all code reviews:
 
-| Topic | Reference File | Key Topics |
-|-------|----------------|------------|
-| **Architecture Review** | [Architecture Review Guide](reference/architecture-review-guide.md) | SOLID, anti-patterns, coupling/cohesion, dependency direction |
-| **Performance Review** | [Performance Review Guide](reference/performance-review-guide.md) | Web Vitals, N+1, algorithm complexity, memory leaks, caching |
-| **Security Review** | [Security Review Guide](reference/security-review-guide.md) | SQLi, XSS, CSRF, SSRF, IDOR, 命令注入, 跨语言示例 |
-| **Universal Quality** | [Universal Quality Guide](reference/code-quality-universal.md) | Reuse audit, parameter sprawl, leaky abstractions, nested conditionals, stringly-typed code, TOCTOU, no-op updates, redundant state |
-| **Common Bugs** | [Common Bugs Checklist](reference/common-bugs-checklist.md) | Language-specific bug patterns, common pitfalls |
-| **SQL Injection Prevention** | [SQL Injection Guide](reference/cross-cutting/sql-injection-prevention.md) | Parameterized queries, ORM safety, 6 languages, dynamic identifiers, detection |
-| **XSS Prevention** | [XSS Prevention Guide](reference/cross-cutting/xss-prevention.md) | Output encoding, CSP, 5 frameworks, input validation vs encoding, detection |
-| **N+1 Queries** | [N+1 Queries Guide](reference/cross-cutting/n-plus-one-queries.md) | Eager loading, batch fetching, DataLoader, 5 languages, detection |
-| **Error Handling** | [Error Handling Guide](reference/cross-cutting/error-handling-principles.md) | Fail fast, error hierarchy, 7 languages, anti-patterns, logging |
-| **Async & Concurrency** | [Concurrency Guide](reference/cross-cutting/async-concurrency-patterns.md) | Goroutines, async/await, actors, structured concurrency, 7 languages |
-| **Review Best Practices** | [Code Review Best Practices](reference/code-review-best-practices.md) | Communication, reviewer mindset, giving feedback, severity labels |
+| Topic                        | Reference File                                                               | Key Topics                                                                                                                          |
+| ---------------------------- | ---------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
+| **Architecture Review**      | [Architecture Review Guide](reference/architecture-review-guide.md)          | SOLID, anti-patterns, coupling/cohesion, dependency direction                                                                       |
+| **Performance Review**       | [Performance Review Guide](reference/performance-review-guide.md)            | Web Vitals, N+1, algorithm complexity, memory leaks, caching                                                                        |
+| **Security Review**          | [Security Review Guide](reference/security-review-guide.md)                  | SQLi, XSS, CSRF, SSRF, IDOR, 命令注入, 跨语言示例                                                                                   |
+| **Universal Quality**        | [Universal Quality Guide](reference/code-quality-universal.md)               | Reuse audit, parameter sprawl, leaky abstractions, nested conditionals, stringly-typed code, TOCTOU, no-op updates, redundant state |
+| **Common Bugs**              | [Common Bugs Checklist](reference/common-bugs-checklist.md)                  | Language-specific bug patterns, common pitfalls                                                                                     |
+| **SQL Injection Prevention** | [SQL Injection Guide](reference/cross-cutting/sql-injection-prevention.md)   | Parameterized queries, ORM safety, 6 languages, dynamic identifiers, detection                                                      |
+| **XSS Prevention**           | [XSS Prevention Guide](reference/cross-cutting/xss-prevention.md)            | Output encoding, CSP, 5 frameworks, input validation vs encoding, detection                                                         |
+| **N+1 Queries**              | [N+1 Queries Guide](reference/cross-cutting/n-plus-one-queries.md)           | Eager loading, batch fetching, DataLoader, 5 languages, detection                                                                   |
+| **Error Handling**           | [Error Handling Guide](reference/cross-cutting/error-handling-principles.md) | Fail fast, error hierarchy, 7 languages, anti-patterns, logging                                                                     |
+| **Async & Concurrency**      | [Concurrency Guide](reference/cross-cutting/async-concurrency-patterns.md)   | Goroutines, async/await, actors, structured concurrency, 7 languages                                                                |
+| **Review Best Practices**    | [Code Review Best Practices](reference/code-review-best-practices.md)        | Communication, reviewer mindset, giving feedback, severity labels                                                                   |
 
 ## Additional Resources
 

@@ -381,29 +381,34 @@ class UserRepositoryTest {
 ## Review Checklist
 
 ### 基础与规范
+
 - [ ] 遵循 Java 17/21 新特性（Switch 表达式, Records, 文本块）
 - [ ] 避免使用已过时的类（Date, Calendar, SimpleDateFormat）
 - [ ] 集合操作是否优先使用了 Stream API 或 Collections 方法？
 - [ ] Optional 仅用于返回值，未用于字段或参数
 
 ### Spring Boot
+
 - [ ] 使用构造器注入而非 @Autowired 字段注入
 - [ ] 配置属性使用了 @ConfigurationProperties
 - [ ] Controller 职责单一，业务逻辑下沉到 Service
 - [ ] 全局异常处理使用了 @ControllerAdvice / ProblemDetail
 
 ### 数据库 & 事务
+
 - [ ] 读操作事务标记了 `@Transactional(readOnly = true)`
 - [ ] 检查是否存在 N+1 查询（EAGER fetch 或循环调用）
 - [ ] Entity 类未使用 @Data，正确实现了 equals/hashCode
 - [ ] 数据库索引是否覆盖了查询条件
 
 ### 并发与性能
+
 - [ ] I/O 密集型任务是否考虑了虚拟线程？
 - [ ] 线程安全类是否使用正确（ConcurrentHashMap vs HashMap）
 - [ ] 锁的粒度是否合理？避免在锁内进行 I/O 操作
 
 ### 可维护性
+
 - [ ] 关键业务逻辑有充分的单元测试
 - [ ] 日志记录恰当（使用 Slf4j，避免 System.out）
 - [ ] 魔法值提取为常量或枚举

@@ -6,10 +6,10 @@
 
 **HIMATIF Nexus** is built as a **Monolith-SPA (Single Page Application)**, pairing **Laravel (PHP 8.5+)** on the backend with **Vue 3 + Inertia.js** on the frontend.
 
-* **Backend:** Laravel owns authentication, the RBAC system, the Eloquent ORM, business validation, and database management.
-* **Frontend:** Vue 3 + Tailwind CSS render a reactive user interface, without the need for a separate REST API.
-* **Database:** **PostgreSQL** as the relational database management system (see [§3](#3-database-engine--postgresql)).
-* **Content Builder (Infokom):** **Puck (`@measured/puck`)** combined with **`vue3-colorpicker`** for a visual drag-and-drop page builder plus color-scheme customization (Brand Presets & a custom Hex/RGB color wheel).
+- **Backend:** Laravel owns authentication, the RBAC system, the Eloquent ORM, business validation, and database management.
+- **Frontend:** Vue 3 + Tailwind CSS render a reactive user interface, without the need for a separate REST API.
+- **Database:** **PostgreSQL** as the relational database management system (see [§3](#3-database-engine--postgresql)).
+- **Content Builder (Infokom):** **Puck (`@measured/puck`)** combined with **`vue3-colorpicker`** for a visual drag-and-drop page builder plus color-scheme customization (Brand Presets & a custom Hex/RGB color wheel).
 
 ---
 
@@ -17,19 +17,19 @@
 
 Versions below reflect what is actually declared in `composer.json` and `package.json`. Items marked **(planned)** are target stack that is **not installed yet**.
 
-| Layer | Technology / Package | Version | Status | Function |
-| :--- | :--- | :--- | :--- | :--- |
-| **Backend Framework** | `laravel/framework` | ^13.35 (PHP ^8.5) | Installed | Core application, routing, controllers, ORM |
-| **Frontend Framework** | `vue` (Composition API, `<script setup>`) | ^3.4 | Installed | Reactive user interface (UI) |
-| **Monolith-SPA Glue** | `inertiajs/inertia-laravel` + `@inertiajs/vue3` | ^2.0 | Installed | Data/props passing without a manual REST API |
-| **Auth Scaffolding** | `laravel/breeze` (+ `laravel/sanctum`, `tightenco/ziggy`) | ^2.4 / ^4.0 / ^2.0 | Installed | Login, registration, password & profile flows; named routes in JS |
-| **Page & Blog Builder** | `@measured/puck` | — | **(planned)** | Visual drag-and-drop block editor |
-| **Color Picker** | `vue3-colorpicker` | — | **(planned)** | Color wheel & hex input for custom styles |
-| **Styling & UI** | `tailwindcss` + `@tailwindcss/forms` | ^3.2 (v3 directives in `resources/css/app.css`) | Installed | Utility-first CSS styling |
-| **Build Tool** | `vite` + `laravel-vite-plugin` | ^8.0 / ^3.1 | Installed | Asset bundling & HMR |
-| **RBAC Engine** | **Custom** (tabel `roles` + relasi `User::role()`) | — | **Implemented** | Role & permission management via `hasRole()`, `isBph()` methods |
-| **Notification Engine** | **SSE (Server-Sent Events)** — cache-backed per-user queue, `StreamedResponse` | — | **Implemented (T6)** | One-way push to browser: ping heartbeat + `data:` frames on unread-count change |
-| **Database Engine** | **PostgreSQL** | 18.x / 17.x | **Target** | Relational database engine |
+| Layer                   | Technology / Package                                                           | Version                                         | Status               | Function                                                                        |
+| :---------------------- | :----------------------------------------------------------------------------- | :---------------------------------------------- | :------------------- | :------------------------------------------------------------------------------ |
+| **Backend Framework**   | `laravel/framework`                                                            | ^13.35 (PHP ^8.5)                               | Installed            | Core application, routing, controllers, ORM                                     |
+| **Frontend Framework**  | `vue` (Composition API, `<script setup>`)                                      | ^3.4                                            | Installed            | Reactive user interface (UI)                                                    |
+| **Monolith-SPA Glue**   | `inertiajs/inertia-laravel` + `@inertiajs/vue3`                                | ^2.0                                            | Installed            | Data/props passing without a manual REST API                                    |
+| **Auth Scaffolding**    | `laravel/breeze` (+ `laravel/sanctum`, `tightenco/ziggy`)                      | ^2.4 / ^4.0 / ^2.0                              | Installed            | Login, registration, password & profile flows; named routes in JS               |
+| **Page & Blog Builder** | `@measured/puck`                                                               | —                                               | **(planned)**        | Visual drag-and-drop block editor                                               |
+| **Color Picker**        | `vue3-colorpicker`                                                             | —                                               | **(planned)**        | Color wheel & hex input for custom styles                                       |
+| **Styling & UI**        | `tailwindcss` + `@tailwindcss/forms`                                           | ^3.2 (v3 directives in `resources/css/app.css`) | Installed            | Utility-first CSS styling                                                       |
+| **Build Tool**          | `vite` + `laravel-vite-plugin`                                                 | ^8.0 / ^3.1                                     | Installed            | Asset bundling & HMR                                                            |
+| **RBAC Engine**         | **Custom** (tabel `roles` + relasi `User::role()`)                             | —                                               | **Implemented**      | Role & permission management via `hasRole()`, `isBph()` methods                 |
+| **Notification Engine** | **SSE (Server-Sent Events)** — cache-backed per-user queue, `StreamedResponse` | —                                               | **Implemented (T6)** | One-way push to browser: ping heartbeat + `data:` frames on unread-count change |
+| **Database Engine**     | **PostgreSQL**                                                                 | 18.x / 17.x                                     | **Target**           | Relational database engine                                                      |
 
 ---
 
@@ -54,33 +54,33 @@ Required PHP extensions: `pdo_pgsql` (and `pgsql` for direct PDO access).
 
 ### 3.2 Dialect Differences That Affect This Project
 
-| Concern | MySQL / MariaDB / SQLite | PostgreSQL — What to Use Instead |
-| :--- | :--- | :--- |
-| Long content body (`text_konten`) | `LONGTEXT` | **`jsonb`** (preferred) or `text` — **PostgreSQL has no `LONGTEXT`** |
-| Puck layout tree search | `LIKE` scans | `jsonb` + GIN index: `$table->jsonb('text_konten')->default('{}')` |
-| Identifiers | Case-sensitive mix | Unquoted identifiers fold to **lowercase** — use `snake_case` columns/tables, never camelCase |
-| Enum columns | Native `enum()` | `$table->string('status')->check(DB::raw(...))` or a native `CREATE TYPE ... AS ENUM` via `DB::statement` |
-| Boolean / JSON | `tinyint(1)` / `json` text blob | Native `boolean`, native `jsonb` with real containment operators (`@>`, `?`) |
-| Sequences | `AUTO_INCREMENT` | `$table->id()` maps to `bigint generated ... as identity` — no special handling needed |
-| Index name length | 64 chars, silently truncated | **63-byte limit, raises an error** — keep composite index names short |
+| Concern                           | MySQL / MariaDB / SQLite        | PostgreSQL — What to Use Instead                                                                          |
+| :-------------------------------- | :------------------------------ | :-------------------------------------------------------------------------------------------------------- |
+| Long content body (`text_konten`) | `LONGTEXT`                      | **`jsonb`** (preferred) or `text` — **PostgreSQL has no `LONGTEXT`**                                      |
+| Puck layout tree search           | `LIKE` scans                    | `jsonb` + GIN index: `$table->jsonb('text_konten')->default('{}')`                                        |
+| Identifiers                       | Case-sensitive mix              | Unquoted identifiers fold to **lowercase** — use `snake_case` columns/tables, never camelCase             |
+| Enum columns                      | Native `enum()`                 | `$table->string('status')->check(DB::raw(...))` or a native `CREATE TYPE ... AS ENUM` via `DB::statement` |
+| Boolean / JSON                    | `tinyint(1)` / `json` text blob | Native `boolean`, native `jsonb` with real containment operators (`@>`, `?`)                              |
+| Sequences                         | `AUTO_INCREMENT`                | `$table->id()` maps to `bigint generated ... as identity` — no special handling needed                    |
+| Index name length                 | 64 chars, silently truncated    | **63-byte limit, raises an error** — keep composite index names short                                     |
 
 ### 3.3 Migration Status
 
 All framework tables are present and domain migrations have full column definitions:
 
-| Migration File | Status | Description |
-| :--- | :--- | :--- |
-| `0001_01_01_000001_create_cache_table.php` | ✅ Present | Cache table with `key`, `value`, `expiration` |
-| `0001_01_01_000002_create_jobs_table.php` | ✅ Present | Jobs, batches, and failed_jobs tables |
-| `2026_10_19_124812_create_sessions_table.php` | ✅ Present | Sessions table (empty migration — `SESSION_DRIVER=database` ready) |
-| `2026_10_13_010000_create_roles_table.php` | ✅ Present | RBAC roles with `role_id`, `nama_role` |
-| `2026_10_13_010100_create_users_table.php` | ✅ Present | Users with `user_uuid` (primary), `role_id`, `nama`, `email`, `password` |
-| `2026_10_13_010200_create_kegiatan_table.php` | ✅ Present | Activities with full columns |
-| `2026_10_13_010300_create_produk_table.php` | ✅ Present | Products with full columns |
-| `2026_10_13_010400_create_inventaris_alat_table.php` | ✅ Present | Inventory with `nama_barang`, `stok`, `kondisi` |
-| `2026_10_13_010500_create_transaksi_table.php` | ✅ Present | Transactions with `user_id`, `total_bayar`, `status_transaksi` |
-| `2026_10_13_010600_create_formatif_table.php` | ✅ Present | Blog/articles with `judul`, `slug`, `text_konten`, `thumbnail_path`, `status` |
-| `2026_10_13_010800_create_penyewaan_table.php` | ✅ Present | Equipment loans with foreign keys |
+| Migration File                                       | Status     | Description                                                                   |
+| :--------------------------------------------------- | :--------- | :---------------------------------------------------------------------------- |
+| `0001_01_01_000001_create_cache_table.php`           | ✅ Present | Cache table with `key`, `value`, `expiration`                                 |
+| `0001_01_01_000002_create_jobs_table.php`            | ✅ Present | Jobs, batches, and failed_jobs tables                                         |
+| `2026_10_19_124812_create_sessions_table.php`        | ✅ Present | Sessions table (empty migration — `SESSION_DRIVER=database` ready)            |
+| `2026_10_13_010000_create_roles_table.php`           | ✅ Present | RBAC roles with `role_id`, `nama_role`                                        |
+| `2026_10_13_010100_create_users_table.php`           | ✅ Present | Users with `user_uuid` (primary), `role_id`, `nama`, `email`, `password`      |
+| `2026_10_13_010200_create_kegiatan_table.php`        | ✅ Present | Activities with full columns                                                  |
+| `2026_10_13_010300_create_produk_table.php`          | ✅ Present | Products with full columns                                                    |
+| `2026_10_13_010400_create_inventaris_alat_table.php` | ✅ Present | Inventory with `nama_barang`, `stok`, `kondisi`                               |
+| `2026_10_13_010500_create_transaksi_table.php`       | ✅ Present | Transactions with `user_id`, `total_bayar`, `status_transaksi`                |
+| `2026_10_13_010600_create_formatif_table.php`        | ✅ Present | Blog/articles with `judul`, `slug`, `text_konten`, `thumbnail_path`, `status` |
+| `2026_10_13_010800_create_penyewaan_table.php`       | ✅ Present | Equipment loans with foreign keys                                             |
 
 > **Note:** `database/database.sqlite` is a leftover dev artifact (empty file). Keep `DB_CONNECTION=pgsql` in `.env` to ensure PostgreSQL is always used.
 
@@ -88,19 +88,19 @@ All framework tables are present and domain migrations have full column definiti
 
 ## 4. Database Schema (Entity Overview)
 
-Tables as created by the migrations in `database/migrations/`. The *Purpose* column is the design intent; the *Columns* column is the verified reality.
+Tables as created by the migrations in `database/migrations/`. The _Purpose_ column is the design intent; the _Columns_ column is the verified reality.
 
-| Table | Model | Purpose | Columns |
-| :--- | :--- | :--- | :--- |
-| `users` | `User` | Accounts for all four teams | `user_uuid` (PK, UUID), `role_id` (FK), `nama`, `email`, `password`, `email_verified_at`, `remember_token`, `timestamps` |
-| `roles` | `Role` | RBAC roles (BPH / Infokom / Portal / Danus Shop) | `role_id` (PK), `nama_role` |
-| `formatif` | `Formatif` | Formatif articles & Puck content | `formatif_id` (PK), `user_id` (FK), `judul`, `slug`, `kategori`, `text_konten` (jsonb), `thumbnail_path`, `status`, `timestamps` |
-| `kegiatan` | `Kegiatan` | Organizational activities/events | `kegiatan_id` (PK), `nama_kegiatan`, `deskripsi_kegiatan`, `tanggal_pelaksanaan`, `status_kegiatan`, `timestamps` |
-| `transaksi` | `Transaksi` | Transactions across modules | `transaksi_id` (PK), `user_id` (FK, UUID), `total_bayar`, `status_transaksi`, `timestamps` |
-| `produk` | `Produk` | Danus Shop product catalog | `produk_id` (PK), `nama_produk`, `deskripsi_produk`, `harga_produk`, `stok_produk`, `gambar_produk`, `timestamps` |
-| `shop_details` | `ShopDetail` | Line items for transactions | `shop_detail_id` (PK), `transaksi_id` (FK), `produk_id` (FK), `quantity`, `harga_satuan`, `timestamps` |
-| `inventaris_alat` | `Inventaris` | HM asset/equipment inventory | `inventaris_id` (PK), `nama_barang`, `stok`, `kondisi`, `timestamps` |
-| `penyewaan_alats` | `PenyewaanAlat` | Equipment loan requests | `id` (PK), `inventaris_alat_id` (FK), `user_id` (FK, UUID), `jumlah_pinjam`, `tanggal_pinjam`, `tanggal_kembali`, `status`, `timestamps` |
+| Table             | Model           | Purpose                                          | Columns                                                                                                                                  |
+| :---------------- | :-------------- | :----------------------------------------------- | :--------------------------------------------------------------------------------------------------------------------------------------- |
+| `users`           | `User`          | Accounts for all four teams                      | `user_uuid` (PK, UUID), `role_id` (FK), `nama`, `email`, `password`, `email_verified_at`, `remember_token`, `timestamps`                 |
+| `roles`           | `Role`          | RBAC roles (BPH / Infokom / Portal / Danus Shop) | `role_id` (PK), `nama_role`                                                                                                              |
+| `formatif`        | `Formatif`      | Formatif articles & Puck content                 | `formatif_id` (PK), `user_id` (FK), `judul`, `slug`, `kategori`, `text_konten` (jsonb), `thumbnail_path`, `status`, `timestamps`         |
+| `kegiatan`        | `Kegiatan`      | Organizational activities/events                 | `kegiatan_id` (PK), `nama_kegiatan`, `deskripsi_kegiatan`, `tanggal_pelaksanaan`, `status_kegiatan`, `timestamps`                        |
+| `transaksi`       | `Transaksi`     | Transactions across modules                      | `transaksi_id` (PK), `user_id` (FK, UUID), `total_bayar`, `status_transaksi`, `timestamps`                                               |
+| `produk`          | `Produk`        | Danus Shop product catalog                       | `produk_id` (PK), `nama_produk`, `deskripsi_produk`, `harga_produk`, `stok_produk`, `gambar_produk`, `timestamps`                        |
+| `shop_details`    | `ShopDetail`    | Line items for transactions                      | `shop_detail_id` (PK), `transaksi_id` (FK), `produk_id` (FK), `quantity`, `harga_satuan`, `timestamps`                                   |
+| `inventaris_alat` | `Inventaris`    | HM asset/equipment inventory                     | `inventaris_id` (PK), `nama_barang`, `stok`, `kondisi`, `timestamps`                                                                     |
+| `penyewaan_alats` | `PenyewaanAlat` | Equipment loan requests                          | `id` (PK), `inventaris_alat_id` (FK), `user_id` (FK, UUID), `jumlah_pinjam`, `tanggal_pinjam`, `tanggal_kembali`, `status`, `timestamps` |
 
 > **Naming note:** Table names are **singular** in Indonesian (`kegiatan`, `transaksi`, `produk`, `inventaris_alat`) except `penyewaan_alats` which uses Laravel's default pluralization. Models explicitly define `$table` to ensure correct mapping.
 
@@ -108,38 +108,38 @@ Tables as created by the migrations in `database/migrations/`. The *Purpose* col
 
 ## 5. Visual Page Builder Architecture (Puck Integration)
 
-1. **Developer Config:** Register Vue template components (`BannerBlock`, `CardLomba`, `GridBlock`) and their *props* schema in `resources/js/Builder/puckConfig.js` *(directory not created yet)*.
+1. **Developer Config:** Register Vue template components (`BannerBlock`, `CardLomba`, `GridBlock`) and their _props_ schema in `resources/js/Builder/puckConfig.js` _(directory not created yet)_.
 2. **Infokom Editor Mode:**
-   * Drag-and-drop components onto the canvas.
-   * Configure text, layout options, and color scheme via the *sidebar control*.
-   * Pick colors from the **HIMATIF Brand Presets** or the **custom color picker wheel (`vue3-colorpicker`)**.
-3. **Storage Engine:** The resulting *layout* is stored as a clean JSON tree in the `text_konten` column of the `formatif` table — **`jsonb`** under PostgreSQL (formerly documented as `LONGTEXT`, which PostgreSQL does not support).
+    - Drag-and-drop components onto the canvas.
+    - Configure text, layout options, and color scheme via the _sidebar control_.
+    - Pick colors from the **HIMATIF Brand Presets** or the **custom color picker wheel (`vue3-colorpicker`)**.
+3. **Storage Engine:** The resulting _layout_ is stored as a clean JSON tree in the `text_konten` column of the `formatif` table — **`jsonb`** under PostgreSQL (formerly documented as `LONGTEXT`, which PostgreSQL does not support).
 4. **Public Render Mode:** The `Blog/Show.vue` page reads the JSON and loops over components with a Vue dynamic component: `<component :is="block.component" v-bind="block.props" />`.
 
 ---
 
 ## 6. Team Folder Ownership & Access Boundary Matrix
 
-To avoid *merge conflicts* during team collaboration:
+To avoid _merge conflicts_ during team collaboration:
 
-| Folder / File Path | Backend Team | Frontend Team | Access Description & Boundaries |
-| :--- | :--- | :--- | :--- |
-| `app/Http/Controllers/` | **Full Access** | Read Only | Backend owns business logic & renders the Inertia views |
-| `app/Http/Requests/` | **Full Access** | No Access | Backend owns server-side validation request classes |
-| `app/Models/` | **Full Access** | No Access | Backend owns the Eloquent ORM & database relations |
-| `app/Http/Middleware/` | **Full Access** | Read Only | Backend owns the RBAC & Inertia share middleware |
-| `database/migrations/` | **Full Access** | No Access | Backend owns the **PostgreSQL** DDL schema |
-| `database/factories/` & `database/seeders/` | **Full Access** | Read Only | Backend prepares fake & seed data |
-| `routes/` | **Full Access** | Read Only | Backend registers route endpoints & RBAC middleware |
-| `resources/js/Pages/` | Read Only | **Full Access** | Frontend composes per-module Vue page screens |
-| `resources/js/Components/` | Read Only | **Full Access** | Frontend builds re-usable UI (Navbar, Modal, Table) |
-| `resources/js/Layouts/` | Read Only | **Full Access** | Frontend owns page layout shells |
-| `resources/js/Builder/` | Read Only | **Full Access** | Frontend owns the Puck page builder + color picker *(planned)* |
-| `resources/css/` | Read Only | **Full Access** | Frontend owns Tailwind CSS styling |
-| `resources/views/app.blade.php` | **Full Access** | Read Only | Backend owns the Inertia root template |
-| `config/` | **Full Access** | No Access | Backend owns system config, database connections & RBAC |
+| Folder / File Path                          | Backend Team    | Frontend Team   | Access Description & Boundaries                                |
+| :------------------------------------------ | :-------------- | :-------------- | :------------------------------------------------------------- |
+| `app/Http/Controllers/`                     | **Full Access** | Read Only       | Backend owns business logic & renders the Inertia views        |
+| `app/Http/Requests/`                        | **Full Access** | No Access       | Backend owns server-side validation request classes            |
+| `app/Models/`                               | **Full Access** | No Access       | Backend owns the Eloquent ORM & database relations             |
+| `app/Http/Middleware/`                      | **Full Access** | Read Only       | Backend owns the RBAC & Inertia share middleware               |
+| `database/migrations/`                      | **Full Access** | No Access       | Backend owns the **PostgreSQL** DDL schema                     |
+| `database/factories/` & `database/seeders/` | **Full Access** | Read Only       | Backend prepares fake & seed data                              |
+| `routes/`                                   | **Full Access** | Read Only       | Backend registers route endpoints & RBAC middleware            |
+| `resources/js/Pages/`                       | Read Only       | **Full Access** | Frontend composes per-module Vue page screens                  |
+| `resources/js/Components/`                  | Read Only       | **Full Access** | Frontend builds re-usable UI (Navbar, Modal, Table)            |
+| `resources/js/Layouts/`                     | Read Only       | **Full Access** | Frontend owns page layout shells                               |
+| `resources/js/Builder/`                     | Read Only       | **Full Access** | Frontend owns the Puck page builder + color picker _(planned)_ |
+| `resources/css/`                            | Read Only       | **Full Access** | Frontend owns Tailwind CSS styling                             |
+| `resources/views/app.blade.php`             | **Full Access** | Read Only       | Backend owns the Inertia root template                         |
+| `config/`                                   | **Full Access** | No Access       | Backend owns system config, database connections & RBAC        |
 
-> Adjusted from the previous revision: the Breeze-generated frontend-owned folders (`resources/js/Layouts/`, `resources/js/Pages/Auth`, `resources/js/Pages/Profile`) are already committed by the scaffold, so `resources/js/Components/` and `resources/css/` changed from *No Access* to *Read Only* for the backend — the backend must be able to patch scaffold code it generated.
+> Adjusted from the previous revision: the Breeze-generated frontend-owned folders (`resources/js/Layouts/`, `resources/js/Pages/Auth`, `resources/js/Pages/Profile`) are already committed by the scaffold, so `resources/js/Components/` and `resources/css/` changed from _No Access_ to _Read Only_ for the backend — the backend must be able to patch scaffold code it generated.
 
 ---
 
@@ -149,13 +149,13 @@ Controllers must stay thin — they are HTTP gateways, not business logic engine
 
 ### 7.1 Single Responsibility Principle (SRP)
 
-| Layer | Sole Responsibility | Example |
-| :--- | :--- | :--- |
-| **Controller** | Validate input → call service → return response | `ProdukController@store` receives request, calls `ProdukService::create`, redirects |
-| **Model** | Data definition + relationships | `Produk::$fillable`, `User::role()` |
-| **Service** | Business rules & cross-model operations | `ProdukService::adjustStock()`, `PenyewaanAlatService::handleRequest()` |
-| **Form Request** | Validation only | `ProfileUpdateRequest`, `ProdukStoreRequest`, `FormatifUpdateRequest` |
-| **Helper** | Pure, stateless utilities | `CurrencyHelper::format()`, `AutoSlugHelper::generate()` |
+| Layer            | Sole Responsibility                             | Example                                                                             |
+| :--------------- | :---------------------------------------------- | :---------------------------------------------------------------------------------- |
+| **Controller**   | Validate input → call service → return response | `ProdukController@store` receives request, calls `ProdukService::create`, redirects |
+| **Model**        | Data definition + relationships                 | `Produk::$fillable`, `User::role()`                                                 |
+| **Service**      | Business rules & cross-model operations         | `ProdukService::adjustStock()`, `PenyewaanAlatService::handleRequest()`             |
+| **Form Request** | Validation only                                 | `ProfileUpdateRequest`, `ProdukStoreRequest`, `FormatifUpdateRequest`               |
+| **Helper**       | Pure, stateless utilities                       | `CurrencyHelper::format()`, `AutoSlugHelper::generate()`                            |
 
 ```text
 Client → Controller → Service → Model ← Helper
@@ -244,29 +244,29 @@ app/
 
 ### 7.7 Controller Responsibilities
 
-| Method | What It Does | Example |
-| :--- | :--- | :--- |
-| `index()` | Calls `$service->paginate($filter)` → returns Inertia response | `ProdukController::index()` with search |
-| `create()` | Returns Inertia render for create form | `ProdukController::create()` |
-| `store(Request $request)` | Validates via Form Request → `$service->create($validated)` → redirects | `ProdukController::store()` |
-| `show($id)` | Calls `$service->findOrFail($id)` → returns Inertia response | `ProdukController::show()` |
-| `edit($id)` | Calls `$service->findOrFail($id)` → returns Inertia render for edit form | `ProdukController::edit()` |
-| `update(Request $request, $id)` | Validates → `$service->update($id, $validated)` → redirects | `ProdukController::update()` |
-| `destroy($id)` | Calls `$service->delete($id)` → redirects back | `ProdukController::destroy()` |
+| Method                          | What It Does                                                             | Example                                 |
+| :------------------------------ | :----------------------------------------------------------------------- | :-------------------------------------- |
+| `index()`                       | Calls `$service->paginate($filter)` → returns Inertia response           | `ProdukController::index()` with search |
+| `create()`                      | Returns Inertia render for create form                                   | `ProdukController::create()`            |
+| `store(Request $request)`       | Validates via Form Request → `$service->create($validated)` → redirects  | `ProdukController::store()`             |
+| `show($id)`                     | Calls `$service->findOrFail($id)` → returns Inertia response             | `ProdukController::show()`              |
+| `edit($id)`                     | Calls `$service->findOrFail($id)` → returns Inertia render for edit form | `ProdukController::edit()`              |
+| `update(Request $request, $id)` | Validates → `$service->update($id, $validated)` → redirects              | `ProdukController::update()`            |
+| `destroy($id)`                  | Calls `$service->delete($id)` → redirects back                           | `ProdukController::destroy()`           |
 
 **What NOT to put in controllers:** stock checks, price calculations, relationship traversals, notifications, audit logging, complex conditional queries — all go to Services.
 
 ### 7.8 Implemented vs Stub Controllers
 
-| Controller | Status | Notes |
-| :--- | :--- | :--- |
-| `ProdukController` | ✅ Implemented | Full CRUD with search, file upload |
-| `FormatifController` | ✅ Implemented | Full CRUD with `published()` method, file upload |
-| `InventarisController` | ✅ Implemented | Full CRUD with condition-based filtering |
-| `PenyewaanAlatController` | ✅ Implemented | Loan request workflow with approve/reject/return |
-| `KegiatanController` | ✅ Implemented | Status filter + upcoming query, SSE hooks |
-| `TransaksiController` | ⚠️ Stub | Empty — needs implementation |
-| `Admin\UserController` | ✅ Implemented | CRUD + FormRequests for hak-akses (BPH management) |
+| Controller                | Status         | Notes                                              |
+| :------------------------ | :------------- | :------------------------------------------------- |
+| `ProdukController`        | ✅ Implemented | Full CRUD with search, file upload                 |
+| `FormatifController`      | ✅ Implemented | Full CRUD with `published()` method, file upload   |
+| `InventarisController`    | ✅ Implemented | Full CRUD with condition-based filtering           |
+| `PenyewaanAlatController` | ✅ Implemented | Loan request workflow with approve/reject/return   |
+| `KegiatanController`      | ✅ Implemented | Status filter + upcoming query, SSE hooks          |
+| `TransaksiController`     | ⚠️ Stub        | Empty — needs implementation                       |
+| `Admin\UserController`    | ✅ Implemented | CRUD + FormRequests for hak-akses (BPH management) |
 
 ---
 
@@ -300,12 +300,12 @@ public function isBph(): bool
 
 ### 8.2 Available Roles
 
-| Role | Description | Access Level |
-| :--- | :--- | :--- |
-| `BPH` | Badan Pengurus Harian | Full access to all modules |
+| Role      | Description            | Access Level                            |
+| :-------- | :--------------------- | :-------------------------------------- |
+| `BPH`     | Badan Pengurus Harian  | Full access to all modules              |
 | `Infokom` | Informasi & Komunikasi | Content management (Formatif, Kegiatan) |
-| `Portal` | Portal Management | Inventory & equipment loans |
-| `Danus` | Dana Usaha | Shop & product management |
+| `Portal`  | Portal Management      | Inventory & equipment loans             |
+| `Danus`   | Dana Usaha             | Shop & product management               |
 
 ### 8.3 Authorization Strategy (Implemented)
 
@@ -322,6 +322,7 @@ Authorization layers are now implemented:
 ### 9.1 Service Layer Usage
 
 **When to use Service:**
+
 - Business logic that spans multiple models
 - Complex validation beyond Form Request rules
 - External API integrations
@@ -329,6 +330,7 @@ Authorization layers are now implemented:
 - Notification triggers
 
 **When NOT to use Service:**
+
 - Simple CRUD with no business rules (use `BaseService` directly)
 - Pure data transformation (use Model accessors/mutators)
 - Framework-level operations (use Laravel facades)
@@ -387,21 +389,22 @@ public function create(array $data): object
 
 ### 9.5 Error Handling
 
-| Scenario | Handling |
-| :--- | :--- |
-| Validation errors | Inertia handles automatically via Form Request |
-| Not found | `findOrFail()` throws `ModelNotFoundException` → 404 |
-| Unauthorized | **Implemented via Policies/Gates** — 403 thrown when `authorize()` fails |
-| Server errors | Global exception handler (`app/Exceptions/Handler.php`) |
+| Scenario          | Handling                                                                 |
+| :---------------- | :----------------------------------------------------------------------- |
+| Validation errors | Inertia handles automatically via Form Request                           |
+| Not found         | `findOrFail()` throws `ModelNotFoundException` → 404                     |
+| Unauthorized      | **Implemented via Policies/Gates** — 403 thrown when `authorize()` fails |
+| Server errors     | Global exception handler (`app/Exceptions/Handler.php`)                  |
 
 ### 9.6 Testing Strategy
 
-| Test Type | Location | Purpose |
-| :--- | :--- | :--- |
-| Feature Tests | `tests/Feature/` | HTTP-level tests for routes, controllers, auth flows |
-| Unit Tests | `tests/Unit/` | Isolated logic tests (rarely needed with Service Layer) |
+| Test Type     | Location         | Purpose                                                 |
+| :------------ | :--------------- | :------------------------------------------------------ |
+| Feature Tests | `tests/Feature/` | HTTP-level tests for routes, controllers, auth flows    |
+| Unit Tests    | `tests/Unit/`    | Isolated logic tests (rarely needed with Service Layer) |
 
 **Coverage targets (planned):**
+
 - All controllers: minimum 80% coverage
 - All services: minimum 90% coverage
 - Critical paths (auth, payments): 100% coverage
@@ -410,16 +413,17 @@ public function create(array $data): object
 
 ## 10. Known Issues & Technical Debt
 
-| Issue | Priority | Status |
-| :--- | :--- | :--- |
-| ~~RBAC middleware not implemented~~ | 🔴 High | **Done** — `EnsureAdminRole` + `admin` alias |
-| ~~No Policies for model authorization~~ | 🔴 High | **Done** — 5 Policies registered in `AppServiceProvider` |
-| `KegiatanController`, `TransaksiController` are stubs | 🟡 Medium | **Partially done** — KegiatanController implemented; TransaksiController still stub |
-| `TransaksiService` exists but not used | 🟡 Medium | **Needs integration** |
-| Missing empty/loading/error state documentation for data views | 🟡 Medium | **Planned** |
-| **Accessibility (antislop-human)**: Full checklist in §9.R of antislop-human skill | 🟡 Medium | **Planned** |
+| Issue                                                                              | Priority  | Status                                                                              |
+| :--------------------------------------------------------------------------------- | :-------- | :---------------------------------------------------------------------------------- |
+| ~~RBAC middleware not implemented~~                                                | 🔴 High   | **Done** — `EnsureAdminRole` + `admin` alias                                        |
+| ~~No Policies for model authorization~~                                            | 🔴 High   | **Done** — 5 Policies registered in `AppServiceProvider`                            |
+| `KegiatanController`, `TransaksiController` are stubs                              | 🟡 Medium | **Partially done** — KegiatanController implemented; TransaksiController still stub |
+| `TransaksiService` exists but not used                                             | 🟡 Medium | **Needs integration**                                                               |
+| Missing empty/loading/error state documentation for data views                     | 🟡 Medium | **Planned**                                                                         |
+| **Accessibility (antislop-human)**: Full checklist in §9.R of antislop-human skill | 🟡 Medium | **Planned**                                                                         |
 
 ---
+
 ## 11. Directory Structure (Actual)
 
 ---
@@ -551,14 +555,14 @@ himatif-nexus/
 
 One-way, backend-pushed notification channel scoped to **Kegiatan** (Activities) and **Informasi/Formatif** (Articles), stored in Cache per user.
 
-| Property | Value |
-| :--- | :--- |
-| Protocol | HTTP long-lived stream (`text/event-stream`) |
-| Direction | **Server → Client only** |
-| Transport | `Symfony\Component\HttpFoundation\StreamedResponse` |
-| External Dep | **None** (zero additional packages) |
+| Property       | Value                                                               |
+| :------------- | :------------------------------------------------------------------ |
+| Protocol       | HTTP long-lived stream (`text/event-stream`)                        |
+| Direction      | **Server → Client only**                                            |
+| Transport      | `Symfony\Component\HttpFoundation\StreamedResponse`                 |
+| External Dep   | **None** (zero additional packages)                                 |
 | Fallback store | Laravel Cache (`notifications_user_{userId}`, max 50 items, 7d TTL) |
-| Heartbeat | Initial ping + 3s poll loop over unread cache state |
+| Heartbeat      | Initial ping + 3s poll loop over unread cache state                 |
 
 ### 12.2 Endpoints
 
@@ -569,7 +573,6 @@ One-way, backend-pushed notification channel scoped to **Kegiatan** (Activities)
 
 `KegiatanService` and `FormatifService` push notifications via `SseNotificationService` in `afterCreate()` / `afterUpdate()`.
 
-
 ---
 
 ## 13. Role Development Triggers
@@ -578,15 +581,15 @@ Trigger keywords untuk memfokuskan AI agent ke context tertentu. Gunakan trigger
 
 ### 13.1 Trigger Keywords
 
-| Trigger | Role | Files Scope |
-|---|---|---|
-| `@shop` | Danus Shop | `app/Http/Controllers/DanusSHop/`, `app/Services/ProdukService.php`, `app/Models/Produk.php`, `resources/js/Pages/Shop/` |
-| `@infokom` | Infokom | `app/Http/Controllers/Infokom/`, `app/Services/FormatifService.php`, `app/Services/KegiatanService.php`, `resources/js/Pages/Blog/` |
-| `@portal` | Portal | `app/Http/Controllers/Portal/`, `app/Services/InventarisService.php`, `app/Services/PenyewaanAlatService.php`, `resources/js/Pages/Inventory/` |
-| `@admin` | Admin/BPH | `app/Http/Controllers/Admin/`, `app/Services/UserService.php`, `resources/js/Pages/Admin/` |
-| `@frontend` | Frontend Team | `resources/js/`, `resources/css/`, Vue components, Tailwind |
-| `@backend` | Backend Team | `app/Http/Controllers/`, `app/Services/`, `app/Models/`, `database/` |
-| `@recap` | Documentation / Graphify | `ARCHITECTURE.md`, `README.md`, `.ai/rules/` |
+| Trigger     | Role                     | Files Scope                                                                                                                                    |
+| ----------- | ------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------- |
+| `@shop`     | Danus Shop               | `app/Http/Controllers/DanusSHop/`, `app/Services/ProdukService.php`, `app/Models/Produk.php`, `resources/js/Pages/Shop/`                       |
+| `@infokom`  | Infokom                  | `app/Http/Controllers/Infokom/`, `app/Services/FormatifService.php`, `app/Services/KegiatanService.php`, `resources/js/Pages/Blog/`            |
+| `@portal`   | Portal                   | `app/Http/Controllers/Portal/`, `app/Services/InventarisService.php`, `app/Services/PenyewaanAlatService.php`, `resources/js/Pages/Inventory/` |
+| `@admin`    | Admin/BPH                | `app/Http/Controllers/Admin/`, `app/Services/UserService.php`, `resources/js/Pages/Admin/`                                                     |
+| `@frontend` | Frontend Team            | `resources/js/`, `resources/css/`, Vue components, Tailwind                                                                                    |
+| `@backend`  | Backend Team             | `app/Http/Controllers/`, `app/Services/`, `app/Models/`, `database/`                                                                           |
+| `@recap`    | Documentation / Graphify | `ARCHITECTURE.md`, `README.md`, `.ai/rules/`                                                                                                   |
 
 ### 13.2 Intelligent Detection
 
@@ -626,9 +629,9 @@ AI agent akan auto-detect context dari:
 
 ## 14. Changelog
 
-| Version | Date | Changes |
-| :--- | :--- | :--- |
-| 1.3 | 2026-11-09 | Added §12 SSE Notification System (Server-Sent Events) for Kegiatan & Informasi — one-way, zero external dep, `StreamedResponse` + Redis pub-sub/Cache fallback |
-| 1.2 | 2026-10-21 | Added §13 Role Development Triggers (@shop, @infokom, @portal, @admin, @frontend, @backend) |
-| 1.1 | 2026-10-21 | Fixed: PHP version (8.5), RBAC (custom not Spatie), migration status (all present), table names (singular), controller status (implemented vs stub) |
-| 1.0 | 2026-10-12 | Initial architecture documentation |
+| Version | Date       | Changes                                                                                                                                                         |
+| :------ | :--------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1.3     | 2026-11-09 | Added §12 SSE Notification System (Server-Sent Events) for Kegiatan & Informasi — one-way, zero external dep, `StreamedResponse` + Redis pub-sub/Cache fallback |
+| 1.2     | 2026-10-21 | Added §13 Role Development Triggers (@shop, @infokom, @portal, @admin, @frontend, @backend)                                                                     |
+| 1.1     | 2026-10-21 | Fixed: PHP version (8.5), RBAC (custom not Spatie), migration status (all present), table names (singular), controller status (implemented vs stub)             |
+| 1.0     | 2026-10-12 | Initial architecture documentation                                                                                                                              |

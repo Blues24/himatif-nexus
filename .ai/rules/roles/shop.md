@@ -1,12 +1,22 @@
 ---
 trigger: "@shop"
-keywords: ["produk", "shop", "danus", "stok", "harga", "keranjang", "transaksi", "produk_id"]
+keywords:
+    [
+        "produk",
+        "shop",
+        "danus",
+        "stok",
+        "harga",
+        "keranjang",
+        "transaksi",
+        "produk_id",
+    ]
 paths:
-  - "app/Http/Controllers/DanusSHop/**"
-  - "app/Services/ProdukService.php"
-  - "app/Models/Produk.php"
-  - "app/Models/ShopDetail.php"
-  - "resources/js/Pages/Shop/**"
+    - "app/Http/Controllers/DanusSHop/**"
+    - "app/Services/ProdukService.php"
+    - "app/Models/Produk.php"
+    - "app/Models/ShopDetail.php"
+    - "resources/js/Pages/Shop/**"
 ---
 
 # @shop — Danus Shop Role
@@ -17,16 +27,16 @@ Danus Shop module mengelola katalog produk, pricing, dan transaksi penjualan.
 
 ### Files Owned
 
-| File | Purpose |
-|---|---|
-| `app/Http/Controllers/DanusSHop/ProdukController.php` | Product CRUD controller |
-| `app/Services/ProdukService.php` | Business logic untuk produk |
-| `app/Models/Produk.php` | Product model |
-| `app/Models/ShopDetail.php` | Transaction line items |
-| `resources/js/Pages/Shop/Index.vue` | Product listing + search |
-| `resources/js/Pages/Shop/Show.vue` | Product detail |
-| `resources/js/Pages/Shop/Create.vue` | Add product form |
-| `resources/js/Pages/Shop/Edit.vue` | Edit product form |
+| File                                                  | Purpose                     |
+| ----------------------------------------------------- | --------------------------- |
+| `app/Http/Controllers/DanusSHop/ProdukController.php` | Product CRUD controller     |
+| `app/Services/ProdukService.php`                      | Business logic untuk produk |
+| `app/Models/Produk.php`                               | Product model               |
+| `app/Models/ShopDetail.php`                           | Transaction line items      |
+| `resources/js/Pages/Shop/Index.vue`                   | Product listing + search    |
+| `resources/js/Pages/Shop/Show.vue`                    | Product detail              |
+| `resources/js/Pages/Shop/Create.vue`                  | Add product form            |
+| `resources/js/Pages/Shop/Edit.vue`                    | Edit product form           |
 
 ## Conventions
 
@@ -37,12 +47,12 @@ Danus Shop module mengelola katalog produk, pricing, dan transaksi penjualan.
 class ProdukController extends Controller
 {
     public function __construct(private readonly ProdukService $service) {}
-    
+
     public function index(Request $request): Response
     {
         $search = $request->query('q', '');
         return Inertia::render('Shop/Index', [
-            'products' => fn () => filled($search) 
+            'products' => fn () => filled($search)
                 ? $this->service->search($search)->items()
                 : $this->service->paginate()->items(),
             'filters' => ['q' => $search],
@@ -70,7 +80,7 @@ class ProdukController extends Controller
 // Image upload convention
 if ($request->hasFile('gambar_produk')) {
     $data['gambar_produk'] = $request->file('gambar_produk')->store('produk', 'public');
-    
+
     // Delete old image on update
     if ($existing->gambar_produk && Storage::disk('public')->exists($existing->gambar_produk)) {
         Storage::disk('public')->delete($existing->gambar_produk);
@@ -106,26 +116,26 @@ $products = $this->service->search($query)->items();
 
 ### `produk` Table
 
-| Column | Type | Description |
-|---|---|---|
-| `produk_id` | bigint (PK) | Auto-increment primary key |
-| `nama_produk` | string | Product name |
-| `deskripsi_produk` | text | Product description |
-| `harga_produk` | decimal(15,2) | Price in IDR |
-| `stok_produk` | integer | Stock quantity (default: 0) |
-| `gambar_produk` | string (nullable) | Image path in storage |
-| `timestamps` | timestamp | created_at, updated_at |
+| Column             | Type              | Description                 |
+| ------------------ | ----------------- | --------------------------- |
+| `produk_id`        | bigint (PK)       | Auto-increment primary key  |
+| `nama_produk`      | string            | Product name                |
+| `deskripsi_produk` | text              | Product description         |
+| `harga_produk`     | decimal(15,2)     | Price in IDR                |
+| `stok_produk`      | integer           | Stock quantity (default: 0) |
+| `gambar_produk`    | string (nullable) | Image path in storage       |
+| `timestamps`       | timestamp         | created_at, updated_at      |
 
 ### `shop_details` Table
 
-| Column | Type | Description |
-|---|---|---|
-| `shop_detail_id` | bigint (PK) | Auto-increment |
-| `transaksi_id` | uuid (FK) | Reference to transaksi |
-| `produk_id` | bigint (FK) | Reference to produk |
-| `quantity` | integer | Quantity purchased |
-| `harga_satuan` | decimal(15,2) | Price at time of purchase |
-| `timestamps` | timestamp | created_at, updated_at |
+| Column           | Type          | Description               |
+| ---------------- | ------------- | ------------------------- |
+| `shop_detail_id` | bigint (PK)   | Auto-increment            |
+| `transaksi_id`   | uuid (FK)     | Reference to transaksi    |
+| `produk_id`      | bigint (FK)   | Reference to produk       |
+| `quantity`       | integer       | Quantity purchased        |
+| `harga_satuan`   | decimal(15,2) | Price at time of purchase |
+| `timestamps`     | timestamp     | created_at, updated_at    |
 
 ## Frontend Pages
 

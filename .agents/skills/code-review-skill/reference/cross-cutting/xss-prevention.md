@@ -8,11 +8,11 @@ Language-agnostic Cross-Site Scripting prevention strategies with cross-framewor
 
 XSS is ranked #3 in the OWASP Top 10 (2021, merged with Injection). Three variants:
 
-| Type | Description | Attack Vector |
-|------|-------------|---------------|
-| **Reflected** | Malicious script reflected off the server in the response | URL parameters, form submissions |
-| **Stored (Persistent)** | Malicious script stored in the database and served to users | Comments, profiles, messages |
-| **DOM-based** | Client-side JavaScript modifies the DOM unsafely | `innerHTML`, `document.write()`, `eval()` |
+| Type                    | Description                                                 | Attack Vector                             |
+| ----------------------- | ----------------------------------------------------------- | ----------------------------------------- |
+| **Reflected**           | Malicious script reflected off the server in the response   | URL parameters, form submissions          |
+| **Stored (Persistent)** | Malicious script stored in the database and served to users | Comments, profiles, messages              |
+| **DOM-based**           | Client-side JavaScript modifies the DOM unsafely            | `innerHTML`, `document.write()`, `eval()` |
 
 ## Universal Prevention Strategy
 
@@ -72,14 +72,14 @@ useEffect(() => {
 ```
 
 ```typescript
-import DOMPurify from 'dompurify';
+import DOMPurify from "dompurify";
 
 export default {
-  methods: {
-    sanitized(input: string): string {
-      return DOMPurify.sanitize(input);
-    }
-  }
+    methods: {
+        sanitized(input: string): string {
+            return DOMPurify.sanitize(input);
+        },
+    },
 };
 
 // ❌ v-bind:href with javascript: protocol
@@ -148,7 +148,7 @@ return HttpResponse(mark_safe(f"<p>{escape(user_bio)}</p>"))
 const html = `<div>${userInput}</div>`;
 
 // ✅ Always escape server-side rendered content
-import escapeHtml from 'escape-html';
+import escapeHtml from "escape-html";
 const html = `<div>${escapeHtml(userInput)}</div>`;
 
 // ❌ JSON serialization without escaping
@@ -157,8 +157,8 @@ const json = JSON.stringify({ name: userInput });
 
 // ✅ JSON in HTML: escape < and >
 const safe = JSON.stringify({ name: userInput })
-  .replace(/</g, '\\u003c')
-  .replace(/>/g, '\\u003e');
+    .replace(/</g, "\\u003c")
+    .replace(/>/g, "\\u003e");
 ```
 
 ---
@@ -182,25 +182,27 @@ Content-Security-Policy:
 
 ```typescript
 // ✅ Express middleware
-import helmet from 'helmet';
+import helmet from "helmet";
 
-app.use(helmet.contentSecurityPolicy({
-  directives: {
-    defaultSrc: ["'self'"],
-    scriptSrc: ["'self'", "'nonce-{random}'"],
-    styleSrc: ["'self'", "'unsafe-inline'"],
-    objectSrc: ["'none'"],
-    baseUri: ["'self'"],
-    formAction: ["'self'"],
-    frameAncestors: ["'none'"],
-  },
-}));
+app.use(
+    helmet.contentSecurityPolicy({
+        directives: {
+            defaultSrc: ["'self'"],
+            scriptSrc: ["'self'", "'nonce-{random}'"],
+            styleSrc: ["'self'", "'unsafe-inline'"],
+            objectSrc: ["'none'"],
+            baseUri: ["'self'"],
+            formAction: ["'self'"],
+            frameAncestors: ["'none'"],
+        },
+    }),
+);
 ```
 
 ```html
 <!-- ✅ CSP nonce in script tags -->
 <script nonce="{random}">
-  // Allowed by CSP
+    // Allowed by CSP
 </script>
 
 <!-- ❌ Inline event handlers (blocked by CSP without 'unsafe-inline') -->
@@ -208,11 +210,12 @@ app.use(helmet.contentSecurityPolicy({
 
 <!-- ✅ Event listeners in JS with nonce -->
 <script nonce="{random}">
-  document.getElementById('btn').addEventListener('click', doSomething);
+    document.getElementById("btn").addEventListener("click", doSomething);
 </script>
 ```
 
 **CSP anti-patterns to avoid:**
+
 - `script-src 'unsafe-inline'` without nonce/hash
 - `script-src 'unsafe-eval'` (enables `eval()`)
 - `default-src *` (allows loading from any origin)
@@ -222,10 +225,10 @@ app.use(helmet.contentSecurityPolicy({
 
 ## Input Validation vs Output Encoding
 
-| Layer | What | When | Example |
-|-------|------|------|---------|
-| **Input validation** | Reject/clean data on entry | At API boundary | Reject `<script>` in a name field |
-| **Output encoding** | Encode data for render context | At render time | `&lt;script&gt;` in HTML |
+| Layer                | What                           | When            | Example                           |
+| -------------------- | ------------------------------ | --------------- | --------------------------------- |
+| **Input validation** | Reject/clean data on entry     | At API boundary | Reject `<script>` in a name field |
+| **Output encoding**  | Encode data for render context | At render time  | `&lt;script&gt;` in HTML          |
 
 **Rule**: Input validation is a convenience (reject obviously bad data). Output encoding is the security boundary. Never rely on input validation alone.
 

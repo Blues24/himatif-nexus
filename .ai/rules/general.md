@@ -1,14 +1,16 @@
 ---
 paths:
-  - '**/*'
+    - "**/*"
 ---
 
 # General
 
 ## MANDATORY: Read ARCHITECTURE.md on every prompt
+
 CRITICAL: Before responding to ANY prompt or starting ANY task, you MUST read ARCHITECTURE.md first. This is non-negotiable.
 
 ARCHITECTURE.md contains:
+
 - Current tech stack (PHP 8.5, Laravel 13.35, Inertia v2, Vue 3)
 - Database schema with actual table names (singular: kegiatan, transaksi, produk, inventaris_alat, penyewaan_alats)
 - RBAC: Custom implementation (NOT Spatie) with User::role(), hasRole(), isBph()
@@ -28,15 +30,15 @@ When you detect a trigger keyword in the user's prompt, you MUST:
 
 ### Trigger Keywords
 
-| Trigger | Role | Keywords |
-|---|---|---|
-| `@shop` | Danus Shop | produk, shop, danus, stok, harga, keranjang, transaksi |
-| `@infokom` | Infokom | formatif, blog, kegiatan, artikel, puck |
-| `@portal` | Portal | inventaris, peminjaman, alat, pinjam, kembali, approve, reject |
-| `@admin` | Admin/BPH | admin, bph, user, role, permission, access, management |
-| `@frontend` | Frontend Team | vue, component, tailwind, css, ui, layout, page, form |
-| `@backend` | Backend Team | controller, service, model, migration, route, request, database |
-| `@recap` | Documentation / Graphify | architecture, documentation, recap, graphify, summarize |
+| Trigger     | Role                     | Keywords                                                        |
+| ----------- | ------------------------ | --------------------------------------------------------------- |
+| `@shop`     | Danus Shop               | produk, shop, danus, stok, harga, keranjang, transaksi          |
+| `@infokom`  | Infokom                  | formatif, blog, kegiatan, artikel, puck                         |
+| `@portal`   | Portal                   | inventaris, peminjaman, alat, pinjam, kembali, approve, reject  |
+| `@admin`    | Admin/BPH                | admin, bph, user, role, permission, access, management          |
+| `@frontend` | Frontend Team            | vue, component, tailwind, css, ui, layout, page, form           |
+| `@backend`  | Backend Team             | controller, service, model, migration, route, request, database |
+| `@recap`    | Documentation / Graphify | architecture, documentation, recap, graphify, summarize         |
 
 ### Intelligent Detection
 

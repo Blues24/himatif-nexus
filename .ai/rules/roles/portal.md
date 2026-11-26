@@ -1,13 +1,24 @@
 ---
 trigger: "@portal"
-keywords: ["inventaris", "peminjaman", "alat", "penyewaan", "pinjam", "kembali", "approve", "reject", "inventaris_id"]
+keywords:
+    [
+        "inventaris",
+        "peminjaman",
+        "alat",
+        "penyewaan",
+        "pinjam",
+        "kembali",
+        "approve",
+        "reject",
+        "inventaris_id",
+    ]
 paths:
-  - "app/Http/Controllers/Portal/**"
-  - "app/Services/InventarisService.php"
-  - "app/Services/PenyewaanAlatService.php"
-  - "app/Models/Inventaris.php"
-  - "app/Models/PenyewaanAlat.php"
-  - "resources/js/Pages/Inventory/**"
+    - "app/Http/Controllers/Portal/**"
+    - "app/Services/InventarisService.php"
+    - "app/Services/PenyewaanAlatService.php"
+    - "app/Models/Inventaris.php"
+    - "app/Models/PenyewaanAlat.php"
+    - "resources/js/Pages/Inventory/**"
 ---
 
 # @portal — Portal Role
@@ -18,19 +29,19 @@ Portal module mengelola inventaris alat dan peminjaman/pengembalian peralatan or
 
 ### Files Owned
 
-| File | Purpose |
-|---|---|
-| `app/Http/Controllers/Portal/InventarisController.php` | Inventory CRUD controller |
+| File                                                      | Purpose                            |
+| --------------------------------------------------------- | ---------------------------------- |
+| `app/Http/Controllers/Portal/InventarisController.php`    | Inventory CRUD controller          |
 | `app/Http/Controllers/Portal/PenyewaanAlatController.php` | Equipment loan workflow controller |
-| `app/Services/InventarisService.php` | Business logic untuk inventaris |
-| `app/Services/PenyewaanAlatService.php` | Business logic untuk peminjaman |
-| `app/Models/Inventaris.php` | Inventory model |
-| `app/Models/PenyewaanAlat.php` | Loan request model |
-| `resources/js/Pages/Inventory/Index.vue` | Inventory listing |
-| `resources/js/Pages/Inventory/Create.vue` | Add inventory form |
-| `resources/js/Pages/Inventory/Edit.vue` | Edit inventory form |
-| `resources/js/Pages/Inventory/Loans.vue` | Loan requests listing |
-| `resources/js/Pages/Inventory/LoanCreate.vue` | Create loan request form |
+| `app/Services/InventarisService.php`                      | Business logic untuk inventaris    |
+| `app/Services/PenyewaanAlatService.php`                   | Business logic untuk peminjaman    |
+| `app/Models/Inventaris.php`                               | Inventory model                    |
+| `app/Models/PenyewaanAlat.php`                            | Loan request model                 |
+| `resources/js/Pages/Inventory/Index.vue`                  | Inventory listing                  |
+| `resources/js/Pages/Inventory/Create.vue`                 | Add inventory form                 |
+| `resources/js/Pages/Inventory/Edit.vue`                   | Edit inventory form                |
+| `resources/js/Pages/Inventory/Loans.vue`                  | Loan requests listing              |
+| `resources/js/Pages/Inventory/LoanCreate.vue`             | Create loan request form           |
 
 ## Conventions
 
@@ -91,26 +102,26 @@ Actions:
 
 ### `inventaris_alat` Table
 
-| Column | Type | Description |
-|---|---|---|
-| `inventaris_id` | bigint (PK) | Auto-increment |
-| `nama_barang` | string | Item name |
-| `stok` | integer (default: 0) | Stock quantity |
-| `kondisi` | string (default: 'baik') | 'baik', 'rusak', 'hilang' |
-| `timestamps` | timestamp | created_at, updated_at |
+| Column          | Type                     | Description               |
+| --------------- | ------------------------ | ------------------------- |
+| `inventaris_id` | bigint (PK)              | Auto-increment            |
+| `nama_barang`   | string                   | Item name                 |
+| `stok`          | integer (default: 0)     | Stock quantity            |
+| `kondisi`       | string (default: 'baik') | 'baik', 'rusak', 'hilang' |
+| `timestamps`    | timestamp                | created_at, updated_at    |
 
 ### `penyewaan_alats` Table
 
-| Column | Type | Description |
-|---|---|---|
-| `id` | bigint (PK) | Auto-increment |
-| `inventaris_alat_id` | bigint (FK) | Reference to inventaris_alat |
-| `user_id` | uuid (FK) | Borrower reference to users |
-| `jumlah_pinjam` | integer | Quantity borrowed |
-| `tanggal_pinjam` | date | Borrow date |
-| `tanggal_kembali` | date (nullable) | Return date |
-| `status` | string (default: 'pending') | 'pending', 'approve', 'reject', 'returned' |
-| `timestamps` | timestamp | created_at, updated_at |
+| Column               | Type                        | Description                                |
+| -------------------- | --------------------------- | ------------------------------------------ |
+| `id`                 | bigint (PK)                 | Auto-increment                             |
+| `inventaris_alat_id` | bigint (FK)                 | Reference to inventaris_alat               |
+| `user_id`            | uuid (FK)                   | Borrower reference to users                |
+| `jumlah_pinjam`      | integer                     | Quantity borrowed                          |
+| `tanggal_pinjam`     | date                        | Borrow date                                |
+| `tanggal_kembali`    | date (nullable)             | Return date                                |
+| `status`             | string (default: 'pending') | 'pending', 'approve', 'reject', 'returned' |
+| `timestamps`         | timestamp                   | created_at, updated_at                     |
 
 ## Common Tasks
 

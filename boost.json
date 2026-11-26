@@ -1,8 +1,5 @@
 {
-    "agents": [
-        "claude_code",
-        "opencode"
-    ],
+    "agents": ["claude_code", "opencode"],
     "cloud": true,
     "guidelines": true,
     "mcp": true,

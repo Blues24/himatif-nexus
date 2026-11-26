@@ -25,22 +25,26 @@
 ```typescript
 // ❌ 可变状态 + OnPush = 界面不更新
 @Component({
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  template: `<p>{{ data.name }}</p>`,
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    template: `<p>{{ data.name }}</p>`,
 })
 export class UserProfile {
-  data = { name: 'Alice' };
-  changeName() { this.data.name = 'Bob'; } // UI 不会更新！
+    data = { name: "Alice" };
+    changeName() {
+        this.data.name = "Bob";
+    } // UI 不会更新！
 }
 
 // ✅ Signal + OnPush = 自动变更检测
 @Component({
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  template: `<p>{{ name() }}</p>`,
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    template: `<p>{{ name() }}</p>`,
 })
 export class UserProfile {
-  name = signal('Alice');
-  changeName() { this.name.set('Bob'); } // 自动触发 CD
+    name = signal("Alice");
+    changeName() {
+        this.name.set("Bob");
+    } // 自动触发 CD
 }
 ```
 
@@ -60,18 +64,18 @@ updateConfig() { this.config = { ...this.config, theme: 'dark' }; }
 ```typescript
 // ❌ effect 用于同步状态——反模式，可能触发额外 CD 周期
 export class CartComponent {
-  total = signal(0);
-  discounted = signal(0);
+    total = signal(0);
+    discounted = signal(0);
 
-  constructor() {
-    effect(() => this.discounted.set(this.total() * 0.9));
-  }
+    constructor() {
+        effect(() => this.discounted.set(this.total() * 0.9));
+    }
 }
 
 // ✅ computed 用于派生状态——惰性计算，无副作用
 export class CartComponent {
-  total = signal(0);
-  discounted = computed(() => this.total() * 0.9);
+    total = signal(0);
+    discounted = computed(() => this.total() * 0.9);
 }
 ```
 
@@ -80,15 +84,15 @@ export class CartComponent {
 ```typescript
 // ❌ await 之后读取 Signal——依赖未被追踪
 effect(async () => {
-  const data = await fetchUserData();
-  console.log(`Theme: ${theme()}`); // theme() 未被追踪！
+    const data = await fetchUserData();
+    console.log(`Theme: ${theme()}`); // theme() 未被追踪！
 });
 
 // ✅ 在 await 之前同步读取
 effect(async () => {
-  const currentTheme = theme(); // 同步读取，被追踪
-  const data = await fetchUserData();
-  console.log(`Theme: ${currentTheme}`);
+    const currentTheme = theme(); // 同步读取，被追踪
+    const data = await fetchUserData();
+    console.log(`Theme: ${currentTheme}`);
 });
 ```
 
@@ -96,14 +100,16 @@ effect(async () => {
 
 ```typescript
 // ❌ 用 effect 同步两个 Signal——永远用 computed
-effect(() => { this.filtered.set(this.items().filter(i => i.active)); });
+effect(() => {
+    this.filtered.set(this.items().filter((i) => i.active));
+});
 
 // ✅ effect 的合理场景：DOM 操作、分析日志、订阅外部源
 effect(() => {
-  const canvas = this.canvasRef.nativeElement;
-  const ctx = canvas.getContext('2d');
-  ctx.fillStyle = this.color();
-  ctx.fillRect(0, 0, this.size(), this.size());
+    const canvas = this.canvasRef.nativeElement;
+    const ctx = canvas.getContext("2d");
+    ctx.fillStyle = this.color();
+    ctx.fillRect(0, 0, this.size(), this.size());
 });
 
 // 💡 "There are no situations where effect is good,
@@ -119,16 +125,16 @@ effect(() => {
 ```typescript
 // ❌ Legacy NgModule 组件
 @Component({
-  selector: 'old-component',
-  standalone: false,
+    selector: "old-component",
+    standalone: false,
 })
 export class OldComponent {}
 
 // ✅ 现代 Standalone 组件（Angular 19+ standalone 是默认值）
 @Component({
-  selector: 'user-profile',
-  imports: [ProfilePhoto, RouterLink],
-  template: `<profile-photo /><a routerLink="/edit">Edit</a>`,
+    selector: "user-profile",
+    imports: [ProfilePhoto, RouterLink],
+    template: `<profile-photo /><a routerLink="/edit">Edit</a>`,
 })
 export class UserProfile {}
 ```
@@ -155,31 +161,33 @@ export class UserProfile {}
 
 ```typescript
 // ❌ 裸 subscribe——内存泄漏！组件销毁后仍继续接收数据
-@Component({ /* ... */ })
+@Component({/* ... */})
 export class UserProfile implements OnInit {
-  ngOnInit() {
-    this.data$.subscribe(data => this.processData(data));
-  }
+    ngOnInit() {
+        this.data$.subscribe((data) => this.processData(data));
+    }
 }
 
 // ✅ takeUntilDestroyed——自动在组件销毁时取消（需在构造函数或注入上下文中调用）
-@Component({ /* ... */ })
+@Component({/* ... */})
 export class UserProfile {
-  constructor() {
-    this.data$.pipe(takeUntilDestroyed()).subscribe(data => {
-      this.processData(data);
-    });
-  }
+    constructor() {
+        this.data$.pipe(takeUntilDestroyed()).subscribe((data) => {
+            this.processData(data);
+        });
+    }
 }
 
 // ✅ 在构造函数外使用——传入 DestroyRef
-@Component({ /* ... */ })
+@Component({/* ... */})
 export class UserProfile {
-  private destroyRef = inject(DestroyRef);
+    private destroyRef = inject(DestroyRef);
 
-  startListening() {
-    this.data$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(/* ... */);
-  }
+    startListening() {
+        this.data$
+            .pipe(takeUntilDestroyed(this.destroyRef))
+            .subscribe(/* ... */);
+    }
 }
 ```
 
@@ -188,14 +196,14 @@ export class UserProfile {
 ```typescript
 // ❌ AsyncPipe——需要导入，模板中有 | async
 @Component({
-  imports: [AsyncPipe],
-  template: `{{ data$ | async }}`,
+    imports: [AsyncPipe],
+    template: `{{ data$ | async }}`,
 })
 
 // ✅ toSignal——自动取消订阅，可在任何地方使用
 export class UserProfile {
-  data = toSignal(this.data$, { initialValue: null });
-  // 模板直接用 data()
+    data = toSignal(this.data$, { initialValue: null });
+    // 模板直接用 data()
 }
 ```
 
@@ -220,15 +228,19 @@ data = toSignal(this.http.get('/api/data'), { initialValue: null });
 ```typescript
 // ❌ Zoneless 下普通属性赋值不触发 CD
 export class UserService {
-  user: User | null = null;
-  loadUser() { this.user = fetchResult; } // 不触发！
+    user: User | null = null;
+    loadUser() {
+        this.user = fetchResult;
+    } // 不触发！
 }
 
 // ✅ Signal 自动触发 CD
 export class UserService {
-  private _user = signal<User | null>(null);
-  readonly user = this._user.asReadonly();
-  loadUser() { this._user.set(fetchResult); }
+    private _user = signal<User | null>(null);
+    readonly user = this._user.asReadonly();
+    loadUser() {
+        this._user.set(fetchResult);
+    }
 }
 ```
 
@@ -236,31 +248,37 @@ export class UserService {
 
 ```typescript
 // ❌ NgZone.onStable 在 zoneless 中永远不会触发
-ngZone.onStable.subscribe(() => { /* 永远不触发 */ });
+ngZone.onStable.subscribe(() => {
+    /* 永远不触发 */
+});
 
 // ✅ 使用 afterNextRender
-afterNextRender({ write: () => { /* CD 之后执行 */ } });
+afterNextRender({
+    write: () => {
+        /* CD 之后执行 */
+    },
+});
 ```
 
 ### Reactive Forms 变异需要 markForCheck
 
 ```typescript
 // ❌ Reactive Forms 的 setValue/patchValue 在 zoneless 中不自动调度 CD
-this.form.patchValue({ name: 'Alice' }); // UI 可能不更新
+this.form.patchValue({ name: "Alice" }); // UI 可能不更新
 
 // ✅ 手动标记或通过 Signal 反映
-this.form.patchValue({ name: 'Alice' });
+this.form.patchValue({ name: "Alice" });
 this.cdr.markForCheck();
 ```
 
 ### Zoneless 下有效的 CD 触发器
 
-| 触发器 | 说明 |
-|--------|------|
-| `signal.set()` / `.update()` | Signal 更新自动触发 |
-| `ChangeDetectorRef.markForCheck()` | 手动标记 |
-| `ComponentRef.setInput()` | 输入绑定 |
-| 模板事件监听器回调 | 用户交互 |
+| 触发器                             | 说明                |
+| ---------------------------------- | ------------------- |
+| `signal.set()` / `.update()`       | Signal 更新自动触发 |
+| `ChangeDetectorRef.markForCheck()` | 手动标记            |
+| `ComponentRef.setInput()`          | 输入绑定            |
+| 模板事件监听器回调                 | 用户交互            |
 
 ---
 
@@ -270,22 +288,24 @@ this.cdr.markForCheck();
 
 ```typescript
 // ❌ 模板中复杂表达式
-template: `<div *ngIf="items.filter(i => i.active).length > 0 && user.role === 'admin'">`
+template: `<div *ngIf="items.filter(i => i.active).length > 0 && user.role === 'admin'">`;
 
 // ✅ 提取为 computed
-filteredItems = computed(() => this.items().filter(i => i.active));
-shouldShow = computed(() => this.filteredItems().length > 0 && this.user().role === 'admin');
-template: `@if (shouldShow()) { <div>...</div> }`
+filteredItems = computed(() => this.items().filter((i) => i.active));
+shouldShow = computed(
+    () => this.filteredItems().length > 0 && this.user().role === "admin",
+);
+template: `@if (shouldShow()) { <div>...</div> }`;
 ```
 
 ### 原生绑定优于 NgClass / NgStyle
 
 ```typescript
 // ❌ NgClass/NgStyle——额外指令开销
-template: `<div [ngClass]="{active: isActive}" [ngStyle]="{'color': textColor}">`
+template: `<div [ngClass]="{active: isActive}" [ngStyle]="{'color': textColor}">`;
 
 // ✅ 原生 class/style 绑定——性能更好
-template: `<div [class.active]="isActive" [style.color]="textColor">`
+template: `<div [class.active]="isActive" [style.color]="textColor">`;
 ```
 
 ### 模板专用成员标记 protected
@@ -293,12 +313,16 @@ template: `<div [class.active]="isActive" [style.color]="textColor">`
 ```typescript
 // ❂ 模板专用方法暴露为 public
 export class UserProfile {
-  formatName(name: string) { return name.trim(); }
+    formatName(name: string) {
+        return name.trim();
+    }
 }
 
 // ✅ 模板专用成员用 protected
 export class UserProfile {
-  protected formatName(name: string) { return name.trim(); }
+    protected formatName(name: string) {
+        return name.trim();
+    }
 }
 ```
 
@@ -319,10 +343,10 @@ readonly userName = model<string>();
 
 ```typescript
 // ❌ 以事件命名
-template: `<button (click)="handleClick()">Save</button>`
+template: `<button (click)="handleClick()">Save</button>`;
 
 // ✅ 以操作命名
-template: `<button (click)="saveUserData()">Save</button>`
+template: `<button (click)="saveUserData()">Save</button>`;
 ```
 
 ---
@@ -334,11 +358,11 @@ template: `<button (click)="saveUserData()">Save</button>`
 ```typescript
 // ❌ effect 用于状态同步——触发额外 CD，可能无限循环
 effect(() => {
-  this.filteredItems.set(this.items().filter(i => i.active));
+    this.filteredItems.set(this.items().filter((i) => i.active));
 });
 
 // ✅ computed——惰性计算，无副作用，无额外 CD
-filteredItems = computed(() => this.items().filter(i => i.active));
+filteredItems = computed(() => this.items().filter((i) => i.active));
 ```
 
 ### afterRenderEffect 分离读写阶段
@@ -346,15 +370,17 @@ filteredItems = computed(() => this.items().filter(i => i.active));
 ```typescript
 // ❌ 无阶段指定 = mixedReadWrite = 额外 DOM 回流
 afterRenderEffect(() => {
-  const height = el.offsetHeight; // 读
-  el.style.height = height + 10 + 'px'; // 写
+    const height = el.offsetHeight; // 读
+    el.style.height = height + 10 + "px"; // 写
 });
 
 // ✅ 分离阶段减少回流
 afterRenderEffect({
-  earlyRead: () => el.offsetHeight,
-  write: (height) => { el.style.height = height() + 10 + 'px'; },
-  read: () => verifyLayout(),
+    earlyRead: () => el.offsetHeight,
+    write: (height) => {
+        el.style.height = height() + 10 + "px";
+    },
+    read: () => verifyLayout(),
 });
 ```
 
@@ -363,18 +389,18 @@ afterRenderEffect({
 ```typescript
 // ❌ 构造函数注入——多依赖时难以阅读
 export class UserService {
-  constructor(
-    private http: HttpClient,
-    private router: Router,
-    private auth: AuthService,
-  ) {}
+    constructor(
+        private http: HttpClient,
+        private router: Router,
+        private auth: AuthService,
+    ) {}
 }
 
 // ✅ inject()——更好的类型推断和可读性
 export class UserService {
-  private http = inject(HttpClient);
-  private router = inject(Router);
-  private auth = inject(AuthService);
+    private http = inject(HttpClient);
+    private router = inject(Router);
+    private auth = inject(AuthService);
 }
 ```
 
@@ -389,32 +415,34 @@ export class UserService {
 ```typescript
 // ✅ 独立组件测试
 @Component({
-  standalone: true,
-  template: `<button (click)="increment()">{{ count() }}</button>`,
+    standalone: true,
+    template: `<button (click)="increment()">{{ count() }}</button>`,
 })
 export class CounterComponent {
-  count = signal(0);
-  increment() { this.count.update(c => c + 1); }
+    count = signal(0);
+    increment() {
+        this.count.update((c) => c + 1);
+    }
 }
 
-describe('CounterComponent', () => {
-  let fixture: ComponentFixture<CounterComponent>;
+describe("CounterComponent", () => {
+    let fixture: ComponentFixture<CounterComponent>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [CounterComponent],
-    }).compileComponents();
+    beforeEach(async () => {
+        await TestBed.configureTestingModule({
+            imports: [CounterComponent],
+        }).compileComponents();
 
-    fixture = TestBed.createComponent(CounterComponent);
-    fixture.detectChanges();
-  });
+        fixture = TestBed.createComponent(CounterComponent);
+        fixture.detectChanges();
+    });
 
-  it('should increment on click', () => {
-    const button = fixture.nativeElement.querySelector('button');
-    button.click();
-    fixture.detectChanges();
-    expect(button.textContent.trim()).toBe('1');
-  });
+    it("should increment on click", () => {
+        const button = fixture.nativeElement.querySelector("button");
+        button.click();
+        fixture.detectChanges();
+        expect(button.textContent.trim()).toBe("1");
+    });
 });
 ```
 
@@ -422,39 +450,39 @@ describe('CounterComponent', () => {
 
 ```typescript
 // ✅ 使用 TestBed.inject + provide 覆盖
-@Injectable({ providedIn: 'root' })
+@Injectable({ providedIn: "root" })
 export class UserService {
-  private http = inject(HttpClient);
-  getUser(id: number) {
-    return this.http.get<User>(`/api/users/${id}`);
-  }
+    private http = inject(HttpClient);
+    getUser(id: number) {
+        return this.http.get<User>(`/api/users/${id}`);
+    }
 }
 
-describe('UserService', () => {
-  let service: UserService;
-  let httpMock: HttpTestingController;
+describe("UserService", () => {
+    let service: UserService;
+    let httpMock: HttpTestingController;
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({
-      providers: [provideHttpClient(), provideHttpClientTesting()],
-    });
-    service = TestBed.inject(UserService);
-    httpMock = TestBed.inject(HttpTestingController);
-  });
-
-  afterEach(() => httpMock.verify());
-
-  it('should fetch user', () => {
-    const mockUser = { id: 1, name: 'Alice' };
-
-    service.getUser(1).subscribe(user => {
-      expect(user).toEqual(mockUser);
+    beforeEach(() => {
+        TestBed.configureTestingModule({
+            providers: [provideHttpClient(), provideHttpClientTesting()],
+        });
+        service = TestBed.inject(UserService);
+        httpMock = TestBed.inject(HttpTestingController);
     });
 
-    const req = httpMock.expectOne('/api/users/1');
-    expect(req.request.method).toBe('GET');
-    req.flush(mockUser);
-  });
+    afterEach(() => httpMock.verify());
+
+    it("should fetch user", () => {
+        const mockUser = { id: 1, name: "Alice" };
+
+        service.getUser(1).subscribe((user) => {
+            expect(user).toEqual(mockUser);
+        });
+
+        const req = httpMock.expectOne("/api/users/1");
+        expect(req.request.method).toBe("GET");
+        req.flush(mockUser);
+    });
 });
 ```
 
@@ -462,28 +490,24 @@ describe('UserService', () => {
 
 ```typescript
 // ❌ 过度 Mock——测试的是 Mock 而非真实行为
-provideHttpClient: () => ({
-  get: jasmine.createSpy().and.returnValue(of(mockData)),
+provideHttpClient: (() => ({
+    get: jasmine.createSpy().and.returnValue(of(mockData)),
 }),
-
-// ✅ 使用 HttpTestingController 验证真实 HTTP 交互
-TestBed.configureTestingModule({
-  providers: [
-    provideHttpClient(),
-    provideHttpClientTesting(),
-  ],
-});
+    // ✅ 使用 HttpTestingController 验证真实 HTTP 交互
+    TestBed.configureTestingModule({
+        providers: [provideHttpClient(), provideHttpClientTesting()],
+    }));
 
 // ✅ 浅渲染：只测试组件本身，Mock 子组件
-describe('UserProfile', () => {
-  it('should pass user to child', () => {
-    const fixture = TestBed.createComponent(UserProfile);
-    fixture.componentRef.setInput('user', testUser);
-    fixture.detectChanges();
+describe("UserProfile", () => {
+    it("should pass user to child", () => {
+        const fixture = TestBed.createComponent(UserProfile);
+        fixture.componentRef.setInput("user", testUser);
+        fixture.detectChanges();
 
-    const child = fixture.debugElement.query(By.directive(UserAvatar));
-    expect(child.componentInstance.user()).toEqual(testUser);
-  });
+        const child = fixture.debugElement.query(By.directive(UserAvatar));
+        expect(child.componentInstance.user()).toEqual(testUser);
+    });
 });
 ```
 
@@ -496,23 +520,23 @@ describe('UserProfile', () => {
 ```typescript
 // ✅ 函数式路由守卫（Angular 15+ 推荐）
 export const authGuard: CanActivateFn = (route, state) => {
-  const auth = inject(AuthService);
-  const router = inject(Router);
+    const auth = inject(AuthService);
+    const router = inject(Router);
 
-  if (auth.isAuthenticated()) return true;
+    if (auth.isAuthenticated()) return true;
 
-  return router.createUrlTree(['/login'], {
-    queryParams: { returnUrl: state.url },
-  });
+    return router.createUrlTree(["/login"], {
+        queryParams: { returnUrl: state.url },
+    });
 };
 
 // 使用
 export const routes: Routes = [
-  {
-    path: 'dashboard',
-    component: DashboardComponent,
-    canActivate: [authGuard],
-  },
+    {
+        path: "dashboard",
+        component: DashboardComponent,
+        canActivate: [authGuard],
+    },
 ];
 ```
 
@@ -522,17 +546,17 @@ export const routes: Routes = [
 // ✅ 守卫在路由加载时才被解析
 // auth.guard.ts
 export const authGuard: CanActivateFn = () => {
-  const auth = inject(AuthService);
-  return auth.isAuthenticated();
+    const auth = inject(AuthService);
+    return auth.isAuthenticated();
 };
 
 // routes.ts
 export const routes: Routes = [
-  {
-    path: 'admin',
-    loadChildren: () => import('./admin/routes').then(m => m.routes),
-    canActivate: [authGuard],
-  },
+    {
+        path: "admin",
+        loadChildren: () => import("./admin/routes").then((m) => m.routes),
+        canActivate: [authGuard],
+    },
 ];
 ```
 
@@ -561,12 +585,12 @@ export function roleGuard(allowedRoles: string[]): CanActivateFn {
 ```typescript
 // ✅ 防止未保存修改的导航离开
 export const unsavedChangesGuard: CanDeactivateFn<EditFormComponent> = (
-  component
+    component,
 ) => {
-  if (component.hasUnsavedChanges()) {
-    return confirm('You have unsaved changes. Leave anyway?');
-  }
-  return true;
+    if (component.hasUnsavedChanges()) {
+        return confirm("You have unsaved changes. Leave anyway?");
+    }
+    return true;
 };
 ```
 
@@ -618,25 +642,25 @@ export class MyComponent {
 ```typescript
 // ✅ 根据条件动态提供不同实现
 export const themeProvider: FactoryProvider = {
-  provide: ThemeService,
-  useFactory: () => {
-    const platform = inject(PLATFORM_ID);
-    if (isPlatformServer(platform)) {
-      return new ServerThemeService();
-    }
-    return new BrowserThemeService();
-  },
+    provide: ThemeService,
+    useFactory: () => {
+        const platform = inject(PLATFORM_ID);
+        if (isPlatformServer(platform)) {
+            return new ServerThemeService();
+        }
+        return new BrowserThemeService();
+    },
 };
 
 // ✅ 使用环境变量配置
 export const apiConfigProvider: FactoryProvider = {
-  provide: ApiConfig,
-  useFactory: () => {
-    const env = inject(ENVIRONMENT);
-    return env.production
-      ? new ProductionApiConfig()
-      : new DevelopmentApiConfig();
-  },
+    provide: ApiConfig,
+    useFactory: () => {
+        const env = inject(ENVIRONMENT);
+        return env.production
+            ? new ProductionApiConfig()
+            : new DevelopmentApiConfig();
+    },
 };
 ```
 
@@ -649,19 +673,21 @@ export const apiConfigProvider: FactoryProvider = {
 ```typescript
 // ✅ 函数式拦截器——自动附加 Auth Token
 export function authInterceptor(
-  req: HttpRequest<unknown>,
-  next: HttpHandlerFn
+    req: HttpRequest<unknown>,
+    next: HttpHandlerFn,
 ): Observable<HttpEvent<unknown>> {
-  const token = inject(AuthService).token();
-  if (!token) return next(req);
+    const token = inject(AuthService).token();
+    if (!token) return next(req);
 
-  return next(req.clone({
-    setHeaders: { Authorization: `Bearer ${token}` },
-  }));
+    return next(
+        req.clone({
+            setHeaders: { Authorization: `Bearer ${token}` },
+        }),
+    );
 }
 
 // 注册
-provideHttpClient(withInterceptors([authInterceptor]))
+provideHttpClient(withInterceptors([authInterceptor]));
 ```
 
 ### 错误处理拦截器
@@ -669,22 +695,22 @@ provideHttpClient(withInterceptors([authInterceptor]))
 ```typescript
 // ✅ 函数式拦截器——统一错误处理
 export function errorInterceptor(
-  req: HttpRequest<unknown>,
-  next: HttpHandlerFn
+    req: HttpRequest<unknown>,
+    next: HttpHandlerFn,
 ): Observable<HttpEvent<unknown>> {
-  const router = inject(Router);
+    const router = inject(Router);
 
-  return next(req).pipe(
-    catchError((error: HttpErrorResponse) => {
-      if (error.status === 401) {
-        router.navigate(['/login']);
-      }
-      if (error.status === 500) {
-        console.error('Server error:', error);
-      }
-      return throwError(() => error);
-    })
-  );
+    return next(req).pipe(
+        catchError((error: HttpErrorResponse) => {
+            if (error.status === 401) {
+                router.navigate(["/login"]);
+            }
+            if (error.status === 500) {
+                console.error("Server error:", error);
+            }
+            return throwError(() => error);
+        }),
+    );
 }
 ```
 
@@ -693,20 +719,20 @@ export function errorInterceptor(
 ```typescript
 // ✅ 函数式拦截器——自动 camelCase ↔ snake_case
 export function transformInterceptor(
-  req: HttpRequest<unknown>,
-  next: HttpHandlerFn
+    req: HttpRequest<unknown>,
+    next: HttpHandlerFn,
 ): Observable<HttpEvent<unknown>> {
-  const transformedBody = req.body ? toSnakeCase(req.body) : null;
-  const transformedReq = req.clone({ body: transformedBody });
+    const transformedBody = req.body ? toSnakeCase(req.body) : null;
+    const transformedReq = req.clone({ body: transformedBody });
 
-  return next(transformedReq).pipe(
-    map(event => {
-      if (event instanceof HttpResponse) {
-        return event.clone({ body: toCamelCase(event.body) });
-      }
-      return event;
-    })
-  );
+    return next(transformedReq).pipe(
+        map((event) => {
+            if (event instanceof HttpResponse) {
+                return event.clone({ body: toCamelCase(event.body) });
+            }
+            return event;
+        }),
+    );
 }
 ```
 
@@ -717,12 +743,8 @@ export function transformInterceptor(
 // 请求：A → B → C → 后端
 // 响应：后端 → C → B → A
 provideHttpClient(
-  withInterceptors([
-    authInterceptor,
-    loggingInterceptor,
-    errorInterceptor,
-  ])
-)
+    withInterceptors([authInterceptor, loggingInterceptor, errorInterceptor]),
+);
 ```
 
 ## Review Checklist

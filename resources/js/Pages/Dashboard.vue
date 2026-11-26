@@ -1,51 +1,50 @@
 <script setup>
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import { Head, Link, usePage } from '@inertiajs/vue3';
-import { computed, ref, onMounted, onUnmounted } from 'vue';
+import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
+import { Head, Link, usePage } from "@inertiajs/vue3";
+import { computed, ref, onMounted, onUnmounted } from "vue";
 
 const page = usePage();
-const user = computed(() => page.props.auth?.user || { name: 'Tamu' });
+const user = computed(() => page.props.auth?.user || { name: "Tamu" });
 const isLoggedIn = computed(() => !!page.props.auth?.user);
 
 // Data Galeri Dokumentasi (Bangga Menjadi Bagian Dari Kami)
 const galleryPhotos = [
     {
-        src: '/images/galeri-1.png',
-        alt: 'Briefing dan Rapat Anggota HIMATIF',
-        title: 'Rapat Kerja & Pengarahan Anggota',
+        src: "/images/galeri-1.png",
+        alt: "Briefing dan Rapat Anggota HIMATIF",
+        title: "Rapat Kerja & Pengarahan Anggota",
     },
     {
-        src: '/images/galeri-2.jpg',
-        alt: 'Keluarga Besar Mahasiswa Informatika',
-        title: 'Kebersamaan & Solidaritas Informatika',
+        src: "/images/galeri-2.jpg",
+        alt: "Keluarga Besar Mahasiswa Informatika",
+        title: "Kebersamaan & Solidaritas Informatika",
     },
     {
-        src: '/images/galeri-3.png',
-        alt: 'Aksi Semangat dan Kaderisasi',
-        title: 'Semangat Kaderisasi & Yel-Yel Mahasiswa',
+        src: "/images/galeri-3.png",
+        alt: "Aksi Semangat dan Kaderisasi",
+        title: "Semangat Kaderisasi & Yel-Yel Mahasiswa",
     },
     {
-        src: '/images/hero-pengurus.jpg',
-        alt: 'Pengurus Lengkap Periode 2025/2026',
-        title: 'Keluarga Besar Pengurus HIMATIF 18',
+        src: "/images/hero-pengurus.jpg",
+        alt: "Pengurus Lengkap Periode 2025/2026",
+        title: "Keluarga Besar Pengurus HIMATIF 18",
     },
     {
-        src: '/images/aktivitas-workshop.png',
-        alt: 'Pelatihan dan Workshop Teknologi',
-        title: 'Workshop & Upgrade Skill Teknologi',
+        src: "/images/aktivitas-workshop.png",
+        alt: "Pelatihan dan Workshop Teknologi",
+        title: "Workshop & Upgrade Skill Teknologi",
     },
     {
-        src: '/images/aktivitas-itcast.png',
-        alt: 'Informatics Care & Bakti Sosial',
-        title: 'Bakti Sosial & Kolaborasi Mahasiswa',
+        src: "/images/aktivitas-itcast.png",
+        alt: "Informatics Care & Bakti Sosial",
+        title: "Bakti Sosial & Kolaborasi Mahasiswa",
     },
 
     {
-        src: '/images/galeri-4.jpg',
-        alt: 'PKPS',
-        title: 'Semangat Jargon Kegiatan PKPS 2026',
+        src: "/images/galeri-4.jpg",
+        alt: "PKPS",
+        title: "Semangat Jargon Kegiatan PKPS 2026",
     },
-   
 ];
 
 // Carousel Kontrol & Auto Scroll 2 Detik
@@ -64,11 +63,12 @@ const scrollNext = () => {
 
     if (container.scrollLeft + step >= maxScroll - 15) {
         // Kembali ke foto pertama jika sudah di ujung kanan
-        container.scrollTo({ left: 0, behavior: 'smooth' });
+        container.scrollTo({ left: 0, behavior: "smooth" });
         currentSlideIndex.value = 0;
     } else {
-        container.scrollBy({ left: step, behavior: 'smooth' });
-        currentSlideIndex.value = (currentSlideIndex.value + 1) % galleryPhotos.length;
+        container.scrollBy({ left: step, behavior: "smooth" });
+        currentSlideIndex.value =
+            (currentSlideIndex.value + 1) % galleryPhotos.length;
     }
 };
 
@@ -80,10 +80,10 @@ const scrollPrev = () => {
     const step = cardWidth + gap;
 
     if (container.scrollLeft - step <= 10) {
-        container.scrollTo({ left: container.scrollWidth, behavior: 'smooth' });
+        container.scrollTo({ left: container.scrollWidth, behavior: "smooth" });
         currentSlideIndex.value = galleryPhotos.length - 1;
     } else {
-        container.scrollBy({ left: -step, behavior: 'smooth' });
+        container.scrollBy({ left: -step, behavior: "smooth" });
         currentSlideIndex.value = Math.max(0, currentSlideIndex.value - 1);
     }
 };
@@ -93,7 +93,7 @@ const scrollToSlide = (index) => {
     const container = galleryContainer.value;
     const cardWidth = container.firstElementChild?.clientWidth || 340;
     const gap = 20;
-    container.scrollTo({ left: index * (cardWidth + gap), behavior: 'smooth' });
+    container.scrollTo({ left: index * (cardWidth + gap), behavior: "smooth" });
     currentSlideIndex.value = index;
 };
 
@@ -124,72 +124,72 @@ onUnmounted(() => {
 // Data Layanan HIMATIF (Fitur Yang Tersedia - Sesuai Mockup Referensi)
 const himatifServices = [
     {
-        category: 'MANAJEMEN SEKRETARIAT',
-        title: 'Penyewaan Inventaris',
-        desc: 'Layanan penyewaan proyektor, sound system, kamera, hingga perlengkapan kepanitiaan kampus.',
-        btnText: 'Ajukan Penyewaan',
-        href: route('penyewaan-inventaris'),
-        iconType: 'box',
+        category: "MANAJEMEN SEKRETARIAT",
+        title: "Penyewaan Inventaris",
+        desc: "Layanan penyewaan proyektor, sound system, kamera, hingga perlengkapan kepanitiaan kampus.",
+        btnText: "Ajukan Penyewaan",
+        href: route("penyewaan-inventaris"),
+        iconType: "box",
     },
     {
-        category: 'DANA USAHA (DANUS)',
-        title: 'HIMATIF – Merch Shop',
-        desc: 'Katalog t-shirt eksklusif, hoodie, lanyard, stiker, dan aksesoris identitas mahasiswa Teknik Informatika.',
-        btnText: 'Kunjungi Katalog',
-        href: route('produk.index'),
-        iconType: 'bag',
+        category: "DANA USAHA (DANUS)",
+        title: "HIMATIF – Merch Shop",
+        desc: "Katalog t-shirt eksklusif, hoodie, lanyard, stiker, dan aksesoris identitas mahasiswa Teknik Informatika.",
+        btnText: "Kunjungi Katalog",
+        href: route("produk.index"),
+        iconType: "bag",
     },
     {
-        category: 'KOMPETISI & PRESTASI',
-        title: 'Info Seputar Lomba',
-        desc: 'Kurasi informasi lomba Hackathon, UI/UX, Competitive Programming, dan pendampingan delegasi tim mahasiswa.',
-        btnText: 'Lihat Info Lomba',
-        href: route('informasi'),
-        iconType: 'sparkles',
+        category: "KOMPETISI & PRESTASI",
+        title: "Info Seputar Lomba",
+        desc: "Kurasi informasi lomba Hackathon, UI/UX, Competitive Programming, dan pendampingan delegasi tim mahasiswa.",
+        btnText: "Lihat Info Lomba",
+        href: route("informasi"),
+        iconType: "sparkles",
     },
     {
-        category: 'EDUKASI & LITERASI',
-        title: 'Materi & Bank Soal Study Club',
-        desc: 'Akses gratis modul pembelajaran pemrograman, arsip soal UTS/UAS, dan rekaman materi Study Club HIMATIF.',
-        btnText: 'Buka Modul Belajar',
-        href: route('informasi'),
-        iconType: 'book',
+        category: "EDUKASI & LITERASI",
+        title: "Materi & Bank Soal Study Club",
+        desc: "Akses gratis modul pembelajaran pemrograman, arsip soal UTS/UAS, dan rekaman materi Study Club HIMATIF.",
+        btnText: "Buka Modul Belajar",
+        href: route("informasi"),
+        iconType: "book",
     },
 ];
 
 // Data Aktivitas / Program Kerja Terkini (4 Kolom Sesuai Mockup)
 const activities = [
     {
-        title: 'Seminar Teknologi: The Rise of AI & Modern Software Engineering',
-        desc: 'Seminar nasional mengupas tren AI, cloud architecture, dan strategi karir tech.',
-        date: '15 Des 2026',
-        location: 'Auditorium POLINDRA',
-        status: 'Akan Datang',
-        image: '/images/aktivitas-iconfest.png',
+        title: "Seminar Teknologi: The Rise of AI & Modern Software Engineering",
+        desc: "Seminar nasional mengupas tren AI, cloud architecture, dan strategi karir tech.",
+        date: "15 Des 2026",
+        location: "Auditorium POLINDRA",
+        status: "Akan Datang",
+        image: "/images/aktivitas-iconfest.png",
     },
     {
-        title: 'Workshop Hands-On: Web Development & Cloud Deployment',
-        desc: 'Pelatihan intensif live-coding web modern dan deployment praktis server cloud.',
-        date: '22 Des 2026',
-        location: 'Lab Komputer 2',
-        status: 'Akan Datang',
-        image: '/images/aktivitas-workshop.png',
+        title: "Workshop Hands-On: Web Development & Cloud Deployment",
+        desc: "Pelatihan intensif live-coding web modern dan deployment praktis server cloud.",
+        date: "22 Des 2026",
+        location: "Lab Komputer 2",
+        status: "Akan Datang",
+        image: "/images/aktivitas-workshop.png",
     },
     {
-        title: 'IT Cast: Podcast & Tech Talk Series Mahasiswa',
-        desc: 'Bincang santai inspiratif seputar tips magang industri software dan tech career.',
-        date: '12 Okt 2026',
-        location: 'YouTube HIMATIF',
-        status: 'Selesai Terlaksana',
-        image: '/images/aktivitas-itcast.png',
+        title: "IT Cast: Podcast & Tech Talk Series Mahasiswa",
+        desc: "Bincang santai inspiratif seputar tips magang industri software dan tech career.",
+        date: "12 Okt 2026",
+        location: "YouTube HIMATIF",
+        status: "Selesai Terlaksana",
+        image: "/images/aktivitas-itcast.png",
     },
     {
-        title: 'LKMM-D: Latihan Kepemimpinan Mahasiswa Dasar 2026',
-        desc: 'Kaderisasi kepemimpinan formal, manajemen organisasi, dan perancangan proker.',
-        date: '18 - 20 Okt 2026',
-        location: 'Kampus POLINDRA',
-        status: 'Selesai Terlaksana',
-        image: '/images/galeri-3.png',
+        title: "LKMM-D: Latihan Kepemimpinan Mahasiswa Dasar 2026",
+        desc: "Kaderisasi kepemimpinan formal, manajemen organisasi, dan perancangan proker.",
+        date: "18 - 20 Okt 2026",
+        location: "Kampus POLINDRA",
+        status: "Selesai Terlaksana",
+        image: "/images/galeri-3.png",
     },
 ];
 </script>
@@ -198,23 +198,42 @@ const activities = [
     <Head title="Beranda - HIMATIF POLINDRA" />
 
     <AuthenticatedLayout>
-        <div class="bg-gradient-to-b from-white via-slate-50 to-slate-100 min-h-screen pb-16">
+        <div
+            class="bg-gradient-to-b from-white via-slate-50 to-slate-100 min-h-screen pb-16"
+        >
             <!-- Container Utama -->
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 sm:pt-6 space-y-8">
-                
+            <div
+                class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 sm:pt-6 space-y-8"
+            >
                 <!-- Status Bar Admin jika Login -->
-                <div v-if="isLoggedIn" class="p-3.5 px-5 rounded-2xl bg-slate-900 text-white flex items-center justify-between text-xs sm:text-sm shadow-md">
+                <div
+                    v-if="isLoggedIn"
+                    class="p-3.5 px-5 rounded-2xl bg-slate-900 text-white flex items-center justify-between text-xs sm:text-sm shadow-md"
+                >
                     <div class="flex items-center gap-2.5">
-                        <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
-                        <span>Halo Admin, <strong class="text-orange-400">{{ user.name }}</strong> (Sesi Admin Aktif)</span>
+                        <span
+                            class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"
+                        ></span>
+                        <span
+                            >Halo Admin,
+                            <strong class="text-orange-400">{{
+                                user.name
+                            }}</strong>
+                            (Sesi Admin Aktif)</span
+                        >
                     </div>
-                    <Link :href="route('profile.edit')" class="text-xs font-semibold px-3 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 transition">
+                    <Link
+                        :href="route('profile.edit')"
+                        class="text-xs font-semibold px-3 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 transition"
+                    >
                         Kelola Akun
                     </Link>
                 </div>
 
                 <!-- 1. Hero Section dengan Foto Pengurus (Background + Opacity) & Teks HTML di Atasnya -->
-                <div class="relative overflow-hidden rounded-3xl border border-slate-200/90 shadow-xl bg-white min-h-[420px] sm:min-h-[460px] flex items-center">
+                <div
+                    class="relative overflow-hidden rounded-3xl border border-slate-200/90 shadow-xl bg-white min-h-[420px] sm:min-h-[460px] flex items-center"
+                >
                     <!-- Foto Pengurus sebagai Background dengan Opacity -->
                     <div class="absolute inset-0 z-0">
                         <img
@@ -223,34 +242,58 @@ const activities = [
                             class="w-full h-full object-cover object-center opacity-40 select-none pointer-events-none"
                         />
                         <!-- Soft White Gradient Wash agar teks di atasnya sangat kontras & terbaca jelas -->
-                        <div class="absolute inset-0 bg-gradient-to-r from-white/90 via-white/75 to-white/30"></div>
+                        <div
+                            class="absolute inset-0 bg-gradient-to-r from-white/90 via-white/75 to-white/30"
+                        ></div>
                     </div>
 
                     <!-- Teks & Elemen HTML di atas Foto (z-10) -->
-                    <div class="relative z-10 w-full p-6 sm:p-10 lg:p-14 grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
+                    <div
+                        class="relative z-10 w-full p-6 sm:p-10 lg:p-14 grid grid-cols-1 md:grid-cols-12 gap-8 items-center"
+                    >
                         <!-- Kolom Kiri: Teks & Tombol -->
-                        <div class="md:col-span-8 lg:col-span-8 space-y-4 sm:space-y-5 text-left">
+                        <div
+                            class="md:col-span-8 lg:col-span-8 space-y-4 sm:space-y-5 text-left"
+                        >
                             <!-- Pill Badge -->
-                            <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/95 border border-slate-300 shadow-xs backdrop-blur-xs">
-                                <span class="w-2.5 h-2.5 rounded-full bg-[#F95700]"></span>
-                                <span class="text-[11px] sm:text-xs font-bold text-slate-800 tracking-wider uppercase">
+                            <div
+                                class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/95 border border-slate-300 shadow-xs backdrop-blur-xs"
+                            >
+                                <span
+                                    class="w-2.5 h-2.5 rounded-full bg-[#F95700]"
+                                ></span>
+                                <span
+                                    class="text-[11px] sm:text-xs font-bold text-slate-800 tracking-wider uppercase"
+                                >
                                     PERIODE KEPENGURUSAN 2025/2026 • HIMATIF 18
                                 </span>
                             </div>
 
                             <!-- Judul Utama -->
-                            <h1 class="text-3xl sm:text-5xl lg:text-[54px] font-black text-slate-900 tracking-tight leading-none">
+                            <h1
+                                class="text-3xl sm:text-5xl lg:text-[54px] font-black text-slate-900 tracking-tight leading-none"
+                            >
                                 Himpunan Mahasiswa
-                                <span class="block text-[#F95700] mt-1 sm:mt-2">Teknik Informatika</span>
+                                <span class="block text-[#F95700] mt-1 sm:mt-2"
+                                    >Teknik Informatika</span
+                                >
                             </h1>
 
                             <!-- Deskripsi Singkat -->
-                            <p class="text-xs sm:text-sm lg:text-base text-slate-600 max-w-xl font-normal leading-relaxed">
-                                Wadah kolaborasi, akselerasi riset terapan, dan pemberdayaan talenta teknologi mahasiswa Informatika. Bersama mencetak inovator kompeten berintegritas tinggi menuju lanskap digital global.
+                            <p
+                                class="text-xs sm:text-sm lg:text-base text-slate-600 max-w-xl font-normal leading-relaxed"
+                            >
+                                Wadah kolaborasi, akselerasi riset terapan, dan
+                                pemberdayaan talenta teknologi mahasiswa
+                                Informatika. Bersama mencetak inovator kompeten
+                                berintegritas tinggi menuju lanskap digital
+                                global.
                             </p>
 
                             <!-- Tombol Aksi Hero -->
-                            <div class="pt-2 flex flex-wrap gap-3 sm:gap-4 items-center">
+                            <div
+                                class="pt-2 flex flex-wrap gap-3 sm:gap-4 items-center"
+                            >
                                 <a
                                     href="#layanan"
                                     class="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-xs sm:text-sm text-white bg-gradient-to-r from-[#F95700] to-orange-600 hover:from-orange-600 hover:to-orange-700 shadow-md shadow-orange-500/25 transition transform active:scale-95"
@@ -268,7 +311,9 @@ const activities = [
                         </div>
 
                         <!-- Kolom Kanan: Grafis Megafon 3D dengan floating icons -->
-                        <div class="hidden md:flex md:col-span-4 lg:col-span-4 justify-center items-center">
+                        <div
+                            class="hidden md:flex md:col-span-4 lg:col-span-4 justify-center items-center"
+                        >
                             <img
                                 src="/images/megaphone-illustration.png"
                                 alt="Ilustrasi Informasi HIMATIF"
@@ -280,83 +325,183 @@ const activities = [
 
                 <!-- 2. Orange Stats Banner (Sesuai Desain Mockup) -->
                 <div class="relative z-10 -mt-2 sm:-mt-4">
-                    <div class="bg-gradient-to-r from-[#FF5500] via-[#F95700] to-[#FF5E00] rounded-2xl sm:rounded-3xl shadow-xl shadow-orange-500/25 p-5 sm:py-6 sm:px-8">
-                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-6 lg:gap-0 lg:divide-x lg:divide-white/25">
+                    <div
+                        class="bg-gradient-to-r from-[#FF5500] via-[#F95700] to-[#FF5E00] rounded-2xl sm:rounded-3xl shadow-xl shadow-orange-500/25 p-5 sm:py-6 sm:px-8"
+                    >
+                        <div
+                            class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-6 lg:gap-0 lg:divide-x lg:divide-white/25"
+                        >
                             <!-- 1. 500+ Anggota Mahasiswa -->
-                            <div class="flex items-center gap-3.5 sm:gap-4 lg:pr-6">
-                                <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-white shadow-md flex items-center justify-center shrink-0">
-                                    <svg class="w-6 h-6 sm:w-7 sm:h-7 text-[#F95700]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                        <circle cx="12" cy="7" r="3"/>
-                                        <circle cx="5" cy="10" r="2.5"/>
-                                        <circle cx="19" cy="10" r="2.5"/>
-                                        <path d="M7 20v-2a5 5 0 0 1 10 0v2"/>
-                                        <path d="M2 20v-1.5a4 4 0 0 1 3.5-3.9"/>
-                                        <path d="M22 20v-1.5a4 4 0 0 0-3.5-3.9"/>
+                            <div
+                                class="flex items-center gap-3.5 sm:gap-4 lg:pr-6"
+                            >
+                                <div
+                                    class="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-white shadow-md flex items-center justify-center shrink-0"
+                                >
+                                    <svg
+                                        class="w-6 h-6 sm:w-7 sm:h-7 text-[#F95700]"
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        stroke-width="2"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                    >
+                                        <circle cx="12" cy="7" r="3" />
+                                        <circle cx="5" cy="10" r="2.5" />
+                                        <circle cx="19" cy="10" r="2.5" />
+                                        <path d="M7 20v-2a5 5 0 0 1 10 0v2" />
+                                        <path
+                                            d="M2 20v-1.5a4 4 0 0 1 3.5-3.9"
+                                        />
+                                        <path
+                                            d="M22 20v-1.5a4 4 0 0 0-3.5-3.9"
+                                        />
                                     </svg>
                                 </div>
                                 <div>
-                                    <div class="text-xl sm:text-2xl font-black text-white tracking-tight leading-none drop-shadow-xs">
+                                    <div
+                                        class="text-xl sm:text-2xl font-black text-white tracking-tight leading-none drop-shadow-xs"
+                                    >
                                         500+
                                     </div>
-                                    <div class="text-xs sm:text-sm font-medium text-white/90 mt-1 sm:mt-1.5 leading-tight">
+                                    <div
+                                        class="text-xs sm:text-sm font-medium text-white/90 mt-1 sm:mt-1.5 leading-tight"
+                                    >
                                         Mahasiswa Aktif
                                     </div>
                                 </div>
                             </div>
 
                             <!-- 2. 12 Program Kerja Tahunan -->
-                            <div class="flex items-center gap-3.5 sm:gap-4 lg:px-6">
-                                <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-white shadow-md flex items-center justify-center shrink-0">
-                                    <svg class="w-6 h-6 sm:w-7 sm:h-7 text-[#F95700]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                        <path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/>
-                                        <path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/>
-                                        <path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/>
-                                        <path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/>
+                            <div
+                                class="flex items-center gap-3.5 sm:gap-4 lg:px-6"
+                            >
+                                <div
+                                    class="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-white shadow-md flex items-center justify-center shrink-0"
+                                >
+                                    <svg
+                                        class="w-6 h-6 sm:w-7 sm:h-7 text-[#F95700]"
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        stroke-width="2"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                    >
+                                        <path
+                                            d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"
+                                        />
+                                        <path
+                                            d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"
+                                        />
+                                        <path
+                                            d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"
+                                        />
+                                        <path
+                                            d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"
+                                        />
                                     </svg>
                                 </div>
                                 <div>
-                                    <div class="text-xl sm:text-2xl font-black text-white tracking-tight leading-none drop-shadow-xs">
+                                    <div
+                                        class="text-xl sm:text-2xl font-black text-white tracking-tight leading-none drop-shadow-xs"
+                                    >
                                         12 Program
                                     </div>
-                                    <div class="text-xs sm:text-sm font-medium text-white/90 mt-1 sm:mt-1.5 leading-tight">
+                                    <div
+                                        class="text-xs sm:text-sm font-medium text-white/90 mt-1 sm:mt-1.5 leading-tight"
+                                    >
                                         Kerja Tahunan
                                     </div>
                                 </div>
                             </div>
 
                             <!-- 3. 3 Divisi Pilar Organisasi -->
-                            <div class="flex items-center gap-3.5 sm:gap-4 lg:px-6">
-                                <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-white shadow-md flex items-center justify-center shrink-0">
-                                    <svg class="w-6 h-6 sm:w-7 sm:h-7 text-[#F95700]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                        <rect x="9" y="3" width="6" height="5" rx="1"/>
-                                        <rect x="3" y="16" width="6" height="5" rx="1"/>
-                                        <rect x="15" y="16" width="6" height="5" rx="1"/>
-                                        <path d="M12 8v4m-6 4v-4h12v4"/>
+                            <div
+                                class="flex items-center gap-3.5 sm:gap-4 lg:px-6"
+                            >
+                                <div
+                                    class="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-white shadow-md flex items-center justify-center shrink-0"
+                                >
+                                    <svg
+                                        class="w-6 h-6 sm:w-7 sm:h-7 text-[#F95700]"
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        stroke-width="2"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                    >
+                                        <rect
+                                            x="9"
+                                            y="3"
+                                            width="6"
+                                            height="5"
+                                            rx="1"
+                                        />
+                                        <rect
+                                            x="3"
+                                            y="16"
+                                            width="6"
+                                            height="5"
+                                            rx="1"
+                                        />
+                                        <rect
+                                            x="15"
+                                            y="16"
+                                            width="6"
+                                            height="5"
+                                            rx="1"
+                                        />
+                                        <path d="M12 8v4m-6 4v-4h12v4" />
                                     </svg>
                                 </div>
                                 <div>
-                                    <div class="text-xl sm:text-2xl font-black text-white tracking-tight leading-none drop-shadow-xs">
+                                    <div
+                                        class="text-xl sm:text-2xl font-black text-white tracking-tight leading-none drop-shadow-xs"
+                                    >
                                         3 Divisi
                                     </div>
-                                    <div class="text-xs sm:text-sm font-medium text-white/90 mt-1 sm:mt-1.5 leading-tight">
+                                    <div
+                                        class="text-xs sm:text-sm font-medium text-white/90 mt-1 sm:mt-1.5 leading-tight"
+                                    >
                                         Pilar Organisasi
                                     </div>
                                 </div>
                             </div>
 
                             <!-- 4. Baik Sekali Akreditasi Prodi -->
-                            <div class="flex items-center gap-3.5 sm:gap-4 lg:pl-6">
-                                <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-white shadow-md flex items-center justify-center shrink-0">
-                                    <svg class="w-6 h-6 sm:w-7 sm:h-7 text-[#F95700]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                        <circle cx="12" cy="8" r="5"/>
-                                        <path d="M8.21 12.89L7 21l5-3 5 3-1.21-8.11"/>
+                            <div
+                                class="flex items-center gap-3.5 sm:gap-4 lg:pl-6"
+                            >
+                                <div
+                                    class="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-white shadow-md flex items-center justify-center shrink-0"
+                                >
+                                    <svg
+                                        class="w-6 h-6 sm:w-7 sm:h-7 text-[#F95700]"
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        stroke-width="2"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                    >
+                                        <circle cx="12" cy="8" r="5" />
+                                        <path
+                                            d="M8.21 12.89L7 21l5-3 5 3-1.21-8.11"
+                                        />
                                     </svg>
                                 </div>
                                 <div>
-                                    <div class="text-xl sm:text-2xl font-black text-white tracking-tight leading-none drop-shadow-xs">
+                                    <div
+                                        class="text-xl sm:text-2xl font-black text-white tracking-tight leading-none drop-shadow-xs"
+                                    >
                                         Baik Sekali
                                     </div>
-                                    <div class="text-xs sm:text-sm font-medium text-white/90 mt-1 sm:mt-1.5 leading-tight">
+                                    <div
+                                        class="text-xs sm:text-sm font-medium text-white/90 mt-1 sm:mt-1.5 leading-tight"
+                                    >
                                         Akreditasi Prodi
                                     </div>
                                 </div>
@@ -366,10 +511,15 @@ const activities = [
                 </div>
 
                 <!-- 3. Profile Organisasi (Sesuai Mockup Desain) -->
-                <div id="informasi" class="rounded-3xl bg-[#090F24] border border-slate-800 p-6 sm:p-10 lg:p-12 shadow-2xl text-white">
+                <div
+                    id="informasi"
+                    class="rounded-3xl bg-[#090F24] border border-slate-800 p-6 sm:p-10 lg:p-12 shadow-2xl text-white"
+                >
                     <!-- Pill Badge Header -->
                     <div class="mb-6 sm:mb-8">
-                        <span class="inline-block px-4 py-1.5 rounded-full bg-white text-[#F95700] text-[11px] sm:text-xs font-black tracking-widest uppercase shadow-md">
+                        <span
+                            class="inline-block px-4 py-1.5 rounded-full bg-white text-[#F95700] text-[11px] sm:text-xs font-black tracking-widest uppercase shadow-md"
+                        >
                             PROFILE ORGANISASI
                         </span>
                     </div>
@@ -377,9 +527,13 @@ const activities = [
                     <!-- Dua Card Pimpinan: Ketua & Wakil Ketua (Sesuai Mockup Baru) -->
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                         <!-- 1. Card Ketua Himpunan -->
-                        <div class="rounded-3xl border border-slate-700/60 bg-[#111C38]/80 p-5 sm:p-7 shadow-xl hover:border-slate-600 transition flex flex-col sm:flex-row items-center sm:items-stretch gap-5 sm:gap-6 group">
+                        <div
+                            class="rounded-3xl border border-slate-700/60 bg-[#111C38]/80 p-5 sm:p-7 shadow-xl hover:border-slate-600 transition flex flex-col sm:flex-row items-center sm:items-stretch gap-5 sm:gap-6 group"
+                        >
                             <!-- Foto Ketua -->
-                            <div class="w-36 sm:w-44 md:w-48 aspect-[3/4] rounded-2xl overflow-hidden shrink-0 shadow-lg border border-slate-700/50 bg-[#1a294e]">
+                            <div
+                                class="w-36 sm:w-44 md:w-48 aspect-[3/4] rounded-2xl overflow-hidden shrink-0 shadow-lg border border-slate-700/50 bg-[#1a294e]"
+                            >
                                 <img
                                     src="/images/ketua-himpunan.png"
                                     alt="Foto Ketua Himpunan"
@@ -388,30 +542,43 @@ const activities = [
                             </div>
 
                             <!-- Info Teks Ketua -->
-                            <div class="flex flex-col justify-center text-center sm:text-left flex-1">
+                            <div
+                                class="flex flex-col justify-center text-center sm:text-left flex-1"
+                            >
                                 <!-- Badge KETUA HIMPUNAN -->
                                 <div>
-                                    <span class="inline-block px-3.5 py-1 rounded-full bg-[#F95700] text-slate-950 font-black text-[11px] sm:text-xs tracking-wider uppercase shadow-xs">
+                                    <span
+                                        class="inline-block px-3.5 py-1 rounded-full bg-[#F95700] text-slate-950 font-black text-[11px] sm:text-xs tracking-wider uppercase shadow-xs"
+                                    >
                                         KETUA HIMPUNAN
                                     </span>
                                 </div>
 
                                 <!-- Nama Ketua -->
-                                <h3 class="text-xl sm:text-2xl lg:text-3xl font-black text-white tracking-tight leading-tight mt-3">
-                                    Achmad Rizqi<br class="hidden sm:inline" /> Adiyatma
+                                <h3
+                                    class="text-xl sm:text-2xl lg:text-3xl font-black text-white tracking-tight leading-tight mt-3"
+                                >
+                                    Achmad Rizqi<br class="hidden sm:inline" />
+                                    Adiyatma
                                 </h3>
 
                                 <!-- Subtitle / Organisasi -->
-                                <p class="text-xs sm:text-sm text-slate-400 font-medium mt-2">
+                                <p
+                                    class="text-xs sm:text-sm text-slate-400 font-medium mt-2"
+                                >
                                     Himpunan Mahasiswa Teknik Informatika
                                 </p>
                             </div>
                         </div>
 
                         <!-- 2. Card Wakil Ketua Himpunan -->
-                        <div class="rounded-3xl border border-slate-700/60 bg-[#111C38]/80 p-5 sm:p-7 shadow-xl hover:border-slate-600 transition flex flex-col sm:flex-row items-center sm:items-stretch gap-5 sm:gap-6 group">
+                        <div
+                            class="rounded-3xl border border-slate-700/60 bg-[#111C38]/80 p-5 sm:p-7 shadow-xl hover:border-slate-600 transition flex flex-col sm:flex-row items-center sm:items-stretch gap-5 sm:gap-6 group"
+                        >
                             <!-- Foto Wakil Ketua -->
-                            <div class="w-36 sm:w-44 md:w-48 aspect-[3/4] rounded-2xl overflow-hidden shrink-0 shadow-lg border border-slate-700/50 bg-[#1a294e]">
+                            <div
+                                class="w-36 sm:w-44 md:w-48 aspect-[3/4] rounded-2xl overflow-hidden shrink-0 shadow-lg border border-slate-700/50 bg-[#1a294e]"
+                            >
                                 <img
                                     src="/images/wakil-ketua-himpunan.png"
                                     alt="Foto Wakil Ketua"
@@ -420,21 +587,30 @@ const activities = [
                             </div>
 
                             <!-- Info Teks Wakil Ketua -->
-                            <div class="flex flex-col justify-center text-center sm:text-left flex-1">
+                            <div
+                                class="flex flex-col justify-center text-center sm:text-left flex-1"
+                            >
                                 <!-- Badge WAKIL KETUA -->
                                 <div>
-                                    <span class="inline-block px-3.5 py-1 rounded-full bg-[#F95700] text-slate-950 font-black text-[11px] sm:text-xs tracking-wider uppercase shadow-xs">
+                                    <span
+                                        class="inline-block px-3.5 py-1 rounded-full bg-[#F95700] text-slate-950 font-black text-[11px] sm:text-xs tracking-wider uppercase shadow-xs"
+                                    >
                                         WAKIL KETUA
                                     </span>
                                 </div>
 
                                 <!-- Nama Wakil Ketua -->
-                                <h3 class="text-xl sm:text-2xl lg:text-3xl font-black text-white tracking-tight leading-tight mt-3">
-                                    Amanda Aulia<br class="hidden sm:inline" /> Pramudita
+                                <h3
+                                    class="text-xl sm:text-2xl lg:text-3xl font-black text-white tracking-tight leading-tight mt-3"
+                                >
+                                    Amanda Aulia<br class="hidden sm:inline" />
+                                    Pramudita
                                 </h3>
 
                                 <!-- Subtitle / Organisasi -->
-                                <p class="text-xs sm:text-sm text-slate-400 font-medium mt-2">
+                                <p
+                                    class="text-xs sm:text-sm text-slate-400 font-medium mt-2"
+                                >
                                     Himpunan Mahasiswa Teknik Informatika
                                 </p>
                             </div>
@@ -442,22 +618,52 @@ const activities = [
                     </div>
 
                     <!-- Bagian VISI & MISI -->
-                    <div class="mt-8 sm:mt-10 grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 items-start">
+                    <div
+                        class="mt-8 sm:mt-10 grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 items-start"
+                    >
                         <!-- Kolom VISI (Kiri) -->
                         <div class="space-y-4">
                             <!-- Header Pill VISI -->
-                            <div class="inline-flex items-center gap-3 px-6 py-2.5 rounded-full bg-[#132247] border border-blue-400/30 text-white shadow-md">
-                                <svg class="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                            <div
+                                class="inline-flex items-center gap-3 px-6 py-2.5 rounded-full bg-[#132247] border border-blue-400/30 text-white shadow-md"
+                            >
+                                <svg
+                                    class="w-5 h-5 text-white"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke="currentColor"
+                                >
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        stroke-width="2"
+                                        d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                                    />
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        stroke-width="2"
+                                        d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                                    />
                                 </svg>
-                                <span class="text-base sm:text-lg font-black tracking-[0.25em] uppercase">VISI</span>
+                                <span
+                                    class="text-base sm:text-lg font-black tracking-[0.25em] uppercase"
+                                    >VISI</span
+                                >
                             </div>
 
                             <!-- Box Isi VISI -->
-                            <div class="p-6 sm:p-8 rounded-3xl bg-[#111C38]/70 border border-slate-700/60 shadow-lg flex items-center justify-center min-h-[170px]">
-                                <p class="text-center text-slate-100 text-xs sm:text-sm md:text-base leading-relaxed font-medium">
-                                    Mewujudkan HIMATIF sebagai wadah mahasiswa informatika yang aktif berkembang, produktif berkarya, dan mampu memberikan dampak melalui pemanfaatan teknologi serta budaya organisasi yang kolaboratif.
+                            <div
+                                class="p-6 sm:p-8 rounded-3xl bg-[#111C38]/70 border border-slate-700/60 shadow-lg flex items-center justify-center min-h-[170px]"
+                            >
+                                <p
+                                    class="text-center text-slate-100 text-xs sm:text-sm md:text-base leading-relaxed font-medium"
+                                >
+                                    Mewujudkan HIMATIF sebagai wadah mahasiswa
+                                    informatika yang aktif berkembang, produktif
+                                    berkarya, dan mampu memberikan dampak
+                                    melalui pemanfaatan teknologi serta budaya
+                                    organisasi yang kolaboratif.
                                 </p>
                             </div>
                         </div>
@@ -465,25 +671,55 @@ const activities = [
                         <!-- Kolom MISI (Kanan) -->
                         <div class="space-y-4">
                             <!-- Header Pill MISI -->
-                            <div class="inline-flex items-center gap-3 px-6 py-2.5 rounded-full bg-[#132247] border border-blue-400/30 text-white shadow-md">
-                                <svg class="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/>
+                            <div
+                                class="inline-flex items-center gap-3 px-6 py-2.5 rounded-full bg-[#132247] border border-blue-400/30 text-white shadow-md"
+                            >
+                                <svg
+                                    class="w-5 h-5 text-white"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke="currentColor"
+                                >
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        stroke-width="2"
+                                        d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"
+                                    />
                                 </svg>
-                                <span class="text-base sm:text-lg font-black tracking-[0.25em] uppercase">MISI</span>
+                                <span
+                                    class="text-base sm:text-lg font-black tracking-[0.25em] uppercase"
+                                    >MISI</span
+                                >
                             </div>
 
                             <!-- 3 Butir Poin MISI -->
                             <div class="space-y-3">
-                                <div class="px-5 sm:px-6 py-3.5 sm:py-4 rounded-2xl sm:rounded-full bg-[#111C38]/70 border border-slate-700/60 shadow-md text-center text-slate-100 text-xs sm:text-[13px] font-medium leading-relaxed">
-                                    Membangun budaya belajar, diskusi, dan pengembangan skill yang konsisten bagi mahasiswa teknik informatika.
+                                <div
+                                    class="px-5 sm:px-6 py-3.5 sm:py-4 rounded-2xl sm:rounded-full bg-[#111C38]/70 border border-slate-700/60 shadow-md text-center text-slate-100 text-xs sm:text-[13px] font-medium leading-relaxed"
+                                >
+                                    Membangun budaya belajar, diskusi, dan
+                                    pengembangan skill yang konsisten bagi
+                                    mahasiswa teknik informatika.
                                 </div>
 
-                                <div class="px-5 sm:px-6 py-3.5 sm:py-4 rounded-2xl sm:rounded-full bg-[#111C38]/70 border border-slate-700/60 shadow-md text-center text-slate-100 text-xs sm:text-[13px] font-medium leading-relaxed">
-                                    Mendorong mahasiswa teknik informatika untuk menghasilkan karya dan berpartisipasi dalam kompetisi sebagai sarana pengembangan kompetensi serta kontribusi nyata HIMATIF.
+                                <div
+                                    class="px-5 sm:px-6 py-3.5 sm:py-4 rounded-2xl sm:rounded-full bg-[#111C38]/70 border border-slate-700/60 shadow-md text-center text-slate-100 text-xs sm:text-[13px] font-medium leading-relaxed"
+                                >
+                                    Mendorong mahasiswa teknik informatika untuk
+                                    menghasilkan karya dan berpartisipasi dalam
+                                    kompetisi sebagai sarana pengembangan
+                                    kompetensi serta kontribusi nyata HIMATIF.
                                 </div>
 
-                                <div class="px-5 sm:px-6 py-3.5 sm:py-4 rounded-2xl sm:rounded-full bg-[#111C38]/70 border border-slate-700/60 shadow-md text-center text-slate-100 text-xs sm:text-[13px] font-medium leading-relaxed">
-                                    Mengembangkan organisasi yang aktif, disiplin, dan informatif melalui pemanfaatan teknologi digital guna mendukung penyebaran informasi, publikasi prestasi, serta penguatan branding HIMATIF.
+                                <div
+                                    class="px-5 sm:px-6 py-3.5 sm:py-4 rounded-2xl sm:rounded-full bg-[#111C38]/70 border border-slate-700/60 shadow-md text-center text-slate-100 text-xs sm:text-[13px] font-medium leading-relaxed"
+                                >
+                                    Mengembangkan organisasi yang aktif,
+                                    disiplin, dan informatif melalui pemanfaatan
+                                    teknologi digital guna mendukung penyebaran
+                                    informasi, publikasi prestasi, serta
+                                    penguatan branding HIMATIF.
                                 </div>
                             </div>
                         </div>
@@ -493,12 +729,18 @@ const activities = [
                 <!-- 4. AKTIVITAS - Program Kerja & Informasi Terkini (Sesuai Mockup) -->
                 <div id="agenda" class="space-y-6 pt-4">
                     <!-- Section Header -->
-                    <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-3">
+                    <div
+                        class="flex flex-col sm:flex-row sm:items-end justify-between gap-3"
+                    >
                         <div>
-                            <span class="text-xs sm:text-sm font-black tracking-widest text-[#F95700] uppercase">
+                            <span
+                                class="text-xs sm:text-sm font-black tracking-widest text-[#F95700] uppercase"
+                            >
                                 AKTIVITAS
                             </span>
-                            <h2 class="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight mt-1">
+                            <h2
+                                class="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight mt-1"
+                            >
                                 Program Kerja & Informasi Terkini
                             </h2>
                         </div>
@@ -507,12 +749,17 @@ const activities = [
                             class="inline-flex items-center gap-1.5 text-xs sm:text-sm font-bold text-[#F95700] hover:text-orange-700 transition group"
                         >
                             <span>Lihat Semua Agenda</span>
-                            <span class="group-hover:translate-x-1 transition-transform">→</span>
+                            <span
+                                class="group-hover:translate-x-1 transition-transform"
+                                >→</span
+                            >
                         </Link>
                     </div>
 
                     <!-- 4 Cards Grid -->
-                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div
+                        class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"
+                    >
                         <div
                             v-for="item in activities"
                             :key="item.title"
@@ -521,7 +768,9 @@ const activities = [
                             <div>
                                 <!-- Image Thumbnail -->
                                 <div class="p-3 pb-0">
-                                    <div class="relative overflow-hidden rounded-xl aspect-[16/10] bg-slate-100">
+                                    <div
+                                        class="relative overflow-hidden rounded-xl aspect-[16/10] bg-slate-100"
+                                    >
                                         <img
                                             :src="item.image"
                                             :alt="item.title"
@@ -532,28 +781,46 @@ const activities = [
 
                                 <!-- Card Content -->
                                 <div class="p-4 space-y-2">
-                                    <div class="flex items-center gap-1.5 text-[11px] font-semibold text-slate-500">
+                                    <div
+                                        class="flex items-center gap-1.5 text-[11px] font-semibold text-slate-500"
+                                    >
                                         <span>📅</span>
-                                        <span>{{ item.date }} • {{ item.location }}</span>
+                                        <span
+                                            >{{ item.date }} •
+                                            {{ item.location }}</span
+                                        >
                                     </div>
-                                    <h3 class="text-sm font-bold text-slate-900 group-hover:text-[#F95700] transition line-clamp-2 leading-snug">
+                                    <h3
+                                        class="text-sm font-bold text-slate-900 group-hover:text-[#F95700] transition line-clamp-2 leading-snug"
+                                    >
                                         {{ item.title }}
                                     </h3>
-                                    <p class="text-xs text-slate-500 line-clamp-2 leading-relaxed">
+                                    <p
+                                        class="text-xs text-slate-500 line-clamp-2 leading-relaxed"
+                                    >
                                         {{ item.desc }}
                                     </p>
                                 </div>
                             </div>
 
                             <!-- Card Footer -->
-                            <div class="px-4 pb-4 pt-1 flex items-center justify-between border-t border-slate-100">
+                            <div
+                                class="px-4 pb-4 pt-1 flex items-center justify-between border-t border-slate-100"
+                            >
                                 <span
                                     class="text-xs font-bold"
-                                    :class="item.status.includes('Selesai') || item.status.includes('Sisa') ? 'text-[#F95700]' : 'text-slate-600'"
+                                    :class="
+                                        item.status.includes('Selesai') ||
+                                        item.status.includes('Sisa')
+                                            ? 'text-[#F95700]'
+                                            : 'text-slate-600'
+                                    "
                                 >
                                     {{ item.status }}
                                 </span>
-                                <span class="text-slate-400 group-hover:text-[#F95700] group-hover:translate-x-1 transition text-sm">
+                                <span
+                                    class="text-slate-400 group-hover:text-[#F95700] group-hover:translate-x-1 transition text-sm"
+                                >
                                     →
                                 </span>
                             </div>
@@ -564,16 +831,22 @@ const activities = [
                 <!-- 5. FITUR YANG TERSEDIA (Layanan HIMATIF - Sesuai Mockup) -->
                 <div id="layanan" class="pt-6 space-y-6">
                     <div>
-                        <span class="text-xs sm:text-sm font-black tracking-widest text-[#F95700] uppercase">
+                        <span
+                            class="text-xs sm:text-sm font-black tracking-widest text-[#F95700] uppercase"
+                        >
                             FITUR YANG TERSEDIA
                         </span>
-                        <h2 class="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight mt-1">
+                        <h2
+                            class="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight mt-1"
+                        >
                             Layanan HIMATIF
                         </h2>
                     </div>
 
                     <!-- 4 Kolom Grid untuk Layanan HIMATIF (Sesuai Mockup Referensi) -->
-                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div
+                        class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"
+                    >
                         <div
                             v-for="service in himatifServices"
                             :key="service.title"
@@ -581,7 +854,9 @@ const activities = [
                         >
                             <div>
                                 <!-- Kotak Ikon Peach/Oranye -->
-                                <div class="w-12 h-12 rounded-2xl bg-orange-100/70 border border-orange-200/50 flex items-center justify-center mb-5 group-hover:scale-110 transition duration-300">
+                                <div
+                                    class="w-12 h-12 rounded-2xl bg-orange-100/70 border border-orange-200/50 flex items-center justify-center mb-5 group-hover:scale-110 transition duration-300"
+                                >
                                     <!-- Icon 1: Manajemen Sekretariat (Isometric Box / Cube) -->
                                     <svg
                                         v-if="service.iconType === 'box'"
@@ -590,7 +865,12 @@ const activities = [
                                         viewBox="0 0 24 24"
                                         stroke="currentColor"
                                     >
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+                                        <path
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                            stroke-width="2"
+                                            d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"
+                                        />
                                     </svg>
 
                                     <!-- Icon 2: Dana Usaha (Shopping Bag) -->
@@ -601,18 +881,30 @@ const activities = [
                                         viewBox="0 0 24 24"
                                         stroke="currentColor"
                                     >
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                                        <path
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                            stroke-width="2"
+                                            d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"
+                                        />
                                     </svg>
 
                                     <!-- Icon 3: Kompetisi & Prestasi (Sparkles) -->
                                     <svg
-                                        v-else-if="service.iconType === 'sparkles'"
+                                        v-else-if="
+                                            service.iconType === 'sparkles'
+                                        "
                                         class="w-6 h-6 text-[#F95700]"
                                         fill="none"
                                         viewBox="0 0 24 24"
                                         stroke="currentColor"
                                     >
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
+                                        <path
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                            stroke-width="2"
+                                            d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"
+                                        />
                                     </svg>
 
                                     <!-- Icon 4: Edukasi & Literasi (Open Book) -->
@@ -623,22 +915,33 @@ const activities = [
                                         viewBox="0 0 24 24"
                                         stroke="currentColor"
                                     >
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                                        <path
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                            stroke-width="2"
+                                            d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
+                                        />
                                     </svg>
                                 </div>
 
                                 <!-- Kategori Tag Kecil Oranye -->
-                                <span class="text-[11px] font-black tracking-wider text-[#F95700] uppercase block">
+                                <span
+                                    class="text-[11px] font-black tracking-wider text-[#F95700] uppercase block"
+                                >
                                     {{ service.category }}
                                 </span>
 
                                 <!-- Judul Layanan -->
-                                <h3 class="text-base sm:text-lg font-black text-slate-900 group-hover:text-[#F95700] transition mt-1.5 leading-snug">
+                                <h3
+                                    class="text-base sm:text-lg font-black text-slate-900 group-hover:text-[#F95700] transition mt-1.5 leading-snug"
+                                >
                                     {{ service.title }}
                                 </h3>
 
                                 <!-- Deskripsi Layanan -->
-                                <p class="text-xs sm:text-[13px] text-slate-600 mt-2 leading-relaxed">
+                                <p
+                                    class="text-xs sm:text-[13px] text-slate-600 mt-2 leading-relaxed"
+                                >
                                     {{ service.desc }}
                                 </p>
                             </div>
@@ -649,7 +952,10 @@ const activities = [
                                 class="mt-6 inline-flex items-center gap-1.5 text-xs sm:text-sm font-bold text-slate-900 group-hover:text-[#F95700] transition select-none"
                             >
                                 <span>{{ service.btnText }}</span>
-                                <span class="group-hover:translate-x-1 transition-transform">→</span>
+                                <span
+                                    class="group-hover:translate-x-1 transition-transform"
+                                    >→</span
+                                >
                             </Link>
                         </div>
                     </div>
@@ -662,13 +968,20 @@ const activities = [
                     @mouseleave="isHovering = false"
                 >
                     <!-- Header Judul & Tombol Kontrol Kanan Kiri -->
-                    <div class="flex flex-col sm:flex-row items-center justify-between gap-4 mb-6 sm:mb-8 text-center sm:text-left">
+                    <div
+                        class="flex flex-col sm:flex-row items-center justify-between gap-4 mb-6 sm:mb-8 text-center sm:text-left"
+                    >
                         <div>
-                            <span class="text-xs font-bold tracking-widest text-[#F95700] uppercase block mb-1">
+                            <span
+                                class="text-xs font-bold tracking-widest text-[#F95700] uppercase block mb-1"
+                            >
                                 DOKUMENTASI HIMPUNAN
                             </span>
-                            <h2 class="text-xl sm:text-2xl md:text-3xl font-black text-white tracking-[0.15em] sm:tracking-[0.25em] uppercase">
-                                BANGGA MENJADI BAGIAN <span class="text-[#F95700]">DARI KAMI</span>
+                            <h2
+                                class="text-xl sm:text-2xl md:text-3xl font-black text-white tracking-[0.15em] sm:tracking-[0.25em] uppercase"
+                            >
+                                BANGGA MENJADI BAGIAN
+                                <span class="text-[#F95700]">DARI KAMI</span>
                             </h2>
                         </div>
 
@@ -680,8 +993,18 @@ const activities = [
                                 class="w-10 h-10 rounded-full bg-slate-800/90 hover:bg-[#F95700] text-white flex items-center justify-center border border-slate-700 hover:border-orange-500 shadow-md transition transform active:scale-95"
                                 title="Foto Sebelumnya"
                             >
-                                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7" />
+                                <svg
+                                    class="w-5 h-5"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke="currentColor"
+                                >
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        stroke-width="2.5"
+                                        d="M15 19l-7-7 7-7"
+                                    />
                                 </svg>
                             </button>
                             <button
@@ -690,8 +1013,18 @@ const activities = [
                                 class="w-10 h-10 rounded-full bg-slate-800/90 hover:bg-[#F95700] text-white flex items-center justify-center border border-slate-700 hover:border-orange-500 shadow-md transition transform active:scale-95"
                                 title="Foto Selanjutnya"
                             >
-                                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7" />
+                                <svg
+                                    class="w-5 h-5"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke="currentColor"
+                                >
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        stroke-width="2.5"
+                                        d="M9 5l7 7-7 7"
+                                    />
                                 </svg>
                             </button>
                         </div>
@@ -701,7 +1034,7 @@ const activities = [
                     <div
                         ref="galleryContainer"
                         class="flex gap-4 sm:gap-6 overflow-x-auto scroll-smooth snap-x snap-mandatory py-2 pb-4 select-none cursor-grab active:cursor-grabbing no-scrollbar"
-                        style="scrollbar-width: none; -ms-overflow-style: none;"
+                        style="scrollbar-width: none; -ms-overflow-style: none"
                     >
                         <div
                             v-for="(photo, idx) in galleryPhotos"
@@ -715,14 +1048,22 @@ const activities = [
                                 loading="lazy"
                             />
                             <!-- Gradient overlay -->
-                            <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/20 to-transparent"></div>
-                            
+                            <div
+                                class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/20 to-transparent"
+                            ></div>
+
                             <!-- Caption Teks di Bawah Foto -->
-                            <div class="absolute bottom-0 inset-x-0 p-4 transform translate-y-1 group-hover:translate-y-0 transition">
-                                <span class="inline-block px-2.5 py-0.5 rounded-md bg-[#F95700]/90 text-white text-[10px] font-bold uppercase tracking-wider mb-1 shadow-xs">
+                            <div
+                                class="absolute bottom-0 inset-x-0 p-4 transform translate-y-1 group-hover:translate-y-0 transition"
+                            >
+                                <span
+                                    class="inline-block px-2.5 py-0.5 rounded-md bg-[#F95700]/90 text-white text-[10px] font-bold uppercase tracking-wider mb-1 shadow-xs"
+                                >
                                     Dokumentasi
                                 </span>
-                                <h4 class="text-xs sm:text-sm font-bold text-white tracking-tight line-clamp-1">
+                                <h4
+                                    class="text-xs sm:text-sm font-bold text-white tracking-tight line-clamp-1"
+                                >
                                     {{ photo.title }}
                                 </h4>
                             </div>
@@ -730,18 +1071,23 @@ const activities = [
                     </div>
 
                     <!-- Dot Indicators -->
-                    <div class="flex items-center justify-center gap-2 mt-4 sm:mt-6">
+                    <div
+                        class="flex items-center justify-center gap-2 mt-4 sm:mt-6"
+                    >
                         <button
                             v-for="(_, idx) in galleryPhotos"
                             :key="'dot-' + idx"
                             @click="scrollToSlide(idx)"
                             class="h-2 rounded-full transition-all duration-300"
-                            :class="currentSlideIndex === idx ? 'w-8 bg-[#F95700]' : 'w-2 bg-slate-700 hover:bg-slate-500'"
+                            :class="
+                                currentSlideIndex === idx
+                                    ? 'w-8 bg-[#F95700]'
+                                    : 'w-2 bg-slate-700 hover:bg-slate-500'
+                            "
                             :title="'Slide ' + (idx + 1)"
                         />
                     </div>
                 </div>
-
             </div>
         </div>
     </AuthenticatedLayout>

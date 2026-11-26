@@ -278,12 +278,12 @@ public class OrderNotFoundException extends AppException {
 
 ### 日志级别选择
 
-| 级别 | 何时使用 | 示例 |
-|------|---------|------|
+| 级别      | 何时使用           | 示例                 |
+| --------- | ------------------ | -------------------- |
 | **ERROR** | 需要人工介入的故障 | 支付失败、数据不一致 |
-| **WARN** | 可自动恢复的异常 | 重试成功、降级处理 |
-| **INFO** | 正常业务事件 | 订单创建、用户登录 |
-| **DEBUG** | 调试信息 | 函数参数、中间状态 |
+| **WARN**  | 可自动恢复的异常   | 重试成功、降级处理   |
+| **INFO**  | 正常业务事件       | 订单创建、用户登录   |
+| **DEBUG** | 调试信息           | 函数参数、中间状态   |
 
 ### 日志格式
 
@@ -438,13 +438,13 @@ class PaymentError extends Error {
         public readonly cause?: Error,
     ) {
         super(message);
-        this.name = 'PaymentError';
+        this.name = "PaymentError";
     }
 }
 
 async function processPayment(orderId: string): Promise<Receipt> {
     try {
-        const response = await fetch(url, { method: 'POST', body: payload });
+        const response = await fetch(url, { method: "POST", body: payload });
         if (!response.ok) {
             throw new PaymentError(
                 `gateway returned ${response.status}`,
@@ -455,7 +455,12 @@ async function processPayment(orderId: string): Promise<Receipt> {
         return await response.json();
     } catch (err) {
         if (err instanceof TypeError) {
-            throw new PaymentError('gateway unreachable', orderId, gatewayName, err);
+            throw new PaymentError(
+                "gateway unreachable",
+                orderId,
+                gatewayName,
+                err,
+            );
         }
         throw err;
     }
@@ -467,6 +472,7 @@ async function processPayment(orderId: string): Promise<Receipt> {
 ## Review Checklist
 
 ### 核心检查
+
 - [ ] 没有空 catch 块或静默忽略错误
 - [ ] 错误信息包含操作描述和关键参数
 - [ ] 使用特定错误类型（非通用 Error/Exception）
@@ -474,16 +480,19 @@ async function processPayment(orderId: string): Promise<Receipt> {
 - [ ] 前置条件在操作开始前验证（fail fast）
 
 ### 架构检查
+
 - [ ] 定义了清晰的错误层次（应用/模块/基础设施）
 - [ ] 全局异常处理器捕获未处理错误
 - [ ] API 边界将内部错误转换为适当的 HTTP 状态码
 
 ### 日志检查
+
 - [ ] 错误日志包含结构化上下文
 - [ ] 没有记录敏感信息（密码、token、PII）
 - [ ] 日志级别使用正确（ERROR vs WARN vs INFO）
 
 ### 语言特定
+
 - [ ] Go: error 不忽略，使用 `%w` 包装
 - [ ] Python: catch 特定异常，使用 `from` 保留链
 - [ ] Java: 异常有 cause，使用特定类型

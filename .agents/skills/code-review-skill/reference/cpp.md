@@ -105,13 +105,13 @@ widgets.push_back(std::make_unique<Widget>());
 
 ### Decision matrix
 
-| Scenario | Pointer | Why |
-|----------|---------|-----|
-| Single owner | `unique_ptr` | Zero overhead, clear ownership |
-| Shared ownership (few owners) | `shared_ptr` | Reference counted, thread-safe refcount |
-| Non-owning observer | `weak_ptr` | Breaks cycles, checks liveness |
-| Never-null reference | raw reference `T&` | No ownership, cannot be null |
-| Maybe-null observer | raw pointer `T*` | No ownership, can be null |
+| Scenario                      | Pointer            | Why                                     |
+| ----------------------------- | ------------------ | --------------------------------------- |
+| Single owner                  | `unique_ptr`       | Zero overhead, clear ownership          |
+| Shared ownership (few owners) | `shared_ptr`       | Reference counted, thread-safe refcount |
+| Non-owning observer           | `weak_ptr`         | Breaks cycles, checks liveness          |
+| Never-null reference          | raw reference `T&` | No ownership, cannot be null            |
+| Maybe-null observer           | raw pointer `T*`   | No ownership, can be null               |
 
 ### Avoid shared_ptr when unique_ptr suffices
 
@@ -463,7 +463,7 @@ struct Widget {
 
 ### When to use constexpr vs consteval
 
-- `constexpr`: can be evaluated at compile time *or* runtime.
+- `constexpr`: can be evaluated at compile time _or_ runtime.
 - `consteval`: **must** be evaluated at compile time (immediate function).
 
 ```cpp
@@ -715,11 +715,11 @@ class Service : public ServiceBase {
 
 ### Framework selection
 
-| Framework | Best For |
-|-----------|----------|
-| **Google Test (GTest)** | Large projects, CI, GMock integration |
-| **Catch2** | Header-only, BDD-style, modern C++ |
-| **doctest** | Lightweight, single-header, fast compile |
+| Framework               | Best For                                 |
+| ----------------------- | ---------------------------------------- |
+| **Google Test (GTest)** | Large projects, CI, GMock integration    |
+| **Catch2**              | Header-only, BDD-style, modern C++       |
+| **doctest**             | Lightweight, single-header, fast compile |
 
 ### Google Test basics
 
@@ -855,6 +855,7 @@ clang++ -std=c++20 -Wall -Wextra -Werror -Wshadow -Wconversion \
 ## Review Checklist
 
 ### Safety and Lifetime
+
 - [ ] Ownership is explicit (RAII, unique_ptr by default)
 - [ ] No dangling references or views
 - [ ] Rule of 0/3/5 followed for resource-owning types
@@ -864,6 +865,7 @@ clang++ -std=c++20 -Wall -Wextra -Werror -Wshadow -Wconversion \
 - [ ] No shared_ptr cycles (use weak_ptr for back-references)
 
 ### API and Design
+
 - [ ] const-correctness is applied consistently
 - [ ] Constructors are explicit where needed
 - [ ] Override/final used for virtual functions
@@ -871,22 +873,26 @@ clang++ -std=c++20 -Wall -Wextra -Werror -Wshadow -Wconversion \
 - [ ] Concepts constrain template parameters (C++20)
 
 ### Modern Features
+
 - [ ] constexpr used for compile-time computation where beneficial
 - [ ] Ranges preferred over manual loops for data pipelines (C++20)
 - [ ] std::jthread preferred over std::thread for new code (C++20)
 - [ ] std::expected used for error handling (C++23) where available
 
 ### Concurrency
+
 - [ ] Shared data is protected (mutex or atomics)
 - [ ] Locking order is consistent
 - [ ] No blocking while holding locks
 
 ### Performance
+
 - [ ] Unnecessary allocations avoided (reserve, move, span)
 - [ ] Copies avoided in hot paths
 - [ ] Algorithmic complexity is reasonable
 
 ### Testing and Tooling
+
 - [ ] Unit tests cover happy path, error paths, and edge cases
 - [ ] Builds clean with warnings enabled
 - [ ] Sanitizers run on critical code paths

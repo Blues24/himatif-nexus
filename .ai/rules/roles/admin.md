@@ -1,12 +1,22 @@
 ---
 trigger: "@admin"
-keywords: ["admin", "bph", "user", "role", "permission", "access", "management", "user_uuid"]
+keywords:
+    [
+        "admin",
+        "bph",
+        "user",
+        "role",
+        "permission",
+        "access",
+        "management",
+        "user_uuid",
+    ]
 paths:
-  - "app/Http/Controllers/Admin/**"
-  - "app/Services/UserService.php"
-  - "app/Models/User.php"
-  - "app/Models/Role.php"
-  - "resources/js/Pages/Admin/**"
+    - "app/Http/Controllers/Admin/**"
+    - "app/Services/UserService.php"
+    - "app/Models/User.php"
+    - "app/Models/Role.php"
+    - "resources/js/Pages/Admin/**"
 ---
 
 # @admin — Admin/BPH Role
@@ -17,14 +27,14 @@ Admin/BPH module mengelola user management, role assignment, dan akses kontrol u
 
 ### Files Owned
 
-| File | Purpose |
-|---|---|
-| `app/Http/Controllers/Admin/UserController.php` | ⚠️ Stub — needs implementation |
-| `app/Services/UserService.php` | User management & RBAC assignment |
-| `app/Models/User.php` | User model with RBAC methods |
-| `app/Models/Role.php` | Role definition model |
-| `resources/js/Pages/Admin/Users.vue` | User management (planned) |
-| `resources/js/Pages/Admin/Roles.vue` | Role management (planned) |
+| File                                            | Purpose                           |
+| ----------------------------------------------- | --------------------------------- |
+| `app/Http/Controllers/Admin/UserController.php` | ⚠️ Stub — needs implementation    |
+| `app/Services/UserService.php`                  | User management & RBAC assignment |
+| `app/Models/User.php`                           | User model with RBAC methods      |
+| `app/Models/Role.php`                           | Role definition model             |
+| `resources/js/Pages/Admin/Users.vue`            | User management (planned)         |
+| `resources/js/Pages/Admin/Roles.vue`            | Role management (planned)         |
 
 ## RBAC Implementation
 
@@ -52,12 +62,12 @@ public function isBph(): bool
 
 ### Available Roles
 
-| Role | Description | Access Level |
-|---|---|---|
-| `BPH` | Badan Pengurus Harian | Full access to all modules |
+| Role      | Description            | Access Level                            |
+| --------- | ---------------------- | --------------------------------------- |
+| `BPH`     | Badan Pengurus Harian  | Full access to all modules              |
 | `Infokom` | Informasi & Komunikasi | Content management (Formatif, Kegiatan) |
-| `Portal` | Portal Management | Inventory & equipment loans |
-| `Danus` | Dana Usaha | Shop & product management |
+| `Portal`  | Portal Management      | Inventory & equipment loans             |
+| `Danus`   | Dana Usaha             | Shop & product management               |
 
 ### User Model Details
 
@@ -95,22 +105,22 @@ class User extends Authenticatable
 
 ### `users` Table
 
-| Column | Type | Description |
-|---|---|---|
-| `user_uuid` | uuid (PK) | Primary key (UUID) |
-| `role_id` | bigint (FK) | Reference to roles |
-| `nama` | string | Display name |
-| `email` | string (unique) | Email address |
+| Column              | Type                 | Description            |
+| ------------------- | -------------------- | ---------------------- |
+| `user_uuid`         | uuid (PK)            | Primary key (UUID)     |
+| `role_id`           | bigint (FK)          | Reference to roles     |
+| `nama`              | string               | Display name           |
+| `email`             | string (unique)      | Email address          |
 | `email_verified_at` | timestamp (nullable) | Verification timestamp |
-| `password` | string | Hashed password |
-| `remember_token` | string (nullable) | Remember me token |
-| `timestamps` | timestamp | created_at, updated_at |
+| `password`          | string               | Hashed password        |
+| `remember_token`    | string (nullable)    | Remember me token      |
+| `timestamps`        | timestamp            | created_at, updated_at |
 
 ### `roles` Table
 
-| Column | Type | Description |
-|---|---|---|
-| `role_id` | bigint (PK) | Auto-increment |
+| Column      | Type            | Description                             |
+| ----------- | --------------- | --------------------------------------- |
+| `role_id`   | bigint (PK)     | Auto-increment                          |
 | `nama_role` | string (unique) | Role name (BPH, Infokom, Portal, Danus) |
 
 ## Common Tasks
@@ -123,7 +133,7 @@ public function create(array $data): User
 {
     $data['user_uuid'] = Str::uuid();
     $data['password'] = Hash::make($data['password']);
-    
+
     return parent::create($data);
 }
 
@@ -174,7 +184,7 @@ class UserService extends BaseService
     {
         $data['user_uuid'] = Str::uuid();
         $data['password'] = Hash::make($data['password']);
-        
+
         return DB::transaction(function () use ($data) {
             return app($this->model)->create($data);
         });

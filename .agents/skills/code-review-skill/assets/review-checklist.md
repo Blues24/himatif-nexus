@@ -70,28 +70,28 @@ Quick reference checklist for code reviews.
 
 ## Severity Labels
 
-| Label | Meaning | Action |
-|-------|---------|--------|
-| 🔴 `[blocking]` | Must fix | Block merge |
-| 🟡 `[important]` | Should fix | Discuss if disagree |
-| 🟢 `[nit]` | Nice to have | Non-blocking |
-| 💡 `[suggestion]` | Alternative | Consider |
-| 📚 `[learning]` | Educational comment | No action needed |
-| 🎉 `[praise]` | Good work | Celebrate! |
+| Label             | Meaning             | Action              |
+| ----------------- | ------------------- | ------------------- |
+| 🔴 `[blocking]`   | Must fix            | Block merge         |
+| 🟡 `[important]`  | Should fix          | Discuss if disagree |
+| 🟢 `[nit]`        | Nice to have        | Non-blocking        |
+| 💡 `[suggestion]` | Alternative         | Consider            |
+| 📚 `[learning]`   | Educational comment | No action needed    |
+| 🎉 `[praise]`     | Good work           | Celebrate!          |
 
 ---
 
 ## Decision Matrix
 
-| Situation | Decision |
-|-----------|----------|
-| Critical security issue | 🔴 Block, fix immediately |
-| Breaking change without migration | 🔴 Block |
-| Missing error handling | 🟡 Should fix |
-| No tests for new code | 🟡 Should fix |
-| Style preference | 🟢 Non-blocking |
-| Minor naming improvement | 🟢 Non-blocking |
-| Clever but working code | 💡 Suggest simpler |
+| Situation                         | Decision                  |
+| --------------------------------- | ------------------------- |
+| Critical security issue           | 🔴 Block, fix immediately |
+| Breaking change without migration | 🔴 Block                  |
+| Missing error handling            | 🟡 Should fix             |
+| No tests for new code             | 🟡 Should fix             |
+| Style preference                  | 🟢 Non-blocking           |
+| Minor naming improvement          | 🟢 Non-blocking           |
+| Clever but working code           | 💡 Suggest simpler        |
 
 ---
 
@@ -99,11 +99,11 @@ Quick reference checklist for code reviews.
 
 This checklist is designed for a **lightweight quick review**. For comprehensive reviews covering architecture and performance analysis, use the full four-phase process in [SKILL.md](../SKILL.md) (19–36 minutes). Smaller PRs trend toward the lower end of each phase; larger PRs toward the upper end.
 
-| PR Size | Quick Review | Full Review (4-phase) |
-|---------|-------------|----------------------|
-| < 100 lines | 10–15 min | ~19–28 min |
-| 100–400 lines | 20–40 min | ~28–36 min |
-| > 400 lines | Ask to split | Ask to split |
+| PR Size       | Quick Review | Full Review (4-phase) |
+| ------------- | ------------ | --------------------- |
+| < 100 lines   | 10–15 min    | ~19–28 min            |
+| 100–400 lines | 20–40 min    | ~28–36 min            |
+| > 400 lines   | Ask to split | Ask to split          |
 
 ---
 

@@ -8,15 +8,15 @@ PHPUnit and Laravel provide features for most testing needs. Find an existing fe
 
 Search for a feature in this table before you write the code by hand.
 
-| Work that you need | Term to search for |
-| --- | --- |
-| Run one test method with many input values | data provider, `#[DataProvider]`, `#[TestWith]` |
-| Run one test only after another test passes | `#[Depends]` |
-| Select or skip a set of tests in one run | `#[Group]`, `--group`, `--exclude-group` |
-| Skip a test on a version or on a missing extension | `#[RequiresPhp]`, `#[RequiresPhpExtension]` |
-| Find a test that depends on the order of the run | `--order-by=random` |
-| Reduce the time of a slow suite | ParaTest, `--cache-result` |
-| Stop the run at the first failure while you debug | `--stop-on-failure`, `--filter` |
+| Work that you need                                 | Term to search for                              |
+| -------------------------------------------------- | ----------------------------------------------- |
+| Run one test method with many input values         | data provider, `#[DataProvider]`, `#[TestWith]` |
+| Run one test only after another test passes        | `#[Depends]`                                    |
+| Select or skip a set of tests in one run           | `#[Group]`, `--group`, `--exclude-group`        |
+| Skip a test on a version or on a missing extension | `#[RequiresPhp]`, `#[RequiresPhpExtension]`     |
+| Find a test that depends on the order of the run   | `--order-by=random`                             |
+| Reduce the time of a slow suite                    | ParaTest, `--cache-result`                      |
+| Stop the run at the first failure while you debug  | `--stop-on-failure`, `--filter`                 |
 
 ## Built-in Laravel Assertion Methods
 

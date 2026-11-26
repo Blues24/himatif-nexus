@@ -317,18 +317,18 @@ Svelte 5 / SvelteKit 审查重点：Runes 响应式系统、Server/Client 边界
 // ❌ 在 +page.js 中访问数据库或 secrets
 // src/routes/admin/+page.js
 export async function load({ fetch }) {
-  // universal load runs on both server and client
-  const data = await db.query('SELECT * FROM users');  // db not available in browser!
-  return { users: data };
+    // universal load runs on both server and client
+    const data = await db.query("SELECT * FROM users"); // db not available in browser!
+    return { users: data };
 }
 
 // ✅ 服务端逻辑放在 +page.server.js
 // src/routes/admin/+page.server.js
-import { db } from '$lib/server/db';
+import { db } from "$lib/server/db";
 
 export async function load() {
-  const users = await db.query('SELECT * FROM users');
-  return { users };
+    const users = await db.query("SELECT * FROM users");
+    return { users };
 }
 ```
 
@@ -336,11 +336,11 @@ export async function load() {
 // ✅ +page.js 用于客户端也可用的数据（如 fetch 聚合）
 // src/routes/dashboard/+page.js
 export async function load({ fetch, parent }) {
-  const [analytics, notifications] = await Promise.all([
-    fetch('/api/analytics').then(r => r.json()),
-    fetch('/api/notifications').then(r => r.json())
-  ]);
-  return { analytics, notifications };
+    const [analytics, notifications] = await Promise.all([
+        fetch("/api/analytics").then((r) => r.json()),
+        fetch("/api/notifications").then((r) => r.json()),
+    ]);
+    return { analytics, notifications };
 }
 ```
 
@@ -350,25 +350,25 @@ export async function load({ fetch, parent }) {
 // ❌ 顺序 await parent → 瀑布流
 // src/routes/blog/[slug]/+page.js
 export async function load({ parent, fetch }) {
-  const parentData = await parent();  // wait for parent
-  const post = await fetch(`/api/posts/${parentData.blogId}`);
-  return { post };
+    const parentData = await parent(); // wait for parent
+    const post = await fetch(`/api/posts/${parentData.blogId}`);
+    return { post };
 }
 
 // ✅ 尽可能并行，避免不必要的 parent await
 // src/routes/blog/[slug]/+page.js
 export async function load({ parent, fetch }) {
-  // only await parent if you truly need its data
-  const post = await fetch('/api/posts/slug');
-  return { post };
+    // only await parent if you truly need its data
+    const post = await fetch("/api/posts/slug");
+    return { post };
 }
 
 // ✅ 如果确实需要 parent 数据，无法避免瀑布流，但要明确注释
 // src/routes/blog/[slug]/+page.js
 export async function load({ parent, fetch }) {
-  const { blogId } = await parent();  // required: need blogId for post URL
-  const post = await fetch(`/api/posts/${blogId}`);
-  return { post };
+    const { blogId } = await parent(); // required: need blogId for post URL
+    const post = await fetch(`/api/posts/${blogId}`);
+    return { post };
 }
 ```
 
@@ -378,20 +378,20 @@ export async function load({ parent, fetch }) {
 // ❌ 从 server load 返回不可序列化的值
 // src/routes/api/+page.server.js
 export async function load() {
-  return {
-    stream: fs.createReadStream('data.csv'),  // not serializable!
-    callback: () => console.log('hi'),        // functions not serializable!
-    date: new Date(),                         // OK — devalue serializes Date/Map/Set fine
-  };
+    return {
+        stream: fs.createReadStream("data.csv"), // not serializable!
+        callback: () => console.log("hi"), // functions not serializable!
+        date: new Date(), // OK — devalue serializes Date/Map/Set fine
+    };
 }
 
 // ✅ 只返回可序列化的数据
 // src/routes/api/+page.server.js
 export async function load() {
-  return {
-    data: await readFile('data.csv', 'utf-8'),
-    timestamp: Date.now(),
-  };
+    return {
+        data: await readFile("data.csv", "utf-8"),
+        timestamp: Date.now(),
+    };
 }
 ```
 
@@ -418,18 +418,18 @@ export async function load() {
 
 ```typescript
 // src/routes/users/+page.server.js
-import { fail, redirect } from '@sveltejs/kit';
+import { fail, redirect } from "@sveltejs/kit";
 
 export const actions = {
-  delete: async ({ request, locals }) => {
-    const formData = await request.formData();
-    const id = formData.get('id');
+    delete: async ({ request, locals }) => {
+        const formData = await request.formData();
+        const id = formData.get("id");
 
-    if (!id) return fail(400, { message: 'Missing id' });
+        if (!id) return fail(400, { message: "Missing id" });
 
-    await locals.db.users.delete(id);
-    throw redirect(303, '/users');
-  }
+        await locals.db.users.delete(id);
+        throw redirect(303, "/users");
+    },
 };
 ```
 
@@ -451,28 +451,28 @@ export const actions = {
 // ❌ fail() 中返回敏感信息
 // src/routes/login/+page.server.js
 export const actions = {
-  default: async ({ request, locals }) => {
-    const formData = await request.formData();
-    const user = await locals.db.users.findByEmail(formData.get('email'));
+    default: async ({ request, locals }) => {
+        const formData = await request.formData();
+        const user = await locals.db.users.findByEmail(formData.get("email"));
 
-    return fail(401, {
-      password: formData.get('password'),  // ❌ exposes password in page data!
-      hint: user.passwordHint,             // ❌ leaks internal data!
-    });
-  }
+        return fail(401, {
+            password: formData.get("password"), // ❌ exposes password in page data!
+            hint: user.passwordHint, // ❌ leaks internal data!
+        });
+    },
 };
 
 // ✅ 只返回安全的错误信息
 export const actions = {
-  default: async ({ request }) => {
-    const formData = await request.formData();
-    const email = formData.get('email');
+    default: async ({ request }) => {
+        const formData = await request.formData();
+        const email = formData.get("email");
 
-    return fail(401, {
-      email,                    // ✅ safe to echo back
-      incorrect: true,          // ✅ generic error flag
-    });
-  }
+        return fail(401, {
+            email, // ✅ safe to echo back
+            incorrect: true, // ✅ generic error flag
+        });
+    },
 };
 ```
 
@@ -526,10 +526,10 @@ export const actions = {
 ```typescript
 // ❌ Legacy store pattern (Svelte 4)
 // src/lib/stores/user.js
-import { writable, derived } from 'svelte/store';
+import { writable, derived } from "svelte/store";
 
 export const user = writable(null);
-export const isLoggedIn = derived(user, $user => !!$user);
+export const isLoggedIn = derived(user, ($user) => !!$user);
 
 // usage with $ prefix
 // $user = { name: 'John' };
@@ -539,15 +539,15 @@ export const isLoggedIn = derived(user, $user => !!$user);
 let currentUser = $state<User | null>(null);
 
 export function getUser() {
-  return currentUser;
+    return currentUser;
 }
 
 export function setUser(user: User | null) {
-  currentUser = user;
+    currentUser = user;
 }
 
 export function isLoggedIn() {
-  return currentUser !== null;
+    return currentUser !== null;
 }
 ```
 
@@ -582,18 +582,18 @@ export function isLoggedIn() {
 ```typescript
 // ❌ 在普通 .js 文件中使用 runes → 编译错误
 // src/lib/utils.js
-let state = $state(0);  // runes only work in .svelte.js files!
+let state = $state(0); // runes only work in .svelte.js files!
 
 // ✅ 使用 .svelte.js 扩展名
 // src/lib/utils.svelte.js
 let state = $state(0);
 
 export function getState() {
-  return state;
+    return state;
 }
 
 export function setState(val: number) {
-  state = val;
+    state = val;
 }
 ```
 
@@ -606,15 +606,15 @@ export function setState(val: number) {
 ```typescript
 // ❌ 在根 layout 中禁用 SSR → 全部变成 CSR
 // src/routes/+layout.js
-export const ssr = false;  // entire app becomes SPA
+export const ssr = false; // entire app becomes SPA
 
 // ✅ 只在需要的页面禁用 SSR
 // src/routes/admin/dashboard/+page.js
-export const ssr = false;  // only this page skips SSR
+export const ssr = false; // only this page skips SSR
 
 // ✅ 更好的做法：按路由配置
 // src/routes/editor/+page.js
-export const ssr = false;  // editor needs browser APIs, skip SSR
+export const ssr = false; // editor needs browser APIs, skip SSR
 ```
 
 ### 浏览器全局变量在 SSR 中
@@ -652,8 +652,10 @@ export const ssr = false;  // editor needs browser APIs, skip SSR
 export const prerender = true;
 
 export const actions = {
-  // Error: prerendered pages cannot have server-side form actions
-  default: async ({ request }) => { /* ... */ }
+    // Error: prerendered pages cannot have server-side form actions
+    default: async ({ request }) => {
+        /* ... */
+    },
 };
 
 // ✅ prerender 页面不使用 server actions
@@ -664,9 +666,9 @@ export const prerender = true;
 // ✅ 需要 actions 的页面不 prerender
 // src/routes/contact/+page.server.js
 export const actions = {
-  default: async ({ request }) => {
-    // handle form submission
-  }
+    default: async ({ request }) => {
+        // handle form submission
+    },
 };
 ```
 
@@ -870,19 +872,19 @@ export const actions = {
 // ❌ 串行等待所有数据 → 页面阻塞
 // src/routes/+page.server.js
 export async function load({ params }) {
-  const posts = await getPosts();       // slow
-  const comments = await getComments(); // slow
-  const tags = await getTags();         // slow
-  return { posts, comments, tags };
+    const posts = await getPosts(); // slow
+    const comments = await getComments(); // slow
+    const tags = await getTags(); // slow
+    return { posts, comments, tags };
 }
 
 // ✅ 并行加载独立数据
 export async function load({ params }) {
-  return {
-    posts: getPosts(),       // return promises directly for streaming
-    comments: getComments(),
-    tags: getTags(),
-  };
+    return {
+        posts: getPosts(), // return promises directly for streaming
+        comments: getComments(),
+        tags: getTags(),
+    };
 }
 ```
 
@@ -915,18 +917,18 @@ Svelte/SvelteKit 默认自动转义模板表达式。审查重点：`{@html}` �
 // ❌ 在 universal load 中暴露服务端 secrets
 // src/routes/admin/+page.js (universal — runs on client too!)
 export async function load() {
-  return {
-    apiKey: process.env.SECRET_API_KEY,    // exposed to client bundle!
-    dbUrl: import.meta.env.DATABASE_URL,    // leaks to browser!
-  };
+    return {
+        apiKey: process.env.SECRET_API_KEY, // exposed to client bundle!
+        dbUrl: import.meta.env.DATABASE_URL, // leaks to browser!
+    };
 }
 
 // ✅ 私有环境变量只在 server load 中使用
 // src/routes/admin/+page.server.js (server-only)
 export async function load({ locals }) {
-  // secrets stay on server
-  const data = await fetch(process.env.SECRET_API_KEY + '/admin');
-  return { data };  // only derived data is sent to client
+    // secrets stay on server
+    const data = await fetch(process.env.SECRET_API_KEY + "/admin");
+    return { data }; // only derived data is sent to client
 }
 
 // ✅ 公开变量使用 PUBLIC_ 前缀
@@ -940,20 +942,20 @@ export async function load({ locals }) {
 ```typescript
 // ❌ 服务端代码放在可被客户端导入的位置
 // src/lib/db.js
-import { SECRET_DB_URL } from '$env/static/private';
+import { SECRET_DB_URL } from "$env/static/private";
 // any client component importing this gets the secret!
 
 // ✅ 放在 $lib/server/ 目录 → 客户端导入会编译报错
 // src/lib/server/db.js
-import { SECRET_DB_URL } from '$env/static/private';
+import { SECRET_DB_URL } from "$env/static/private";
 
 export async function query(sql: string) {
-  // safe: client cannot import from $lib/server/
+    // safe: client cannot import from $lib/server/
 }
 
 // usage in server files only
 // src/routes/api/users/+server.js
-import { query } from '$lib/server/db';
+import { query } from "$lib/server/db";
 ```
 
 ### CSRF 内建防护
@@ -965,10 +967,11 @@ import { query } from '$lib/server/db';
 
 // ❌ 不要禁用 CSRF 检查（除非有充分理由）
 // src/hooks.server.js
-export const handle = sequence(
-  // do NOT do this without understanding the implications
-  // ({ event, resolve }) => resolve(event, { filterSerializedResponseHeaders: () => true })
-);
+export const handle =
+    sequence(
+        // do NOT do this without understanding the implications
+        // ({ event, resolve }) => resolve(event, { filterSerializedResponseHeaders: () => true })
+    );
 ```
 
 ### Cookie 安全设置
@@ -977,23 +980,23 @@ export const handle = sequence(
 // ❌ 不安全的 Cookie 设置
 // src/hooks.server.js
 export async function handle({ event, resolve }) {
-  const token = event.cookies.get('session');
-  // cookie without httpOnly, secure, sameSite flags
-  event.cookies.set('session', token, {
-    path: '/',
-    // missing: httpOnly, secure, sameSite
-  });
+    const token = event.cookies.get("session");
+    // cookie without httpOnly, secure, sameSite flags
+    event.cookies.set("session", token, {
+        path: "/",
+        // missing: httpOnly, secure, sameSite
+    });
 }
 
 // ✅ 安全的 Cookie 配置
-import { dev } from '$app/environment';
+import { dev } from "$app/environment";
 
-event.cookies.set('session', token, {
-  path: '/',
-  httpOnly: true,          // not accessible via JS
-  secure: !dev,            // HTTPS only in production
-  sameSite: 'lax',         // CSRF protection
-  maxAge: 60 * 60 * 24 * 7 // 1 week, explicit expiry
+event.cookies.set("session", token, {
+    path: "/",
+    httpOnly: true, // not accessible via JS
+    secure: !dev, // HTTPS only in production
+    sameSite: "lax", // CSRF protection
+    maxAge: 60 * 60 * 24 * 7, // 1 week, explicit expiry
 });
 ```
 

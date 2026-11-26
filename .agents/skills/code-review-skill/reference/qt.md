@@ -21,6 +21,7 @@
 ## Object Model & Memory Management
 
 ### Use Parent-Child Ownership Mechanism
+
 Qt's `QObject` hierarchy automatically manages memory. For `QObject`, prefer setting a parent object over manual `delete` or smart pointers.
 
 ```cpp
@@ -36,6 +37,7 @@ QLabel* l = new QLabel(w);      // Owned by 'w'
 ```
 
 ### Use Smart Pointers with QObject
+
 If a `QObject` has no parent, use `QScopedPointer` or `std::unique_ptr` with a custom deleter (use `deleteLater` if cross-thread). Avoid `std::shared_ptr` for `QObject` unless necessary, as it confuses the parent-child ownership system.
 
 ```cpp
@@ -50,6 +52,7 @@ if (safePtr) {
 ```
 
 ### Use `deleteLater()`
+
 For asynchronous deletion, especially in slots or event handlers, use `deleteLater()` instead of `delete` to ensure pending events in the event loop are processed.
 
 ```cpp
@@ -79,6 +82,7 @@ auto* dialog = new QDialog(this);
 ## Signals & Slots
 
 ### Prefer Function Pointer Syntax
+
 Use compile-time checked syntax (Qt 5+).
 
 ```cpp
@@ -104,12 +108,15 @@ connect(timer, &QTimer::timeout, this, [this]() {
 ```
 
 ### Connection Types
+
 Be explicit or aware of connection types when crossing threads.
+
 - `Qt::AutoConnection` (Default): Direct if same thread, Queued if different thread.
 - `Qt::QueuedConnection`: Always posts event (thread-safe across threads).
 - `Qt::DirectConnection`: Immediate call (dangerous if accessing non-thread-safe data across threads).
 
 ### Avoid Loops
+
 Check logic that might cause infinite signal loops (e.g., `valueChanged` -> `setValue` -> `valueChanged`). Block signals or check for equality before setting values.
 
 ```cpp
@@ -133,6 +140,7 @@ connect(newSource, &Source::data, this, &Receiver::onData);
 ## Containers & Strings
 
 ### QString Efficiency
+
 - Use `QStringLiteral("...")` for compile-time string creation to avoid runtime allocation.
 - Use `QLatin1String` for comparison with ASCII literals (in Qt 5).
 - Prefer `arg()` for formatting (or `QStringBuilder`'s `%` operator).
@@ -147,9 +155,10 @@ if (str == u"test"_s) ...             // Qt 6
 ```
 
 ### Container Selection
+
 - **Qt 6**: `QList` is now the default choice (unified with `QVector`).
 - **Qt 5**: Prefer `QVector` over `QList` for contiguous memory and cache performance, unless stable references are needed.
-- Be aware of Implicit Sharing (Copy-on-Write). Passing containers by value is cheap *until* modified. Use `const &` for read-only access.
+- Be aware of Implicit Sharing (Copy-on-Write). Passing containers by value is cheap _until_ modified. Use `const &` for read-only access.
 
 ```cpp
 // ❌ Forces deep copy if function modifies 'list'
@@ -185,6 +194,7 @@ for (const auto& item : list) {
 ## Threads & Concurrency
 
 ### Subclassing QThread vs Worker Object
+
 Prefer the "Worker Object" pattern over subclassing `QThread` implementation details.
 
 ```cpp
@@ -203,6 +213,7 @@ thread->start();
 ```
 
 ### GUI Thread Safety
+
 **NEVER** access UI widgets (`QWidget` and subclasses) from a background thread. Use signals/slots to communicate updates to the main thread.
 
 ```cpp
@@ -242,13 +253,17 @@ auto results = QtConcurrent::mappedReduced(
 ## GUI & Widgets
 
 ### Logic Separation
+
 Keep business logic out of UI classes (`MainWindow`, `Dialog`). UI classes should only handle display and user input forwarding.
 
 ### Layouts
+
 Avoid fixed sizes (`setGeometry`, `resize`). Use layouts (`QVBoxLayout`, `QGridLayout`) to handle different DPIs and window resizing gracefully.
 
 ### Blocking Event Loop
+
 Never execute long-running operations on the main thread (freezes GUI).
+
 - **Bad**: `Sleep()`, `while(busy)`, synchronous network calls.
 - **Good**: `QProcess`, `QThread`, `QtConcurrent`, or asynchronous APIs (`QNetworkAccessManager`).
 
@@ -381,6 +396,7 @@ tableView->setItemDelegateForColumn(1, new PriorityDelegate(this));
 ## Meta-Object System
 
 ### Properties & Enums
+
 Use `Q_PROPERTY` for values exposed to QML or needing introspection.
 Use `Q_ENUM` to enable string conversion for enums.
 
@@ -396,6 +412,7 @@ public:
 ```
 
 ### qobject_cast
+
 Use `qobject_cast<T*>` for QObjects instead of `dynamic_cast`. It is faster and doesn't require RTTI.
 
 ### Q_GADGET for value types
@@ -493,15 +510,15 @@ Loader {
 
 ### Key breaking changes
 
-| Qt 5 | Qt 6 | Notes |
-|------|------|-------|
-| `QList` ≠ `QVector` | `QList` = `QVector` | Unified; QList is now QVector internally |
-| `QStringRef` | `QStringView` | QStringView is non-owning, more like string_view |
-| `QLatin1String` | `QLatin1StringView` | Or use `u"..."_s` string literals |
-| `QTextStream(stream)` | `QTextStream(&string)` | Constructor changes |
-| `QMouseEvent::pos()` | `QMouseEvent::position()` | Returns QPointF instead of QPoint |
-| `QWheelEvent::delta()` | `QWheelEvent::angleDelta()` | Already deprecated in Qt 5 |
-| `QComboBox::activated(int)` | `QComboBox::textActivated(QString)` | Overload disambiguation |
+| Qt 5                        | Qt 6                                | Notes                                            |
+| --------------------------- | ----------------------------------- | ------------------------------------------------ |
+| `QList` ≠ `QVector`         | `QList` = `QVector`                 | Unified; QList is now QVector internally         |
+| `QStringRef`                | `QStringView`                       | QStringView is non-owning, more like string_view |
+| `QLatin1String`             | `QLatin1StringView`                 | Or use `u"..."_s` string literals                |
+| `QTextStream(stream)`       | `QTextStream(&string)`              | Constructor changes                              |
+| `QMouseEvent::pos()`        | `QMouseEvent::position()`           | Returns QPointF instead of QPoint                |
+| `QWheelEvent::delta()`      | `QWheelEvent::angleDelta()`         | Already deprecated in Qt 5                       |
+| `QComboBox::activated(int)` | `QComboBox::textActivated(QString)` | Overload disambiguation                          |
 
 ### CMake replaces qmake
 
@@ -714,44 +731,52 @@ xvfb-run -a ctest --output-on-failure
 ## Review Checklist
 
 ### Memory
+
 - [ ] Is parent-child relationship correct? Are dangling pointers avoided (using `QPointer`)?
 - [ ] No double ownership (parent + smart pointer)
 - [ ] `deleteLater()` used instead of `delete` in slots
 
 ### Signals & Slots
+
 - [ ] Function pointer syntax used (compile-time checked)
 - [ ] Lambda connections have context object for auto-disconnect
 - [ ] No signal loops (guard with equality check or blockSignals)
 - [ ] Proper disconnect when changing signal sources
 
 ### Threads
+
 - [ ] Is UI accessed only from main thread?
 - [ ] Are long tasks offloaded (QThread worker, QtConcurrent)?
 - [ ] Worker object pattern preferred over QThread subclassing
 - [ ] Proper cleanup: thread quit + wait before delete
 
 ### Strings & Containers
+
 - [ ] `QStringLiteral` or `u"..."_s` used for compile-time strings
 - [ ] `const &` used for read-only container access
 - [ ] No implicit detach in loops (use const iterators or range-for with const ref)
 
 ### Model/View
+
 - [ ] begin/end Insert/Remove/Reset signals emitted correctly
 - [ ] dataChanged emitted for individual item updates
 - [ ] Delegate used for custom rendering (not subclassing view)
 
 ### QML
+
 - [ ] C++/QML boundary uses QML_ELEMENT (Qt 6) or registered types
 - [ ] Heavy computation not in QML JS
 - [ ] Loader used for conditional/lazy component instantiation
 
 ### Testing
+
 - [ ] QTest unit tests for core logic
 - [ ] GUI tests use QTest::keyClicks / qWaitForWindowExposed
 - [ ] Dependencies injected for mockability
 - [ ] Tests run in CI (with Xvfb for GUI tests)
 
 ### Style
+
 - [ ] Naming conventions (camelCase for methods, PascalCase for classes)
 - [ ] Resources loaded from `.qrc`
 - [ ] `Q_OBJECT` macro present in all QObject subclasses
