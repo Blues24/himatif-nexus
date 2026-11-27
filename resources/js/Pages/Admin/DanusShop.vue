@@ -17,60 +17,14 @@ const searchQuery = ref("");
 const statusFilter = ref("Semua status");
 
 // Data Produk — gunakan prop jika ada, fallback ke dummy
-const products = ref(
-    props.products.length
-        ? props.products
-        : [
-              {
-                  id: 1,
-                  code: "KS",
-                  name: "Kaos HIMATIF",
-                  desc: "Katun combed 30s",
-                  price: 85000,
-                  stock: 42,
-              },
-              {
-                  id: 2,
-                  code: "HD",
-                  name: "Hoodie HIMATIF",
-                  desc: "Fleece tebal",
-                  price: 185000,
-                  stock: 6,
-              },
-              {
-                  id: 3,
-                  code: "TB",
-                  name: "Tote bag",
-                  desc: "Kanvas",
-                  price: 45000,
-                  stock: 18,
-              },
-              {
-                  id: 4,
-                  code: "ST",
-                  name: "Paket stiker",
-                  desc: "Isi 5 lembar",
-                  price: 15000,
-                  stock: 60,
-              },
-              {
-                  id: 5,
-                  code: "LY",
-                  name: "Lanyard HIMATIF",
-                  desc: "Sablon dua sisi",
-                  price: 20000,
-                  stock: 0,
-              },
-              {
-                  id: 6,
-                  code: "GC",
-                  name: "Gantungan kunci",
-                  desc: "Akrilik",
-                  price: 12000,
-                  stock: 35,
-              },
-          ],
-);
+const products = ref(props.products.length ? props.products : [
+  { id: 1, code: 'KS', name: 'Kaos HIMATIF', desc: 'Katun combed 30s', price: 85000, stock: 42 },
+  { id: 2, code: 'HD', name: 'Hoodie HIMATIF', desc: 'Fleece tebal', price: 185000, stock: 6 },
+  { id: 3, code: 'TB', name: 'Tote bag', desc: 'Kanvas', price: 45000, stock: 18 },
+  { id: 4, code: 'ST', name: 'Paket stiker', desc: 'Isi 5 lembar', price: 15000, stock: 60 },
+  { id: 5, code: 'LY', name: 'Lanyard HIMATIF', desc: 'Sablon dua sisi', price: 20000, stock: 0 },
+  { id: 6, code: 'GC', name: 'Gantungan kunci', desc: 'Akrilik', price: 12000, stock: 35 }
+]);
 
 // Data Pesanan Masuk
 const incomingOrders = ref(
@@ -230,42 +184,135 @@ const verifyOrder = (order) => {
 </script>
 
 <template>
-    <Head title="Danus / Shop - Panel Admin" />
+  <Head title="Shop - Panel Admin HIMATIF" />
 
-    <AdminLayout
-        title="Danus / Shop"
-        subtitle="Kelola produk merchandise resmi HIMATIF dan verifikasi pesanan."
-    >
-        <template #actions>
-            <button
-                class="btn-himatif"
-                @click="
-                    resetForm();
-                    activeTab = 'produk';
-                "
-            >
-                + Tambah produk
-            </button>
-        </template>
+  <AdminLayout
+    title="Shop"
+    subtitle="Kelola produk merchandise resmi HIMATIF dan verifikasi pesanan."
+  >
+    <template #actions>
+      <button class="btn-cyan" @click="resetForm(); activeTab = 'produk'">
+        + Tambah produk
+      </button>
+    </template>
 
-        <!-- Segmented Tabs (Produk | Pesanan masuk · 7) -->
-        <div class="tab-switcher mb-3">
-            <button
-                type="button"
-                class="tab-btn"
-                :class="{ active: activeTab === 'produk' }"
-                @click="activeTab = 'produk'"
-            >
-                Produk
-            </button>
-            <button
-                type="button"
-                class="tab-btn"
-                :class="{ active: activeTab === 'pesanan' }"
-                @click="activeTab = 'pesanan'"
-            >
-                Pesanan masuk · 7
-            </button>
+    <!-- Segmented Tabs (Produk | Pesanan masuk · 7) -->
+    <div class="tab-switcher mb-3">
+      <button
+        type="button"
+        class="tab-btn"
+        :class="{ active: activeTab === 'produk' }"
+        @click="activeTab = 'produk'"
+      >
+        Produk
+      </button>
+      <button
+        type="button"
+        class="tab-btn"
+        :class="{ active: activeTab === 'pesanan' }"
+        @click="activeTab = 'pesanan'"
+      >
+        Pesanan masuk · 7
+      </button>
+    </div>
+
+    <!-- TAB 1: KELOLA PRODUK -->
+    <div v-if="activeTab === 'produk'" class="row g-3 align-items-start">
+      <!-- Kolom Kiri: Filter & Tabel Produk -->
+      <div class="col-12 col-xl-8">
+        <div class="card-panel">
+          <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-3">
+            <div class="d-flex flex-wrap align-items-center gap-2 flex-grow-1">
+              <input
+                v-model="searchQuery"
+                type="text"
+                class="form-control custom-input"
+                style="max-width: 260px;"
+                placeholder="Cari nama produk"
+              />
+              <select
+                v-model="statusFilter"
+                class="form-select custom-input"
+                style="max-width: 170px;"
+              >
+                <option value="Semua status">Semua status</option>
+                <option value="Tersedia">Tersedia</option>
+                <option value="Stok menipis">Stok menipis</option>
+                <option value="Habis">Habis</option>
+              </select>
+            </div>
+            <div class="text-secondary" style="font-size: 13px;">
+              {{ filteredProducts.length }} produk
+            </div>
+          </div>
+
+          <div class="table-responsive">
+            <table class="table align-middle mb-0 custom-table">
+              <thead>
+                <tr>
+                  <th>PRODUK</th>
+                  <th>HARGA</th>
+                  <th>STOK</th>
+                  <th>STATUS</th>
+                  <th class="text-end">AKSI</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="item in filteredProducts" :key="item.id">
+                  <td>
+                    <div class="d-flex align-items-center gap-3">
+                      <div class="prod-avatar">{{ item.code }}</div>
+                      <div>
+                        <div class="fw-semibold text-dark" style="font-size: 13.5px;">{{ item.name }}</div>
+                        <div class="text-secondary" style="font-size: 12px;">{{ item.desc }}</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td class="text-dark">{{ formatRupiah(item.price) }}</td>
+                  <td class="text-dark">{{ item.stock }}</td>
+                  <td>
+                    <span
+                      class="status-pill"
+                      :class="`pill-${getProductStatus(item.stock).type}`"
+                    >
+                      {{ getProductStatus(item.stock).label }}
+                    </span>
+                  </td>
+                  <td class="text-end">
+                    <div class="d-inline-flex gap-1">
+                      <button
+                        type="button"
+                        class="action-icon-btn"
+                        title="Edit produk"
+                        @click="editProduct(item)"
+                      >
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                          <path d="M12 20h9"></path>
+                          <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
+                        </svg>
+                      </button>
+                      <button
+                        type="button"
+                        class="action-icon-btn delete"
+                        title="Hapus produk"
+                        @click="deleteProduct(item.id)"
+                      >
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                          <polyline points="3 6 5 6 21 6"></polyline>
+                          <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                        </svg>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+                <tr v-if="filteredProducts.length === 0">
+                  <td colspan="5" class="text-center text-secondary py-4">
+                    Produk tidak ditemukan.
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
 
         <!-- TAB 1: KELOLA PRODUK -->
@@ -421,151 +468,30 @@ const verifyOrder = (order) => {
                 </div>
             </div>
 
-            <!-- Kolom Kanan: Form Tambah / Edit Produk -->
-            <div class="col-12 col-xl-4">
-                <div class="card-panel">
-                    <h6 class="fw-bold mb-3" style="font-size: 15px">
-                        {{ isEditing ? "Edit produk" : "Tambah / edit produk" }}
-                    </h6>
-
-                    <form @submit.prevent="saveProduct">
-                        <div class="mb-3">
-                            <label class="form-label custom-label"
-                                >Nama produk</label
-                            >
-                            <input
-                                v-model="form.name"
-                                type="text"
-                                class="form-control custom-input"
-                                placeholder="Contoh: Kaos HIMATIF"
-                                required
-                            />
-                        </div>
-
-                        <div class="row g-2 mb-3">
-                            <div class="col-7">
-                                <label class="form-label custom-label"
-                                    >Harga (Rp)</label
-                                >
-                                <input
-                                    v-model="form.price"
-                                    type="number"
-                                    min="0"
-                                    class="form-control custom-input"
-                                    required
-                                />
-                            </div>
-                            <div class="col-5">
-                                <label class="form-label custom-label"
-                                    >Stok</label
-                                >
-                                <input
-                                    v-model="form.stock"
-                                    type="number"
-                                    min="0"
-                                    class="form-control custom-input"
-                                    required
-                                />
-                            </div>
-                        </div>
-
-                        <div class="mb-3">
-                            <label class="form-label custom-label"
-                                >Deskripsi</label
-                            >
-                            <textarea
-                                v-model="form.desc"
-                                rows="3"
-                                class="form-control custom-input"
-                                placeholder="Bahan, ukuran, dan keterangan lain"
-                            ></textarea>
-                        </div>
-
-                        <div class="mb-3">
-                            <label class="form-label custom-label"
-                                >Gambar produk</label
-                            >
-                            <label
-                                class="upload-dropzone d-flex flex-column align-items-center justify-content-center text-center"
-                            >
-                                <input
-                                    type="file"
-                                    class="d-none"
-                                    accept=".jpg,.jpeg,.png"
-                                    @change="handleFileChange"
-                                />
-                                <svg
-                                    width="18"
-                                    height="18"
-                                    viewBox="0 0 24 24"
-                                    fill="none"
-                                    stroke="#6B7280"
-                                    stroke-width="2"
-                                    class="mb-1"
-                                >
-                                    <path
-                                        d="M12 19V5M5 12l7-7 7 7"
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                    />
-                                </svg>
-                                <div style="font-size: 12.5px">
-                                    <span
-                                        class="fw-semibold"
-                                        style="color: #0f765e"
-                                        >Pilih file</span
-                                    >
-                                    <span class="text-secondary">
-                                        atau seret ke sini</span
-                                    >
-                                </div>
-                                <div
-                                    class="text-secondary"
-                                    style="font-size: 11px"
-                                >
-                                    {{
-                                        form.imageName ||
-                                        "JPG atau PNG, maks. 2 MB"
-                                    }}
-                                </div>
-                            </label>
-                        </div>
-
-                        <div class="d-flex align-items-center gap-2 mb-3">
-                            <button
-                                type="submit"
-                                class="btn-himatif flex-grow-1"
-                            >
-                                Simpan produk
-                            </button>
-                            <button
-                                type="button"
-                                class="btn-cancel"
-                                @click="resetForm"
-                            >
-                                Batal
-                            </button>
-                        </div>
-
-                        <p
-                            class="mb-0 text-secondary"
-                            style="font-size: 11.5px; line-height: 1.45"
-                        >
-                            Pembayaran dikonfirmasi lewat WhatsApp dan
-                            pengambilan barang dilakukan di sekretariat HIMATIF.
-                        </p>
-                    </form>
+            <div class="mb-3">
+              <label class="form-label custom-label">Gambar produk</label>
+              <label class="upload-dropzone d-flex flex-column align-items-center justify-content-center text-center">
+                <input type="file" class="d-none" accept=".jpg,.jpeg,.png" @change="handleFileChange" />
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6B7280" stroke-width="2" class="mb-1">
+                  <path d="M12 19V5M5 12l7-7 7 7" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <div style="font-size: 12.5px;">
+                  <span class="fw-semibold" style="color: #00A3FF;">Pilih file</span>
+                  <span class="text-secondary"> atau seret ke sini</span>
+                </div>
+                <div class="text-secondary" style="font-size: 11px;">
+                  {{ form.imageName || 'JPG atau PNG, maks. 2 MB' }}
                 </div>
             </div>
         </div>
 
-        <!-- TAB 2: PESANAN MASUK -->
-        <div v-else class="card-panel">
-            <div class="d-flex align-items-center justify-content-between mb-3">
-                <h6 class="fw-bold mb-0">Daftar Pesanan Masuk</h6>
-                <span class="text-secondary" style="font-size: 13px"
-                    >{{ incomingOrders.length }} pesanan</span
-                >
+            <div class="d-flex align-items-center gap-2 mb-3">
+              <button type="submit" class="btn-cyan flex-grow-1">
+                Simpan produk
+              </button>
+              <button type="button" class="btn-cancel" @click="resetForm">
+                Batal
+              </button>
             </div>
 
             <div class="table-responsive">
@@ -646,6 +572,25 @@ const verifyOrder = (order) => {
 </template>
 
 <style scoped>
+.btn-cyan {
+  background-color: #00A3FF;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 16px;
+  font-size: 13.5px;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.15s ease;
+}
+
+.btn-cyan:hover {
+  background-color: #008be5;
+  color: #ffffff;
+}
+
 .tab-switcher {
     display: inline-flex;
     background-color: #e8ecef;
