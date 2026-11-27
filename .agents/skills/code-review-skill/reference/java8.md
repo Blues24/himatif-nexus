@@ -23,11 +23,11 @@ Review guidance for codebases still on **Java 8** (and nearby legacy stacks: Spr
 
 ## When to Use This Guide
 
-| Scenario | Load |
-|----------|------|
-| Java 8 / 11 (no modern syntax), Spring Boot 2.x, `javax.persistence` | **This file** |
-| Java 17/21, Spring Boot 3, `jakarta.*`, virtual threads | [java.md](java.md) |
-| Migrating Boot 2 → Boot 3 | Use both: this guide for legacy pitfalls, `java.md` for the target |
+| Scenario                                                             | Load                                                               |
+| -------------------------------------------------------------------- | ------------------------------------------------------------------ |
+| Java 8 / 11 (no modern syntax), Spring Boot 2.x, `javax.persistence` | **This file**                                                      |
+| Java 17/21, Spring Boot 3, `jakarta.*`, virtual threads              | [java.md](java.md)                                                 |
+| Migrating Boot 2 → Boot 3                                            | Use both: this guide for legacy pitfalls, `java.md` for the target |
 
 Confirm `java.version`, Spring Boot version, and `javax` vs `jakarta` package names in `pom.xml` / `build.gradle` before choosing a guide.
 
@@ -247,12 +247,12 @@ private static final DateTimeFormatter FMT = DateTimeFormatter.ofPattern("yyyy-M
 
 ### Pick the right type
 
-| Type | Use for |
-|------|---------|
-| `Instant` | Machine timestamps, audit, cross-service events (UTC timeline) |
-| `LocalDate` | Date only (birthday, business day) |
-| `LocalDateTime` | Date-time **without** zone; do not use for "when an event happened" |
-| `ZonedDateTime` / `OffsetDateTime` | Human time that needs a zone or offset |
+| Type                               | Use for                                                             |
+| ---------------------------------- | ------------------------------------------------------------------- |
+| `Instant`                          | Machine timestamps, audit, cross-service events (UTC timeline)      |
+| `LocalDate`                        | Date only (birthday, business day)                                  |
+| `LocalDateTime`                    | Date-time **without** zone; do not use for "when an event happened" |
+| `ZonedDateTime` / `OffsetDateTime` | Human time that needs a zone or offset                              |
 
 ```java
 // ❌ LocalDateTime for "order placed at" — ambiguous across zones / DST
@@ -543,10 +543,12 @@ Legacy stacks often use JUnit 4; if JUnit 5 is mixed in, keep one runner style p
 ## Review Checklist
 
 ### Version & scope
+
 - [ ] Confirmed Java 8 / Boot 2 / `javax.*` — do not demand Java 17+ APIs or `jakarta.*`
 - [ ] Do not treat "use records / virtual threads / text blocks" as blocking feedback
 
 ### Language features
+
 - [ ] Lambdas stay short; prefer method references and standard functional interfaces
 - [ ] Streams used for transform / filter / reduce, not simple side-effect loops
 - [ ] Collection uses `Collectors.*` (no `Stream.toList()`)
@@ -557,11 +559,13 @@ Legacy stacks often use JUnit 4; if JUnit 5 is mixed in, keep one runner style p
 - [ ] Patterns use `yyyy`, not week-based `YYYY` (unless week-year is intentional)
 
 ### Concurrency
+
 - [ ] Thread pools are bounded and shut down; I/O does not use `ForkJoinPool.commonPool()`
 - [ ] CompletableFuture uses an explicit Executor; `thenCompose` for nested async; timeouts and error handling present
 - [ ] Shared state uses concurrent collections; no static mutable `DateFormat`
 
 ### Spring Boot 2 / JPA
+
 - [ ] Constructor injection; config via `@ConfigurationProperties`
 - [ ] `RestTemplate` (and RequestFactory) has connect/read timeouts
 - [ ] `@Transactional` on public entry points — no self-invocation / private-method failures
@@ -569,6 +573,7 @@ Legacy stacks often use JUnit 4; if JUnit 5 is mixed in, keep one runner style p
 - [ ] Packages stay consistently `javax.*` — no javax/jakarta mix
 
 ### Quality
+
 - [ ] Exceptions are not swallowed; error responses are centralized
 - [ ] try-with-resources for I/O and DB resources
 - [ ] Core logic has unit tests; time is injectable via `Clock`

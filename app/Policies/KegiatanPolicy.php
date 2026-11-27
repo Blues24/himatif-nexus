@@ -34,16 +34,16 @@ class KegiatanPolicy
     /**
      * Determine whether the user can update the activity.
      */
-    public function update(?User $user, Kegiatan $kegain): bool
+    public function update(?User $user, Kegiatan $kegiatan): bool
     {
-        return $user !== null && ($user->isBph() || $user->hasRole('Infokom') || $kegain->user_id === $user->user_uuid);
+        return $user !== null && ($user->isBph() || $user->hasRole('Infokom'));
     }
 
     /**
      * Determine whether the user can delete the activity.
      */
-    public function delete(?User $user, Kegiatan $kegain): bool
+    public function delete(?User $user, Kegiatan $kegiatan): bool
     {
-        return $user !== null && ($user->isBph() || $user->hasRole('Infokom') || $kegain->user_id === $user->user_uuid);
+        return $user !== null && ($user->isBph() || $user->hasRole('Infokom'));
     }
 }

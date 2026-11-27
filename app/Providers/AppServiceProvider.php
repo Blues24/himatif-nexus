@@ -7,6 +7,8 @@ use App\Models\Inventaris;
 use App\Models\Kegiatan;
 use App\Models\PenyewaanAlat;
 use App\Models\Produk;
+use App\Observers\FormatifObserver;
+use App\Observers\ProdukObserver;
 use App\Policies\FormatifPolicy;
 use App\Policies\InventarisPolicy;
 use App\Policies\KegiatanPolicy;
@@ -36,6 +38,9 @@ class AppServiceProvider extends ServiceProvider
         Gate::policy(Produk::class, ProdukPolicy::class);
         Gate::policy(Inventaris::class, InventarisPolicy::class);
         Gate::policy(PenyewaanAlat::class, PenyewaanAlatPolicy::class);
+
+        Formatif::observe(FormatifObserver::class);
+        Produk::observe(ProdukObserver::class);
 
         Vite::prefetch(concurrency: 3);
     }

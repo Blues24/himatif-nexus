@@ -40,6 +40,7 @@ fn readNames(allocator: std.mem.Allocator) ![][]const u8 {
 ```
 
 Review questions:
+
 - Does the caller know who owns allocated memory?
 - Does the API document whether returned slices must be freed?
 - Is the allocator parameter passed through instead of replaced by an internal global allocator?
@@ -71,6 +72,7 @@ fn collect(allocator: std.mem.Allocator) ![]u8 {
 ```
 
 Review questions:
+
 - Is cleanup registered immediately after acquisition?
 - Is `errdefer` used when ownership transfers only on success?
 - Are `deinit` calls paired with all container initializations?
@@ -91,6 +93,7 @@ const allocator = arena.allocator();
 ```
 
 Review questions:
+
 - Are arena allocations freed at a clear lifetime boundary?
 - Is a test using `std.testing.allocator` to catch leaks?
 - Is a library avoiding policy decisions that belong to its caller?
@@ -125,6 +128,7 @@ fn parseDigit(input: []const u8) ParseError!u8 {
 ```
 
 Review questions:
+
 - Are expected domain failures named explicitly?
 - Is `anyerror` only used at integration boundaries?
 - Does the caller preserve context when converting errors?
@@ -142,6 +146,7 @@ const buffer = try allocator.alloc(u8, size);
 ```
 
 Review questions:
+
 - Does `catch unreachable` mask I/O, allocation, parsing, or user-input errors?
 - Are errors converted close to a boundary where the abstraction changes?
 - Does `errdefer` undo partial state changes on failure?
@@ -171,6 +176,7 @@ fn checksum(bytes: []const u8) u32 {
 ```
 
 Review questions:
+
 - Can a raw pointer API become a slice API?
 - Is nullability modeled with `?T` instead of sentinel values?
 - Are pointer lifetimes clear after returning from a function?
@@ -194,6 +200,7 @@ fn label(allocator: std.mem.Allocator) ![]u8 {
 ```
 
 Review questions:
+
 - Does returned memory come from the caller, allocator, static storage, or a stable owner?
 - Does a slice escape after its backing buffer is mutated or freed?
 - Is aliasing intentional and documented for mutable slices?
@@ -219,6 +226,7 @@ fn RingBuffer(comptime T: type, comptime capacity: usize) type {
 ```
 
 Review questions:
+
 - Does `comptime` enforce a real invariant?
 - Are compile errors explicit and actionable?
 - Is reflection code isolated from ordinary runtime logic?
@@ -235,6 +243,7 @@ fn writeAll(writer: anytype, bytes: []const u8) !void {
 ```
 
 Review questions:
+
 - Is the required shape of `anytype` clear from the function body or docs?
 - Would a concrete type or smaller helper be easier to review?
 - Are compile errors understandable when the wrong type is passed?
@@ -258,6 +267,7 @@ const flags = std.mem.readInt(u16, bytes[2..4], .little);
 ```
 
 Review questions:
+
 - Is `undefined` overwritten before being read?
 - Is `unreachable` only used for impossible states, with a nearby explanation when non-obvious?
 - Are casts preceded by checks for layout, range, alignment, size, byte order, and nullability?
@@ -279,6 +289,7 @@ hash = hash +% byte;
 ```
 
 Review questions:
+
 - Is wrapping arithmetic required by an algorithm?
 - Would overflow indicate invalid input or a bug?
 - Are integer width changes explicit and tested around boundaries?
@@ -310,6 +321,7 @@ fn strlenZ(input: [*:0]const u8) usize {
 ```
 
 Review questions:
+
 - Are C pointers represented with the correct Zig pointer type?
 - Are sentinel-terminated strings modeled as sentinel pointers or slices?
 - Are ownership and cleanup rules from the C library documented?
@@ -343,6 +355,7 @@ test "collect handles allocation failures cleanly" {
 ```
 
 Review questions:
+
 - Are allocation-heavy paths covered by tests?
 - Are error paths tested with `std.testing.expectError`?
 - Do tests cover boundary sizes such as empty input, one element, max capacity, and invalid encodings?
@@ -352,6 +365,7 @@ Review questions:
 Behavior can differ across safety modes, targets, and ABIs. For low-level code, ask whether the PR was tested with the intended target and optimization mode.
 
 Review questions:
+
 - Does code rely on debug-only safety checks?
 - Does packed/aligned/extern layout code have target-aware tests?
 - Are endian, pointer-width, and ABI assumptions tested or documented?
@@ -377,6 +391,7 @@ pub const json = struct {
 ```
 
 Review questions:
+
 - Does the fully-qualified name read naturally?
 - Are file and directory names consistent with the style guide?
 - Are underscore-prefixed declarations avoided unless they come from an external convention?
@@ -387,6 +402,7 @@ Review questions:
 Zig modules often expose declarations directly from files and structs. Review public declarations for accidental exports.
 
 Review questions:
+
 - Should this declaration be `pub`?
 - Is the public API stable enough to expose?
 - Are implementation details hidden behind a smaller surface?
@@ -396,35 +412,41 @@ Review questions:
 ## Review Checklist
 
 ### Memory & Lifetime
+
 - [ ] Allocator ownership is explicit.
 - [ ] Allocations have matching `free`, `deinit`, `defer`, or `errdefer`.
 - [ ] Returned slices and pointers outlive the function.
 - [ ] Arena or temporary allocations have a clear lifetime boundary.
 
 ### Errors & Cleanup
+
 - [ ] Expected failures use specific error sets where practical.
 - [ ] `catch unreachable` does not hide real runtime failures.
 - [ ] Partial initialization is rolled back with `errdefer`.
 - [ ] Error conversions happen at abstraction boundaries.
 
 ### Pointers & Safety
+
 - [ ] Raw pointers are justified; slices are used for ordinary buffers.
 - [ ] Casts check size, range, alignment, and nullability.
 - [ ] `undefined` is not read before initialization.
 - [ ] Wrapping arithmetic is intentional and tested.
 
 ### Comptime & API Design
+
 - [ ] `comptime` logic enforces useful invariants.
 - [ ] `anytype` usage has clear expectations.
 - [ ] Public declarations are intentional.
 - [ ] Names follow Zig style conventions.
 
 ### C Interop & Portability
+
 - [ ] C boundaries are isolated behind wrappers.
 - [ ] C ownership and cleanup rules are documented.
 - [ ] Target, endian, pointer-width, and ABI assumptions are tested or documented.
 
 ### Tests
+
 - [ ] Tests use `std.testing.allocator` for allocation-heavy code.
 - [ ] Error paths use `std.testing.expectError`.
 - [ ] Boundary cases are covered.

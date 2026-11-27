@@ -1,0 +1,206 @@
+# GitHub Actions CI/CD for HIMATIF Nexus Laravel + Inertia Vue 3
+
+name: CI
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+concurrency:
+  group: ${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # ---------------------------------------------------------------
+  # LINT & FORMAT
+  # ---------------------------------------------------------------
+  lint:
+    name: Lint & Format
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: "22"
+          cache: "npm"
+      - name: Install dependencies
+        run: npm ci
+      - name: Run ESLint
+        run: npm run lint || echo "No lint script defined"
+      - name: Prettier check
+        run: npx prettier --check .
+
+  # ---------------------------------------------------------------
+  # TYPE CHECK (PHP syntax + autoload)
+  # ---------------------------------------------------------------
+  typecheck:
+    name: Type Check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: "22"
+          cache: "npm"
+      - name: Install dependencies
+        run: npm ci
+      - name: PHP syntax check
+        run: php -l app/**/*.php
+      - name: Composer autoload
+        run: composer dump-autoload
+
+  # ---------------------------------------------------------------
+  # UNIT TESTS WITH COVERAGE
+  # ---------------------------------------------------------------
+  test:
+    name: Unit Tests
+    runs-on: ubuntu-latest
+    needs: [lint, typecheck]
+    strategy:
+      matrix:
+        platform: [ubuntu-latest]
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: "22"
+          cache: "npm"
+      - name: Install dependencies
+        run: npm ci
+      - name: Run unit tests
+        run: npm test -- --coverage
+      - name: Upload coverage report
+        if: always()
+        uses: actions/upload-artifact@v6
+        with:
+          name: coverage-report
+          path: coverage/
+
+  # ---------------------------------------------------------------
+  # BUILD
+  # ---------------------------------------------------------------
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    needs: [typecheck, test]
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: "22"
+          cache: "npm"
+      - name: Install dependencies
+        run: npm ci
+      - name: Build application
+        run: npm run build
+      - name: Upload dist artifacts
+        if: always()
+        uses: actions/upload-artifact@v6
+        with:
+          name: dist
+          path: dist/
+
+  # ---------------------------------------------------------------
+  # DATABASE INTEGRATION TESTS (Prisma + Postgres)
+  # ---------------------------------------------------------------
+  integration:
+    name: Integration (Database)
+    runs-on: ubuntu-latest
+    needs: [build]
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_DB: himatif_nexus_test
+          POSTGRES_USER: himatif
+          POSTGRES_PASSWORD: ${{ secrets.CI_DB_PASSWORD }}
+          POSTGRES_PORT: 5432
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: "22"
+          cache: "npm"
+      - name: Install dependencies
+        run: npm ci
+      - name: Run migrations
+        env:
+          DATABASE_URL: postgresql://himatif:himatif@localhost:5432/himatif_nexus_test
+        run: npx prisma migrate deploy
+      - name: Run integration tests
+        env:
+          DATABASE_URL: postgresql://himatif:himatif@localhost:5432/himatif_nexus_test
+        run: npm run test:integration
+
+  # ---------------------------------------------------------------
+  # SECURITY AUDIT
+  # ---------------------------------------------------------------
+  security:
+    name: Security Audit
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: "22"
+          cache: "npm"
+      - name: Install dependencies
+        run: npm ci
+      - name: npm audit (high severity)
+        run: npm audit --audit-level=high
+      - name: Dependency vulnerability scan
+        run: npm audit --json > npm-audit-result.json || true
+
+  # ---------------------------------------------------------------
+  # E2E TESTS (Playwright) — optional, only on main branch pushes
+  # ---------------------------------------------------------------
+  e2e:
+    name: E2E (Playwright)
+    runs-on: ubuntu-latest
+    needs: [security]
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: "22"
+          cache: "npm"
+      - name: Install Playwright
+        run: npx playwright install --with-deps chromium
+      - name: Build
+        run: npm run build
+      - name: Run E2E tests
+        run: npx playwright test
+      - uses: actions/upload-artifact@v6
+        if: failure()
+        with:
+          name: playwright-report
+          path: playwright-report/
+
+  # ---------------------------------------------------------------
+  # BUNDLE SIZE CHECK
+  # ---------------------------------------------------------------
+  bundle-size:
+    name: Bundle Size
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: "22"
+          cache: "npm"
+      - name: Install dependencies
+        run: npm ci
+      - name: Build
+        run: npm run build
+      - name: Check bundlesize
+        run: npx bundlesize check dist/

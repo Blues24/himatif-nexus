@@ -21,34 +21,34 @@
 
 ```typescript
 // ❌ ORM 直接注入 Controller，跳过 Service 层
-@Controller('users')
+@Controller("users")
 export class UsersController {
-  constructor(private readonly prisma: PrismaService) {}
+    constructor(private readonly prisma: PrismaService) {}
 
-  @Get()
-  findAll() {
-    return this.prisma.user.findMany();
-  }
+    @Get()
+    findAll() {
+        return this.prisma.user.findMany();
+    }
 }
 
 // ✅ Controller → Service → Repository
-@Controller('users')
+@Controller("users")
 export class UsersController {
-  constructor(private readonly usersService: UsersService) {}
+    constructor(private readonly usersService: UsersService) {}
 
-  @Get()
-  findAll() {
-    return this.usersService.findAll();
-  }
+    @Get()
+    findAll() {
+        return this.usersService.findAll();
+    }
 }
 
 @Injectable()
 export class UsersService {
-  constructor(private readonly usersRepo: UsersRepository) {}
+    constructor(private readonly usersRepo: UsersRepository) {}
 
-  findAll() {
-    return this.usersRepo.findAll();
-  }
+    findAll() {
+        return this.usersRepo.findAll();
+    }
 }
 ```
 
@@ -58,16 +58,16 @@ export class UsersService {
 // ❌ Repository 导入另一个 Repository——编排逻辑属于 Service
 @Injectable()
 export class OrdersRepository {
-  constructor(private readonly usersRepository: UsersRepository) {}
+    constructor(private readonly usersRepository: UsersRepository) {}
 }
 
 // ✅ 跨 Repository 编排在 Service 中完成
 @Injectable()
 export class OrdersService {
-  constructor(
-    private readonly ordersRepo: OrdersRepository,
-    private readonly usersRepo: UsersRepository,
-  ) {}
+    constructor(
+        private readonly ordersRepo: OrdersRepository,
+        private readonly usersRepo: UsersRepository,
+    ) {}
 }
 ```
 
@@ -77,28 +77,30 @@ export class OrdersService {
 // ❌ 9 个依赖的巨型 Service
 @Injectable()
 export class OrdersService {
-  constructor(
-    private readonly ordersRepo: OrdersRepository,
-    private readonly usersRepo: UsersRepository,
-    private readonly productsRepo: ProductsRepository,
-    private readonly paymentsService: PaymentsService,
-    private readonly mailerService: MailerService,
-    private readonly inventoryService: InventoryService,
-    private readonly discountService: DiscountService,
-    private readonly taxService: TaxService,
-    private readonly auditService: AuditService,
-  ) {}
+    constructor(
+        private readonly ordersRepo: OrdersRepository,
+        private readonly usersRepo: UsersRepository,
+        private readonly productsRepo: ProductsRepository,
+        private readonly paymentsService: PaymentsService,
+        private readonly mailerService: MailerService,
+        private readonly inventoryService: InventoryService,
+        private readonly discountService: DiscountService,
+        private readonly taxService: TaxService,
+        private readonly auditService: AuditService,
+    ) {}
 }
 
 // ✅ 拆分为 Use-Case Service（一个文件一个操作）
 @Injectable()
 export class CreateOrderService {
-  constructor(
-    private readonly ordersRepo: OrdersRepository,
-    private readonly paymentsService: PaymentsService,
-  ) {}
+    constructor(
+        private readonly ordersRepo: OrdersRepository,
+        private readonly paymentsService: PaymentsService,
+    ) {}
 
-  async execute(dto: CreateOrderDto) { /* ... */ }
+    async execute(dto: CreateOrderDto) {
+        /* ... */
+    }
 }
 ```
 
@@ -159,20 +161,20 @@ src/
 
 ```typescript
 // ❌ Domain Entity 依赖 NestJS——不可独立测试
-import { Injectable } from '@nestjs/common';
+import { Injectable } from "@nestjs/common";
 
 @Injectable()
 export class User {
-  constructor(private readonly email: string) {}
+    constructor(private readonly email: string) {}
 }
 
 // ✅ Domain 是纯类，无框架装饰器
 export class User {
-  private constructor(private readonly email: string) {}
+    private constructor(private readonly email: string) {}
 
-  static create(email: string): User {
-    return new User(email);
-  }
+    static create(email: string): User {
+        return new User(email);
+    }
 }
 ```
 
@@ -192,34 +194,34 @@ export class User {
 // ❌ Guard 中查询数据库 + 业务判断
 @Injectable()
 export class OrderOwnershipGuard implements CanActivate {
-  constructor(private readonly prisma: PrismaService) {}
+    constructor(private readonly prisma: PrismaService) {}
 
-  async canActivate(context: ExecutionContext): Promise<boolean> {
-    const req = context.switchToHttp().getRequest();
-    const order = await this.prisma.order.findUnique({
-      where: { id: req.params.id },
-    });
-    if (order.userId !== req.user.id) {
-      return false; // 数据获取 + 业务规则判断都在 Guard 里
+    async canActivate(context: ExecutionContext): Promise<boolean> {
+        const req = context.switchToHttp().getRequest();
+        const order = await this.prisma.order.findUnique({
+            where: { id: req.params.id },
+        });
+        if (order.userId !== req.user.id) {
+            return false; // 数据获取 + 业务规则判断都在 Guard 里
+        }
+        return true;
     }
-    return true;
-  }
 }
 
 // ✅ Guard 只做授权检查（角色/权限）
 @Injectable()
 export class RolesGuard implements CanActivate {
-  constructor(private readonly reflector: Reflector) {}
+    constructor(private readonly reflector: Reflector) {}
 
-  canActivate(context: ExecutionContext): boolean {
-    const requiredRoles = this.reflector.getAllAndOverride<string[]>('roles', [
-      context.getHandler(),
-      context.getClass(),
-    ]);
-    if (!requiredRoles) return true;
-    const { user } = context.switchToHttp().getRequest();
-    return requiredRoles.some((role) => user.roles?.includes(role));
-  }
+    canActivate(context: ExecutionContext): boolean {
+        const requiredRoles = this.reflector.getAllAndOverride<string[]>(
+            "roles",
+            [context.getHandler(), context.getClass()],
+        );
+        if (!requiredRoles) return true;
+        const { user } = context.switchToHttp().getRequest();
+        return requiredRoles.some((role) => user.roles?.includes(role));
+    }
 }
 ```
 
@@ -229,22 +231,28 @@ export class RolesGuard implements CanActivate {
 // ❌ Interceptor 中执行业务逻辑
 @Injectable()
 export class PricingInterceptor implements NestInterceptor {
-  intercept(context: ExecutionContext, next: CallHandler) {
-    // 计算折扣——这不是横切关注点！
-    return next.handle().pipe(map(data => applyDiscount(data)));
-  }
+    intercept(context: ExecutionContext, next: CallHandler) {
+        // 计算折扣——这不是横切关注点！
+        return next.handle().pipe(map((data) => applyDiscount(data)));
+    }
 }
 
 // ✅ Interceptor 用于日志、缓存、响应转换、计时
 @Injectable()
 export class LoggingInterceptor implements NestInterceptor {
-  intercept(context: ExecutionContext, next: CallHandler) {
-    const now = Date.now();
-    const req = context.switchToHttp().getRequest();
-    return next.handle().pipe(
-      tap(() => console.log(`${req.method} ${req.url} - ${Date.now() - now}ms`)),
-    );
-  }
+    intercept(context: ExecutionContext, next: CallHandler) {
+        const now = Date.now();
+        const req = context.switchToHttp().getRequest();
+        return next
+            .handle()
+            .pipe(
+                tap(() =>
+                    console.log(
+                        `${req.method} ${req.url} - ${Date.now() - now}ms`,
+                    ),
+                ),
+            );
+    }
 }
 ```
 
@@ -253,21 +261,21 @@ export class LoggingInterceptor implements NestInterceptor {
 ```typescript
 // ❌ 没有 whitelist——请求体中的额外属性直接传入
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
-  await app.listen(3000);
+    const app = await NestFactory.create(AppModule);
+    await app.listen(3000);
 }
 
 // ✅ 全局 ValidationPipe + whitelist 过滤未知属性
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
-  app.useGlobalPipes(
-    new ValidationPipe({
-      whitelist: true,
-      forbidNonWhitelisted: true,
-      transform: true,
-    }),
-  );
-  await app.listen(3000);
+    const app = await NestFactory.create(AppModule);
+    app.useGlobalPipes(
+        new ValidationPipe({
+            whitelist: true,
+            forbidNonWhitelisted: true,
+            transform: true,
+        }),
+    );
+    await app.listen(3000);
 }
 ```
 
@@ -280,22 +288,22 @@ async function bootstrap() {
 ```typescript
 // ❌ 只有 @ValidateNested——嵌套对象验证被静默跳过！
 export class CreateOrderDto {
-  @ValidateNested()
-  shipping: AddressDto;
+    @ValidateNested()
+    shipping: AddressDto;
 }
 
 // ✅ @ValidateNested + @Type 配对使用
-import { Type } from 'class-transformer';
+import { Type } from "class-transformer";
 
 export class CreateOrderDto {
-  @ValidateNested()
-  @Type(() => AddressDto)
-  shipping: AddressDto;
+    @ValidateNested()
+    @Type(() => AddressDto)
+    shipping: AddressDto;
 
-  @IsArray()
-  @ValidateNested({ each: true })
-  @Type(() => OrderItemDto)
-  items: OrderItemDto[];
+    @IsArray()
+    @ValidateNested({ each: true })
+    @Type(() => OrderItemDto)
+    items: OrderItemDto[];
 }
 ```
 
@@ -344,17 +352,17 @@ update(@Body() dto: UpdateUserDto) { /* all fields optional */ }
 ```typescript
 // ❌ 可选嵌套对象缺少 @IsOptional
 export class UpdateOrderDto {
-  @ValidateNested()
-  @Type(() => AddressDto)
-  shipping?: AddressDto; // undefined 时仍尝试验证
+    @ValidateNested()
+    @Type(() => AddressDto)
+    shipping?: AddressDto; // undefined 时仍尝试验证
 }
 
 // ✅ @IsOptional + @ValidateNested + @Type
 export class UpdateOrderDto {
-  @IsOptional()
-  @ValidateNested()
-  @Type(() => AddressDto)
-  shipping?: AddressDto;
+    @IsOptional()
+    @ValidateNested()
+    @Type(() => AddressDto)
+    shipping?: AddressDto;
 }
 ```
 
@@ -388,14 +396,14 @@ async findOne(id: string): Promise<User> {
 
 ```typescript
 // ❌ 手动构造 HTTP 响应
-throw new HttpException('Bad request', 400);
+throw new HttpException("Bad request", 400);
 
 // ✅ 使用语义化的内置异常
-throw new BadRequestException('Invalid email format');
-throw new NotFoundException('User not found');
-throw new ConflictException('Email already taken');
-throw new ForbiddenException('Insufficient permissions');
-throw new UnauthorizedException('Invalid credentials');
+throw new BadRequestException("Invalid email format");
+throw new NotFoundException("User not found");
+throw new ConflictException("Email already taken");
+throw new ForbiddenException("Insufficient permissions");
+throw new UnauthorizedException("Invalid credentials");
 ```
 
 ### 自定义异常过滤器
@@ -404,26 +412,29 @@ throw new UnauthorizedException('Invalid credentials');
 // ✅ 全局异常过滤器——统一响应格式
 @Catch()
 export class AllExceptionsFilter implements ExceptionFilter {
-  private readonly logger = new Logger(AllExceptionsFilter.name);
+    private readonly logger = new Logger(AllExceptionsFilter.name);
 
-  catch(exception: unknown, host: ArgumentsHost) {
-    const ctx = host.switchToHttp();
-    const response = ctx.getResponse();
-    const request = ctx.getRequest();
+    catch(exception: unknown, host: ArgumentsHost) {
+        const ctx = host.switchToHttp();
+        const response = ctx.getResponse();
+        const request = ctx.getRequest();
 
-    const status =
-      exception instanceof HttpException
-        ? exception.getStatus()
-        : HttpStatus.INTERNAL_SERVER_ERROR;
+        const status =
+            exception instanceof HttpException
+                ? exception.getStatus()
+                : HttpStatus.INTERNAL_SERVER_ERROR;
 
-    this.logger.error(`${request.method} ${request.url} - ${status}`, exception instanceof Error ? exception.stack : '');
+        this.logger.error(
+            `${request.method} ${request.url} - ${status}`,
+            exception instanceof Error ? exception.stack : "",
+        );
 
-    response.status(status).json({
-      statusCode: status,
-      timestamp: new Date().toISOString(),
-      path: request.url,
-    });
-  }
+        response.status(status).json({
+            statusCode: status,
+            timestamp: new Date().toISOString(),
+            path: request.url,
+        });
+    }
 }
 ```
 
@@ -443,8 +454,8 @@ export class UsersModule {}
 
 // ✅ 提取共享逻辑到第三个模块
 @Module({
-  providers: [SharedService],
-  exports: [SharedService],
+    providers: [SharedService],
+    exports: [SharedService],
 })
 export class SharedModule {}
 
@@ -460,7 +471,7 @@ export class UsersModule {}
 ```typescript
 // ⚠️ forwardRef 表示设计有问题——优先重新设计
 @Module({
-  imports: [forwardRef(() => UsersModule)],
+    imports: [forwardRef(() => UsersModule)],
 })
 export class OrdersModule {}
 
@@ -478,67 +489,69 @@ export class OrdersModule {}
 
 ```typescript
 // ✅ 无需 NestFactory——直接 new
-describe('CreateUserHandler', () => {
-  let handler: CreateUserHandler;
-  let repo: InMemoryUserRepository;
+describe("CreateUserHandler", () => {
+    let handler: CreateUserHandler;
+    let repo: InMemoryUserRepository;
 
-  beforeEach(() => {
-    repo = new InMemoryUserRepository();
-    handler = new CreateUserHandler(repo);
-  });
+    beforeEach(() => {
+        repo = new InMemoryUserRepository();
+        handler = new CreateUserHandler(repo);
+    });
 
-  it('creates a user', async () => {
-    const id = await handler.execute(
-      new CreateUserCommand('user@example.com', 'Alice'),
-    );
-    expect(id).toBeDefined();
-  });
+    it("creates a user", async () => {
+        const id = await handler.execute(
+            new CreateUserCommand("user@example.com", "Alice"),
+        );
+        expect(id).toBeDefined();
+    });
 
-  it('rejects duplicate email', async () => {
-    await handler.execute(new CreateUserCommand('user@example.com', 'Alice'));
-    await expect(
-      handler.execute(new CreateUserCommand('user@example.com', 'Bob')),
-    ).rejects.toThrow('already exists');
-  });
+    it("rejects duplicate email", async () => {
+        await handler.execute(
+            new CreateUserCommand("user@example.com", "Alice"),
+        );
+        await expect(
+            handler.execute(new CreateUserCommand("user@example.com", "Bob")),
+        ).rejects.toThrow("already exists");
+    });
 });
 ```
 
 ### E2E 测试应配置与生产一致的 Pipes
 
 ```typescript
-describe('UsersController (e2e)', () => {
-  let app: INestApplication;
+describe("UsersController (e2e)", () => {
+    let app: INestApplication;
 
-  beforeAll(async () => {
-    const moduleFixture = await Test.createTestingModule({
-      imports: [AppModule],
-    }).compile();
+    beforeAll(async () => {
+        const moduleFixture = await Test.createTestingModule({
+            imports: [AppModule],
+        }).compile();
 
-    app = moduleFixture.createNestApplication();
-    // 必须与 main.ts 中相同的全局配置
-    app.useGlobalPipes(
-      new ValidationPipe({
-        whitelist: true,
-        forbidNonWhitelisted: true,
-        transform: true,
-      }),
-    );
-    await app.init();
-  });
+        app = moduleFixture.createNestApplication();
+        // 必须与 main.ts 中相同的全局配置
+        app.useGlobalPipes(
+            new ValidationPipe({
+                whitelist: true,
+                forbidNonWhitelisted: true,
+                transform: true,
+            }),
+        );
+        await app.init();
+    });
 
-  it('/POST users - valid', () => {
-    return request(app.getHttpServer())
-      .post('/users')
-      .send({ email: 'test@test.com', name: 'Test' })
-      .expect(201);
-  });
+    it("/POST users - valid", () => {
+        return request(app.getHttpServer())
+            .post("/users")
+            .send({ email: "test@test.com", name: "Test" })
+            .expect(201);
+    });
 
-  it('/POST users - extra fields rejected', () => {
-    return request(app.getHttpServer())
-      .post('/users')
-      .send({ email: 'test@test.com', name: 'Test', role: 'admin' })
-      .expect(400);
-  });
+    it("/POST users - extra fields rejected", () => {
+        return request(app.getHttpServer())
+            .post("/users")
+            .send({ email: "test@test.com", name: "Test", role: "admin" })
+            .expect(400);
+    });
 });
 ```
 

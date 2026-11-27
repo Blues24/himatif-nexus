@@ -1027,6 +1027,7 @@ def handle_response(response: dict):
 ## Review Checklist
 
 ### 类型安全
+
 - [ ] 函数有类型注解（参数和返回值）
 - [ ] 使用 `Optional` 明确可能为 None
 - [ ] 泛型类型正确使用
@@ -1034,6 +1035,7 @@ def handle_response(response: dict):
 - [ ] 避免使用 `Any`，必要时添加注释说明
 
 ### 异步代码
+
 - [ ] async/await 正确配对使用
 - [ ] 没有在异步代码中使用阻塞调用
 - [ ] 正确处理 `CancelledError`
@@ -1041,18 +1043,21 @@ def handle_response(response: dict):
 - [ ] 资源正确清理（async context manager）
 
 ### 异常处理
+
 - [ ] 捕获特定异常类型，不使用裸 `except:`
 - [ ] 异常链使用 `from` 保留原因
 - [ ] 自定义异常继承自合适的基类
 - [ ] 异常信息有意义，便于调试
 
 ### 数据结构
+
 - [ ] 没有使用可变默认参数（list、dict、set）
 - [ ] 类属性不是可变对象
 - [ ] 选择正确的数据结构（set vs list 查找）
 - [ ] 大数据集使用生成器而非列表
 
 ### 测试
+
 - [ ] 测试覆盖率达标（建议 ≥80%）
 - [ ] 测试命名清晰描述测试场景
 - [ ] 边界情况有测试覆盖
@@ -1060,6 +1065,7 @@ def handle_response(response: dict):
 - [ ] 异步代码有对应的异步测试
 
 ### 代码风格
+
 - [ ] 遵循 PEP 8 风格指南
 - [ ] 函数和类有 docstring
 - [ ] 导入顺序正确（标准库、第三方、本地）
@@ -1067,6 +1073,7 @@ def handle_response(response: dict):
 - [ ] 使用现代 Python 特性（f-string、walrus operator 等）
 
 ### 性能
+
 - [ ] 避免循环中重复创建对象
 - [ ] 字符串拼接使用 join
 - [ ] 合理使用缓存（@lru_cache）

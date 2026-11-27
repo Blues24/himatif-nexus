@@ -1,5 +1,5 @@
 <script setup>
-import Kegiatan from '@/Pages/Kegiatan.vue';
+import Kegiatan from "@/Pages/Kegiatan.vue";
 </script>
 
 <template>

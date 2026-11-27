@@ -9,6 +9,8 @@ use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -41,11 +43,11 @@ class UserController extends Controller
         $data = $request->validated();
 
         $user = User::create([
-            'user_uuid' => (string) \Illuminate\Support\Str::uuid(),
+            'user_uuid' => (string) Str::uuid(),
             'role_id' => $data['role_id'],
             'nama' => $data['nama'],
             'email' => $data['email'],
-            'password' => bcrypt($data['password']),
+            'password' => Hash::make($data['password']),
         ]);
 
         return response()->json([
@@ -65,7 +67,7 @@ class UserController extends Controller
             'role_id' => $data['role_id'],
             'nama' => $data['nama'],
             'email' => $data['email'],
-            ...($data['password'] ? ['password' => bcrypt($data['password'])] : []),
+            ...($data['password'] ? ['password' => Hash::make($data['password'])] : []),
         ]);
 
         return response()->json([

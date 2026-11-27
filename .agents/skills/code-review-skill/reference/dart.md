@@ -47,6 +47,7 @@ Widget build(BuildContext context) {
 ```
 
 Review questions:
+
 - Are leaf widgets (`Text`, `Icon`, `SizedBox`, `Padding` with constant insets) `const`?
 - Does a missing `const` on a parent block `const` on an entire subtree?
 - Is `const` omitted because a single non-const argument (color from `Theme.of`, a closure) poisons the constructor?
@@ -169,6 +170,7 @@ class ThemeCache {
 ```
 
 Review questions:
+
 - Is `late` used because the author did not want `?` / a constructor argument?
 - Is a `late` field assigned in `initState` but read from a listener that can fire earlier (animation, platform callback)?
 - Are `as Foo` casts used where a pattern (`if (x case final Foo foo)`) or `is` promotion would fail loudly and locally?
@@ -231,6 +233,7 @@ setState(() => report = Report.fromDto(dto));
 ```
 
 Review questions:
+
 - Is `jsonDecode` / image decode / encryption of non-trivial payloads on the UI isolate?
 - Does the isolate callback capture `BuildContext`, `State`, or plugin controllers?
 - If a long-lived isolate is spawned, is `kill` / `pause` paired with widget disposal?
@@ -355,6 +358,7 @@ void onPressed() {
 ```
 
 Review questions:
+
 - Is `ref.watch` used in `initState`, a gesture handler, or a `Provider`'s constructor?
 - Does a widget `watch` a large object when `select` / a derived provider would do?
 - Are providers that capture `ref` after `dispose` (`ref.onDispose` missing for controllers, streams)?
@@ -426,6 +430,7 @@ BlocConsumer<ProfileBloc, ProfileState>(
 ```
 
 Review questions:
+
 - Is a `Cubit`/`Bloc` closed (`BlocProvider` does this if `lazy`/`create` owns it; a manually constructed bloc must `close`)?
 - Are events dispatched from `build`?
 - Is `Equatable` / `==` missing on state so every `emit` rebuilds even when fields did not change?
@@ -455,6 +460,7 @@ try {
 ```
 
 Review questions:
+
 - Is the channel name a collision-prone generic string (`app`, `native`) without a domain prefix?
 - Are Android/iOS implementations of the same method covering all argument types and null?
 - Does the Dart side assume the plugin is registered (tests, background isolates, and add-to-app engines often are not)?
@@ -504,6 +510,7 @@ class _EditorState extends State<Editor> {
 ```
 
 Review questions:
+
 - Do reorderable / dismissible / animated lists use `ValueKey` / `ObjectKey` from a stable model id?
 - Is `GlobalKey` used to reach into a child's `State` when a callback / `ValueNotifier` would do?
 - Are keys on widgets whose `runtimeType` already uniquely identifies them (usually unnecessary)?
@@ -550,6 +557,7 @@ class _SearchFieldState extends State<SearchField> with SingleTickerProviderStat
 ```
 
 Review questions:
+
 - `TextEditingController`, `ScrollController`, `FocusNode`, `AnimationController`, `TabController`, `PageController` — created? disposed?
 - `StreamSubscription`, `Timer`, `ChangeNotifier` listeners, `WidgetsBindingObserver` — removed?
 - `AnimationController` uses a `TickerProvider` that dies with the `State` (`SingleTickerProviderStateMixin`), not a leaked vsync?
@@ -607,6 +615,7 @@ testWidgets('loads profile', (tester) async {
 ```
 
 Review questions:
+
 - Can the new logic be tested with `flutter test` without `IntegrationTestWidgetsFlutterBinding`?
 - Are `Key`s present on interactive widgets the test (and the reviewer) needs to find, without painting `UniqueKey` in `build`?
 - Are platform channels mocked (`TestDefaultBinaryMessengerBinding`)?
@@ -618,17 +627,20 @@ Review questions:
 ## Review Checklist
 
 ### Widgets & rebuilds
+
 - [ ] Static subtrees use `const` constructors
 - [ ] Expensive children are extracted widgets, not `_buildFoo()` methods
 - [ ] Long lists use lazy builders, not a fully-materialized `children:` list
 - [ ] `setState` is not used to store values that can be derived in `build`
 
 ### Null safety & `late`
+
 - [ ] `!` and `as` are not used to silence the type system
 - [ ] `late` is lazy-init (`late final x = ...`) or truly guaranteed before first read
 - [ ] Nullable fields are promoted via locals, not assumed non-null
 
 ### Isolates & async
+
 - [ ] Heavy JSON / image / crypto work is off the UI isolate
 - [ ] Isolate messages are sendable plain data
 - [ ] `build` does not create Futures/Streams or start I/O
@@ -636,18 +648,21 @@ Review questions:
 - [ ] `setState` / `BuildContext` after `await` check `mounted` / `context.mounted`
 
 ### State management
+
 - [ ] `ref.watch` / `context.watch` only in `build`; `read` in callbacks
 - [ ] Rebuilds are narrowed (`select`, `buildWhen`)
 - [ ] Do not construct a `Bloc`/`Cubit`/`ChangeNotifier` in `build` and pass it to `*.value` — use `create`; key with `ValueKey(id)` (not `UniqueKey()`) or `didUpdateWidget` so a new id reloads
 - [ ] Providers/blocs that own controllers are disposed (`autoDispose`, `close`)
 
 ### Platform, keys, disposal
+
 - [ ] Platform channel calls handle `PlatformException` and missing plugins
 - [ ] EventChannel / native subscriptions are cancelled
 - [ ] List children that hold `State` have stable `ValueKey`s (not `UniqueKey()` in `build`)
 - [ ] Controllers, tickers, and subscriptions are disposed; `dispose` does not use `context`
 
 ### Tests
+
 - [ ] Domain logic is unit-tested without pumping widgets
 - [ ] Widget tests inject fakes; they do not hit network or real platform channels
 - [ ] `pumpAndSettle` is not used on never-idle animations

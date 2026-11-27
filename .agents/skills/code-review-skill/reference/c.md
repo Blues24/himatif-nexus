@@ -697,11 +697,11 @@ typeof(x) y = x;
 
 ### Choosing a test framework
 
-| Framework | Use Case | Notes |
-|-----------|----------|-------|
-| **Unity** | Embedded / bare-metal | Single-file, no dependencies, C89 compatible |
-| **CUnit** | Desktop / CI | Richer assertions, HTML/XML output |
-| **CMocka** | System-level code | Mocking via function pointers, works with `setjmp`/`longjmp` |
+| Framework  | Use Case              | Notes                                                        |
+| ---------- | --------------------- | ------------------------------------------------------------ |
+| **Unity**  | Embedded / bare-metal | Single-file, no dependencies, C89 compatible                 |
+| **CUnit**  | Desktop / CI          | Richer assertions, HTML/XML output                           |
+| **CMocka** | System-level code     | Mocking via function pointers, works with `setjmp`/`longjmp` |
 
 ### Basic test structure with Unity
 
@@ -849,6 +849,7 @@ cppcheck --error-exitcode=1 --enable=all src/            # static analysis
 ## Review Checklist
 
 ### Memory and UB
+
 - [ ] All buffers have explicit size parameters
 - [ ] No out-of-bounds access or pointer arithmetic past objects
 - [ ] No use after free or uninitialized reads
@@ -857,6 +858,7 @@ cppcheck --error-exitcode=1 --enable=all src/            # static analysis
 - [ ] Sequence point rules are respected
 
 ### Secure Coding
+
 - [ ] No format string vulnerabilities (user input never used as format)
 - [ ] No unchecked allocation sizes (overflow in count * size)
 - [ ] No TOCTOU races on file operations
@@ -864,6 +866,7 @@ cppcheck --error-exitcode=1 --enable=all src/            # static analysis
 - [ ] Temporary files use mkstemp or equivalent
 
 ### API and Design
+
 - [ ] Ownership rules are documented and consistent
 - [ ] const-correctness is applied for inputs
 - [ ] Error contracts are clear and consistent
@@ -871,18 +874,21 @@ cppcheck --error-exitcode=1 --enable=all src/            # static analysis
 - [ ] Opaque types used for encapsulation
 
 ### Portability
+
 - [ ] No unaligned memory access
 - [ ] Byte order handled explicitly for wire/binary formats
 - [ ] Fixed-width types used for binary protocols
 - [ ] Platform-specific code isolated behind feature macros
 
 ### Concurrency
+
 - [ ] No data races on shared state
 - [ ] volatile is not used for synchronization
 - [ ] Locks are held for minimal time
 - [ ] Lock ordering is consistent
 
 ### Testing and Tooling
+
 - [ ] Unit tests cover happy path, error paths, and edge cases
 - [ ] Builds clean with warnings enabled (-Wall -Wextra -Werror)
 - [ ] Sanitizers (ASan, UBSan) run on critical code paths

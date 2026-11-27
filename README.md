@@ -6,27 +6,27 @@
 
 ## Architecture
 
-| Layer | Technology |
-|---|---|
-| **Backend** | Laravel 13 (PHP 8.5+) |
-| **Frontend** | Vue 3 + Inertia.js v2 |
-| **Styling** | Tailwind CSS |
-| **Build** | Vite + Laravel Vite Plugin |
-| **Database** | PostgreSQL |
-| **Auth** | Laravel Breeze + Sanctum |
-| **RBAC** | Custom (`app/Models/Role` + `User::hasRole()`) — no Spatie dependency |
-| **Page Builder** | Puck (planned) — drag-and-drop content editor for Infokom |
+| Layer            | Technology                                                            |
+| ---------------- | --------------------------------------------------------------------- |
+| **Backend**      | Laravel 13 (PHP 8.5+)                                                 |
+| **Frontend**     | Vue 3 + Inertia.js v2                                                 |
+| **Styling**      | Tailwind CSS                                                          |
+| **Build**        | Vite + Laravel Vite Plugin                                            |
+| **Database**     | PostgreSQL                                                            |
+| **Auth**         | Laravel Breeze + Sanctum                                              |
+| **RBAC**         | Custom (`app/Models/Role` + `User::hasRole()`) — no Spatie dependency |
+| **Page Builder** | Puck (planned) — drag-and-drop content editor for Infokom             |
 
 ## Modules
 
 The application is divided into four functional modules, each owned by a dedicated team:
 
-| Module | Team | Description |
-|---|---|---|
-| **BPH** | Admin | Organization management — user accounts, roles, permissions |
-| **Infokom** | Content | Blog articles and activity/event listings |
-| **Danus Shop** | Commerce | Product catalog, transactions, and merchandise management |
-| **Portal** | Asset | Equipment inventory and rental request workflow |
+| Module         | Team     | Description                                                 |
+| -------------- | -------- | ----------------------------------------------------------- |
+| **BPH**        | Admin    | Organization management — user accounts, roles, permissions |
+| **Infokom**    | Content  | Blog articles and activity/event listings                   |
+| **Danus Shop** | Commerce | Product catalog, transactions, and merchandise management   |
+| **Portal**     | Asset    | Equipment inventory and rental request workflow             |
 
 ## Quick Start
 

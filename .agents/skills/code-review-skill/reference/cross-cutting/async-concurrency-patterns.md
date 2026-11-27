@@ -14,15 +14,15 @@
 
 ## 并发模型对比
 
-| 模型 | 语言 | 核心概念 | 优点 | 缺点 |
-|------|------|----------|------|------|
-| **Goroutines + Channels** | Go | 轻量级协程 + CSP 通信 | 极简语法、低开销 | 手动取消传播 |
-| **async/await + Event Loop** | Python, TypeScript | 单线程协作式多任务 | 无锁、易推理 | 不能阻塞事件循环 |
-| **async/await + Tokio** | Rust | Futures + 运行时调度 | 零成本抽象、编译期安全 | 学习曲线陡 |
-| **Coroutines + Flow** | Kotlin | 挂起函数 + 结构化并发 | 自动取消、生命周期绑定 | Dispatchers 选择复杂 |
-| **async/await + Actors** | Swift | 结构化并发 + Actor 隔离 | 编译期数据竞争检查 | Swift 6 迁移成本 |
-| **async/await + TPL** | C# | Task + 线程池 | 成熟生态、ConfigureAwait | 隐式线程切换 |
-| **Threads + Mutexes** | C++, Java, 所有 | OS 线程 + 共享内存 | 真正并行 | 锁管理复杂、死锁风险 |
+| 模型                         | 语言               | 核心概念                | 优点                     | 缺点                 |
+| ---------------------------- | ------------------ | ----------------------- | ------------------------ | -------------------- |
+| **Goroutines + Channels**    | Go                 | 轻量级协程 + CSP 通信   | 极简语法、低开销         | 手动取消传播         |
+| **async/await + Event Loop** | Python, TypeScript | 单线程协作式多任务      | 无锁、易推理             | 不能阻塞事件循环     |
+| **async/await + Tokio**      | Rust               | Futures + 运行时调度    | 零成本抽象、编译期安全   | 学习曲线陡           |
+| **Coroutines + Flow**        | Kotlin             | 挂起函数 + 结构化并发   | 自动取消、生命周期绑定   | Dispatchers 选择复杂 |
+| **async/await + Actors**     | Swift              | 结构化并发 + Actor 隔离 | 编译期数据竞争检查       | Swift 6 迁移成本     |
+| **async/await + TPL**        | C#                 | Task + 线程池           | 成熟生态、ConfigureAwait | 隐式线程切换         |
+| **Threads + Mutexes**        | C++, Java, 所有    | OS 线程 + 共享内存      | 真正并行                 | 锁管理复杂、死锁风险 |
 
 ### 何时选择什么
 
@@ -74,6 +74,7 @@ task2: lock(B); lock(A);  // 持有 B，等待 A
 ```
 
 **解决方案**：
+
 - 一致的锁获取顺序
 - 超时锁（tryLock with timeout）
 - 避免嵌套锁
@@ -488,24 +489,28 @@ async function processWithLimit<T, R>(
 ## Review Checklist
 
 ### 基本检查
+
 - [ ] 并发任务有明确的退出机制（不会泄漏）
 - [ ] 共享状态有适当保护（mutex、actor、channel）
 - [ ] 没有在异步上下文中执行阻塞操作
 - [ ] 取消信号正确传播到所有子任务
 
 ### 架构检查
+
 - [ ] 使用结构化并发（TaskGroup / coroutineScope / errgroup）
 - [ ] 并发数有上限（semaphore / bounded channel）
 - [ ] 长时间运行的任务支持超时
 - [ ] 背压机制防止内存膨胀
 
 ### 性能检查
+
 - [ ] 并发粒度合理（不过细也不过粗）
 - [ ] I/O 密集使用 async，CPU 密集使用线程/进程
 - [ ] 锁的持有时间最小化
 - [ ] 没有不必要的 await（可并行的操作串行执行）
 
 ### 语言特定
+
 - [ ] Go: context 传播、errgroup 使用、channel 缓冲合理
 - [ ] Python: 事件循环不阻塞、TaskGroup 管理生命周期
 - [ ] Rust: spawn_blocking 隔离阻塞操作、select! 处理超时

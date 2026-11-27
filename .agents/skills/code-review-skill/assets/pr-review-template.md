@@ -20,6 +20,7 @@ Copy and use this template for your code reviews.
 ## Architecture & Performance
 
 **Architecture Assessment**
+
 - [ ] Separation of concerns — are responsibilities clearly divided?
 - [ ] Module responsibilities — does each module have a single purpose?
 - [ ] Dependency direction — do dependencies flow toward stability?
@@ -28,6 +29,7 @@ Copy and use this template for your code reviews.
 > See [Architecture Review Guide](../reference/architecture-review-guide.md) for detailed SOLID, anti-pattern, and coupling analysis.
 
 **Performance Assessment**
+
 - [ ] Algorithm complexity — any O(n²) or worse on large inputs?
 - [ ] Memory impact — large allocations, leaks, unbounded growth?
 - [ ] I/O impact — excessive API calls, unbatched writes, missing caching?
@@ -38,15 +40,18 @@ Copy and use this template for your code reviews.
 ## Required Changes
 
 🔴 **[blocking]** [Issue description]
+
 > [Code location or example]
 > [Suggested fix or explanation]
 
 🔴 **[blocking]** [Issue description]
+
 > [Details]
 
 ## Important Suggestions
 
 🟡 **[important]** [Issue description]
+
 > [Why this matters]
 > [Suggested approach]
 
@@ -91,6 +96,7 @@ Copy and use this template for your code reviews.
 ## Quick Copy Templates
 
 ### Blocking Issue
+
 ```
 🔴 **[blocking]** [Title]
 
@@ -105,6 +111,7 @@ Copy and use this template for your code reviews.
 ```
 
 ### Important Suggestion
+
 ```
 🟡 **[important]** [Title]
 
@@ -116,6 +123,7 @@ Copy and use this template for your code reviews.
 ```
 
 ### Minor Suggestion
+
 ```
 🟢 **[nit]** [Suggestion]
 
@@ -123,6 +131,7 @@ Not blocking, but consider [improvement].
 ```
 
 ### Praise
+
 ```
 🎉 **[praise]** Great work on [specific thing]!
 
@@ -130,6 +139,7 @@ Not blocking, but consider [improvement].
 ```
 
 ### Learning
+
 ```
 📚 **[learning]** [Educational note]
 

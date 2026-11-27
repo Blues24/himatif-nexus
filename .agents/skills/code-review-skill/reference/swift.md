@@ -5,6 +5,7 @@ A code review checklist for modern Swift (5.9+/6), covering SwiftUI, Swift Concu
 ## Quick Review Checklist
 
 ### Must-Check Items
+
 - [ ] Are force-unwraps (`!`) and `try!` avoided in favor of safe unwrapping
 - [ ] Do closures that capture `self` use `[weak self]` to avoid retain cycles
 - [ ] Is the value vs reference type choice intentional (struct vs class)
@@ -12,6 +13,7 @@ A code review checklist for modern Swift (5.9+/6), covering SwiftUI, Swift Concu
 - [ ] Are concurrency boundaries data-race-safe (`Sendable`, `@MainActor`, actors)
 
 ### Common Issues
+
 - [ ] Fire-and-forget `Task {}` that leaks or is never cancelled
 - [ ] Wrong SwiftUI property wrapper (`@ObservedObject` where `@StateObject` is needed)
 - [ ] O(n^2) lookups in loops that could use a `Set` or `Dictionary`

@@ -1,9 +1,22 @@
 ---
 trigger: "@frontend"
-keywords: ["vue", "component", "tailwind", "css", "ui", "layout", "page", "form", "modal", "button", "input"]
+keywords:
+    [
+        "vue",
+        "component",
+        "tailwind",
+        "css",
+        "ui",
+        "layout",
+        "page",
+        "form",
+        "modal",
+        "button",
+        "input",
+    ]
 paths:
-  - "resources/js/**"
-  - "resources/css/**"
+    - "resources/js/**"
+    - "resources/css/**"
 ---
 
 # @frontend — Frontend Team Role
@@ -14,23 +27,23 @@ Frontend team owns semua Vue components, pages, layouts, dan styling dengan Tail
 
 ### Files Owned
 
-| Folder | Purpose |
-|---|---|
-| `resources/js/Pages/` | Inertia page components (per module) |
-| `resources/js/Components/` | Reusable UI components |
-| `resources/js/Layouts/` | Page layout shells |
-| `resources/js/Builder/` | Puck page builder (planned) |
-| `resources/css/app.css` | Tailwind CSS + custom styles |
+| Folder                     | Purpose                              |
+| -------------------------- | ------------------------------------ |
+| `resources/js/Pages/`      | Inertia page components (per module) |
+| `resources/js/Components/` | Reusable UI components               |
+| `resources/js/Layouts/`    | Page layout shells                   |
+| `resources/js/Builder/`    | Puck page builder (planned)          |
+| `resources/css/app.css`    | Tailwind CSS + custom styles         |
 
 ### Team Boundaries
 
-| Path | Frontend | Backend |
-|---|---|---|
-| `resources/js/Pages/` | **Full Access** | Read Only |
-| `resources/js/Components/` | **Full Access** | Read Only |
-| `resources/js/Layouts/` | **Full Access** | Read Only |
-| `resources/css/` | **Full Access** | Read Only |
-| `resources/views/app.blade.php` | Read Only | **Full Access** |
+| Path                            | Frontend        | Backend         |
+| ------------------------------- | --------------- | --------------- |
+| `resources/js/Pages/`           | **Full Access** | Read Only       |
+| `resources/js/Components/`      | **Full Access** | Read Only       |
+| `resources/js/Layouts/`         | **Full Access** | Read Only       |
+| `resources/css/`                | **Full Access** | Read Only       |
+| `resources/views/app.blade.php` | Read Only       | **Full Access** |
 
 ## Conventions
 
@@ -39,23 +52,23 @@ Frontend team owns semua Vue components, pages, layouts, dan styling dengan Tail
 ```vue
 <!-- ✅ Correct — <script setup> syntax -->
 <script setup lang="ts">
-import { ref, computed } from 'vue'
-import { Link, useForm } from '@inertiajs/vue3'
+import { ref, computed } from "vue";
+import { Link, useForm } from "@inertiajs/vue3";
 
 const props = defineProps<{
-  products: Array<Product>
-  filters: { q: string }
-}>()
+    products: Array<Product>;
+    filters: { q: string };
+}>();
 
 const emit = defineEmits<{
-  (e: 'update', id: number): void
-}>()
+    (e: "update", id: number): void;
+}>();
 </script>
 
 <template>
-  <div>
-    <!-- Template content -->
-  </div>
+    <div>
+        <!-- Template content -->
+    </div>
 </template>
 ```
 
@@ -70,13 +83,13 @@ const emit = defineEmits<{
 <!-- Using useForm -->
 <script setup>
 const form = useForm({
-  nama_produk: '',
-  harga_produk: null,
-  stok_produk: 0,
-})
+    nama_produk: "",
+    harga_produk: null,
+    stok_produk: 0,
+});
 
 function submit() {
-  form.post(route('produk.store'))
+    form.post(route("produk.store"));
 }
 </script>
 ```
@@ -96,12 +109,17 @@ const props = defineProps<{
 
 ```vue
 <!-- ✅ Correct — utility-first -->
-<button class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
+<button
+    class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+>
   Submit
 </button>
 
 <!-- ✅ With Tailwind Forms plugin -->
-<input type="email" class="rounded-md shadow-sm border-gray-300 focus:border-blue-500 focus:ring-blue-500" />
+<input
+    type="email"
+    class="rounded-md shadow-sm border-gray-300 focus:border-blue-500 focus:ring-blue-500"
+/>
 ```
 
 ### Component Single Root Element
@@ -109,16 +127,16 @@ const props = defineProps<{
 ```vue
 <!-- ✅ Correct — single root -->
 <template>
-  <div>
-    <h1>Title</h1>
-    <p>Content</p>
-  </div>
+    <div>
+        <h1>Title</h1>
+        <p>Content</p>
+    </div>
 </template>
 
 <!-- ❌ Wrong — multiple roots -->
 <template>
-  <h1>Title</h1>
-  <p>Content</p>
+    <h1>Title</h1>
+    <p>Content</p>
 </template>
 ```
 
@@ -184,34 +202,34 @@ resources/js/Components/
 
 ```javascript
 // resources/js/Builder/puckConfig.js
-import BannerBlock from './Components/BannerBlock.vue'
-import CardLomba from './Components/CardLomba.vue'
-import GridBlock from './Components/GridBlock.vue'
+import BannerBlock from "./Components/BannerBlock.vue";
+import CardLomba from "./Components/CardLomba.vue";
+import GridBlock from "./Components/GridBlock.vue";
 
 export default {
-  blocks: {
-    BannerBlock,
-    CardLomba,
-    GridBlock,
-  },
-}
+    blocks: {
+        BannerBlock,
+        CardLomba,
+        GridBlock,
+    },
+};
 ```
 
 ```vue
 <!-- BannerBlock.vue -->
 <template>
-  <div class="banner" :style="{ background: props.backgroundColor }">
-    <h2>{{ props.title }}</h2>
-    <p>{{ props.description }}</p>
-  </div>
+    <div class="banner" :style="{ background: props.backgroundColor }">
+        <h2>{{ props.title }}</h2>
+        <p>{{ props.description }}</p>
+    </div>
 </template>
 
 <script setup>
 const props = defineProps({
-  title: String,
-  description: String,
-  backgroundColor: String,
-})
+    title: String,
+    description: String,
+    backgroundColor: String,
+});
 </script>
 ```
 
@@ -237,7 +255,9 @@ const props = defineProps({
 ### Focus States
 
 ```vue
-<button class="focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+<button
+    class="focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+>
   Submit
 </button>
 ```

@@ -5,6 +5,7 @@ Quick-reference bug patterns organized by category. For detailed code examples, 
 ## Universal Issues
 
 ### Logic Errors
+
 - [ ] Off-by-one errors in loops and array access
 - [ ] Incorrect boolean logic (De Morgan's law violations)
 - [ ] Missing null/undefined checks
@@ -14,6 +15,7 @@ Quick-reference bug patterns organized by category. For detailed code examples, 
 - [ ] Floating point comparison issues
 
 ### Resource Management
+
 - [ ] Memory leaks (unclosed connections, listeners)
 - [ ] File handles not closed
 - [ ] Database connections not released
@@ -21,6 +23,7 @@ Quick-reference bug patterns organized by category. For detailed code examples, 
 - [ ] Timers/intervals not cleared
 
 ### Error Handling
+
 - [ ] Swallowed exceptions (empty catch blocks)
 - [ ] Generic exception handling hiding specific errors
 - [ ] Missing error propagation
@@ -62,6 +65,7 @@ Quick-reference bug patterns organized by category. For detailed code examples, 
 - [ ] `use()` Hook receiving a new Promise each render
 
 **TanStack Query v5:**
+
 - [ ] `queryKey` missing parameters that affect data
 - [ ] Default `staleTime: 0` causing excessive refetches
 - [ ] `useSuspenseQuery` with `enabled` option (not supported)
@@ -70,6 +74,7 @@ Quick-reference bug patterns organized by category. For detailed code examples, 
 - [ ] Using v4 array syntax (`useQuery(['key'], fn)`) instead of v5 object syntax
 
 **Testing:**
+
 - [ ] Using `container.querySelector` instead of `screen.getByRole`
 - [ ] Using `fireEvent` instead of `userEvent`
 - [ ] Testing implementation details instead of user-visible behavior
@@ -109,29 +114,34 @@ Quick-reference bug patterns organized by category. For detailed code examples, 
 ## Rust
 
 **Ownership & Borrowing:**
+
 - [ ] Unnecessary `clone()` to work around borrow checker
 - [ ] `Arc<Mutex<T>>` when single-owner would suffice
 - [ ] Storing borrows in structs when owned data is simpler
 - [ ] Unnecessary `RefCell` (runtime checks vs compile-time)
 
 **Unsafe Code:**
+
 - [ ] `unsafe` block without `SAFETY:` comment explaining invariants
 - [ ] `unsafe fn` without `# Safety` doc section
 - [ ] Unsafe invariants split across modules
 
 **Async & Concurrency:**
+
 - [ ] Blocking in async context (`std::fs`, `std::thread::sleep`)
 - [ ] Holding `std::sync::Mutex` across `.await`
 - [ ] Spawned task missing `'static` lifetime bound
 - [ ] Dropping a Future without awaiting (forgotten work)
 
 **Error Handling:**
+
 - [ ] `unwrap()`/`expect()` in production code
 - [ ] Library using `anyhow` instead of `thiserror` (callers can't match)
 - [ ] Swallowing error context (`map_err(|_| ...)`)
 - [ ] Ignoring `must_use` return values
 
 **Performance:**
+
 - [ ] Unnecessary `.collect()` — prefer lazy iterators
 - [ ] String concatenation in loops without `with_capacity`
 - [ ] `Box<dyn Trait>` when `impl Trait` would work
@@ -153,8 +163,8 @@ Quick-reference bug patterns organized by category. For detailed code examples, 
 
 ## Java / Spring Boot
 
-- [ ] POJO/DTO with manual boilerplate instead of `record` *(Java 17+)*
-- [ ] Traditional switch missing `break` (use switch expressions) *(Java 14+)*
+- [ ] POJO/DTO with manual boilerplate instead of `record` _(Java 17+)_
+- [ ] Traditional switch missing `break` (use switch expressions) _(Java 14+)_
 - [ ] Field injection instead of constructor injection
 - [ ] JPA N+1 query (missing `fetch join` or `@EntityGraph`)
 - [ ] Incorrect `equals`/`hashCode` on JPA entities (avoid `@Data`; prefer stable business key or null-safe id — never all lazy fields)

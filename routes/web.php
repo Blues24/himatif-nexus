@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\DanusSHop\ProdukController;
 use App\Http\Controllers\Infokom\FormatifController;
@@ -9,7 +8,6 @@ use App\Http\Controllers\NotificationStreamController;
 use App\Http\Controllers\Portal\InventarisController;
 use App\Http\Controllers\Portal\PenyewaanAlatController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Middleware\EnsureAdminRole;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -55,10 +53,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
         ->middleware(EnsureSseAuth::class)
         ->name('notifications.stream');
 });
-
-Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->name('dashboard');
 
 // Warta & Edukasi Informasi Publik
 Route::get('/informasi', function () {
@@ -137,10 +131,6 @@ Route::controller(FormatifController::class)->group(function () {
 */
 
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-
     // Kegiatan Admin/Auth Writes
     Route::get('/kegiatan/create', [KegiatanController::class, 'create'])->name('kegiatan.create');
     Route::post('/kegiatan', [KegiatanController::class, 'store'])->name('kegiatan.store');
@@ -174,7 +164,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 |--------------------------------------------------------------------------|
 */
 
-Route::prefix('admin')->name('admin.')->group(function () {
+Route::prefix('admin')->name('admin.')->middleware('admin')->group(function () {
     Route::get('/dashboard', fn () => Inertia::render('Admin/Dashboard'))->name('dashboard.index');
     Route::get('/shop', function () {
         $service = app(ProdukService::class);

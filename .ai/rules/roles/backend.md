@@ -1,16 +1,29 @@
 ---
 trigger: "@backend"
-keywords: ["controller", "service", "model", "migration", "route", "request", "validation", "database", "sql", "eloquent", "auth"]
+keywords:
+    [
+        "controller",
+        "service",
+        "model",
+        "migration",
+        "route",
+        "request",
+        "validation",
+        "database",
+        "sql",
+        "eloquent",
+        "auth",
+    ]
 paths:
-  - "app/Http/Controllers/**"
-  - "app/Http/Requests/**"
-  - "app/Services/**"
-  - "app/Models/**"
-  - "app/Helpers/**"
-  - "database/migrations/**"
-  - "database/factories/**"
-  - "database/seeders/**"
-  - "routes/**"
+    - "app/Http/Controllers/**"
+    - "app/Http/Requests/**"
+    - "app/Services/**"
+    - "app/Models/**"
+    - "app/Helpers/**"
+    - "database/migrations/**"
+    - "database/factories/**"
+    - "database/seeders/**"
+    - "routes/**"
 ---
 
 # @backend — Backend Team Role
@@ -21,16 +34,16 @@ Backend team owns semua controllers, services, models, migrations, routes, dan b
 
 ### Team Boundaries
 
-| Path | Backend | Frontend |
-|---|---|---|
+| Path                    | Backend         | Frontend  |
+| ----------------------- | --------------- | --------- |
 | `app/Http/Controllers/` | **Full Access** | Read Only |
-| `app/Http/Requests/` | **Full Access** | No Access |
-| `app/Services/` | **Full Access** | No Access |
-| `app/Models/` | **Full Access** | No Access |
-| `app/Http/Middleware/` | **Full Access** | Read Only |
-| `database/migrations/` | **Full Access** | No Access |
-| `routes/` | **Full Access** | Read Only |
-| `config/` | **Full Access** | No Access |
+| `app/Http/Requests/`    | **Full Access** | No Access |
+| `app/Services/`         | **Full Access** | No Access |
+| `app/Models/`           | **Full Access** | No Access |
+| `app/Http/Middleware/`  | **Full Access** | Read Only |
+| `database/migrations/`  | **Full Access** | No Access |
+| `routes/`               | **Full Access** | Read Only |
+| `config/`               | **Full Access** | No Access |
 
 ## Conventions
 
@@ -158,16 +171,16 @@ class Produk extends Model
 
 ### Primary Keys
 
-| Model | Primary Key | Type |
-|---|---|---|
-| `User` | `user_uuid` | UUID |
-| `Produk` | `produk_id` | bigint |
-| `Formatif` | `formatif_id` | bigint |
-| `Kegiatan` | `kegiatan_id` | bigint |
-| `Transaksi` | `transaksi_id` | bigint |
-| `Inventaris` | `inventaris_id` | bigint |
-| `PenyewaanAlat` | `id` | bigint |
-| `Role` | `role_id` | bigint |
+| Model           | Primary Key     | Type   |
+| --------------- | --------------- | ------ |
+| `User`          | `user_uuid`     | UUID   |
+| `Produk`        | `produk_id`     | bigint |
+| `Formatif`      | `formatif_id`   | bigint |
+| `Kegiatan`      | `kegiatan_id`   | bigint |
+| `Transaksi`     | `transaksi_id`  | bigint |
+| `Inventaris`    | `inventaris_id` | bigint |
+| `PenyewaanAlat` | `id`            | bigint |
+| `Role`          | `role_id`       | bigint |
 
 ### Table Naming
 

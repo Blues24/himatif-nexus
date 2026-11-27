@@ -1,18 +1,18 @@
 <script setup>
-import 'bootstrap/dist/css/bootstrap.min.css';
-import 'bootstrap-icons/font/bootstrap-icons.css';
-import '../../css/admin-custom.css';
-import Sidebar from '@/Components/Admin/Sidebar.vue';
-import { Head } from '@inertiajs/vue3';
+import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap-icons/font/bootstrap-icons.css";
+import "../../css/admin-custom.css";
+import Sidebar from "@/Components/Admin/Sidebar.vue";
+import { Head } from "@inertiajs/vue3";
 
 defineProps({
     title: {
         type: String,
-        default: 'Dashboard',
+        default: "Dashboard",
     },
     subtitle: {
         type: String,
-        default: '',
+        default: "",
     },
 });
 </script>
@@ -28,13 +28,22 @@ defineProps({
             <!-- Area Konten Utama Kanan -->
             <main class="admin-main">
                 <!-- Topbar Header Dinamis -->
-                <header class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-4">
+                <header
+                    class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-4"
+                >
                     <div>
                         <slot name="header">
-                            <h1 class="fw-bold mb-1" style="font-size: 24px; color: #111827;">
+                            <h1
+                                class="fw-bold mb-1"
+                                style="font-size: 24px; color: #111827"
+                            >
                                 {{ title }}
                             </h1>
-                            <p v-if="subtitle" class="mb-0" style="font-size: 13.5px; color: #6B7280;">
+                            <p
+                                v-if="subtitle"
+                                class="mb-0"
+                                style="font-size: 13.5px; color: #6b7280"
+                            >
                                 {{ subtitle }}
                             </p>
                         </slot>

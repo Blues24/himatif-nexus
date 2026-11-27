@@ -38,11 +38,11 @@ def get_config_path(name):
 ```javascript
 // ❌ 手写 debounce——项目已有 lodash 或 utils/debounce.ts
 function debounce(fn, ms) {
-  let timer;
-  return (...args) => {
-    clearTimeout(timer);
-    timer = setTimeout(() => fn(...args), ms);
-  };
+    let timer;
+    return (...args) => {
+        clearTimeout(timer);
+        timer = setTimeout(() => fn(...args), ms);
+    };
 }
 
 // ✅ 使用已有的工具函数
@@ -50,6 +50,7 @@ import { debounce } from "@/utils/debounce";
 ```
 
 **审查要点：**
+
 - 新增函数是否与已有 utility 重名或功能重叠？
 - inline 逻辑是否可以提取为已有模块的调用？
 - 检查相邻文件和 shared/utils 目录
@@ -100,6 +101,7 @@ function renderWidget(options: WidgetOptions) { ... }
 ```
 
 **审查要点：**
+
 - 函数参数是否 ≥ 4 个？考虑 options object / dataclass
 - 新参数是否只是布尔标志？考虑 enum 或 strategy pattern
 - 是否有 `enable_x`, `disable_y` 这类互斥参数？
@@ -134,6 +136,7 @@ interface UserSummary {
 ```
 
 **审查要点：**
+
 - 函数返回类型是否泄露底层实现（ORM, HTTP client, file format）？
 - 组件/函数是否依赖外部系统的数据结构？
 - 是否破坏了已有的抽象边界？
@@ -168,13 +171,14 @@ emitter.on("usercreated", handler); // bug: typo
 
 // ✅ 常量或 branded type
 const Events = {
-  USER_CREATED: "userCreated",
-  USER_SUSPENDED: "userSuspended",
+    USER_CREATED: "userCreated",
+    USER_SUSPENDED: "userSuspended",
 } as const;
 emitter.emit(Events.USER_CREATED, data);
 ```
 
 **审查要点：**
+
 - 是否用字符串代替了已有的 enum/union type？
 - 事件名、action type、status 值是否散落在多个文件？
 - 字符串比较是否 case-sensitive 但未验证？
@@ -206,15 +210,19 @@ label = ROLE_LABELS.get(role, "Unknown")
 ```typescript
 // ❌ 嵌套三元
 const bg = isHovered
-  ? isSelected ? "blue" : "gray"
-  : isSelected ? "navy" : "white";
+    ? isSelected
+        ? "blue"
+        : "gray"
+    : isSelected
+      ? "navy"
+      : "white";
 
 // ✅ 查找表（lookup map）
 const bgMap: Record<string, string> = {
-  "true-true": "blue",
-  "true-false": "gray",
-  "false-true": "navy",
-  "false-false": "white",
+    "true-true": "blue",
+    "true-false": "gray",
+    "false-true": "navy",
+    "false-false": "white",
 };
 const bg = bgMap[`${isHovered}-${isSelected}`];
 ```
@@ -239,6 +247,7 @@ def process(order):
 ```
 
 **审查要点：**
+
 - 三元表达式是否嵌套 ≥ 2 层？
 - if/else 嵌套是否 ≥ 3 层？
 - 能否用 lookup table、early return 或 match 替换？
@@ -265,22 +274,23 @@ def format_person(first: str, last: str, email: str) -> str:
 ```typescript
 // ❌ Copy-paste handler 只改了 URL
 async function deletePost(id: string) {
-  await fetch(`/api/posts/${id}`, { method: "DELETE" });
-  router.push("/posts");
+    await fetch(`/api/posts/${id}`, { method: "DELETE" });
+    router.push("/posts");
 }
 async function deleteComment(id: string) {
-  await fetch(`/api/comments/${id}`, { method: "DELETE" });
-  router.push("/comments");
+    await fetch(`/api/comments/${id}`, { method: "DELETE" });
+    router.push("/comments");
 }
 
 // ✅ 参数化
 async function deleteResource(resource: string, id: string) {
-  await fetch(`/api/${resource}/${id}`, { method: "DELETE" });
-  router.push(`/${resource}`);
+    await fetch(`/api/${resource}/${id}`, { method: "DELETE" });
+    router.push(`/${resource}`);
 }
 ```
 
 **审查要点：**
+
 - 是否有 ≥ 2 段代码仅变量名/URL/字符串不同？
 - 能否提取参数化的共享函数？
 - 是否可以用 template method 或 strategy 消除变种？
@@ -294,22 +304,24 @@ async function deleteResource(resource: string, id: string) {
 ```typescript
 // ❌ 每次 poll 都触发 update——即使数据未变
 useEffect(() => {
-  const interval = setInterval(() => {
-    fetch("/api/status").then(r => r.json()).then(setStatus);
-  }, 5000);
-  return () => clearInterval(interval);
+    const interval = setInterval(() => {
+        fetch("/api/status")
+            .then((r) => r.json())
+            .then(setStatus);
+    }, 5000);
+    return () => clearInterval(interval);
 }, []);
 
 // ✅ 仅在值变化时更新
 useEffect(() => {
-  const interval = setInterval(() => {
-    fetch("/api/status")
-      .then(r => r.json())
-      .then(data => {
-        setStatus(prev => isEqual(prev, data) ? prev : data);
-      });
-  }, 5000);
-  return () => clearInterval(interval);
+    const interval = setInterval(() => {
+        fetch("/api/status")
+            .then((r) => r.json())
+            .then((data) => {
+                setStatus((prev) => (isEqual(prev, data) ? prev : data));
+            });
+    }, 5000);
+    return () => clearInterval(interval);
 }, []);
 ```
 
@@ -328,6 +340,7 @@ for item in items:
 ```
 
 **审查要点：**
+
 - polling / interval / event handler 是否无条件更新？
 - wrapper function 是否尊重 same-reference return？
 - DB 写入是否检查了实际变化？
@@ -367,19 +380,21 @@ with account.lock:
 ```typescript
 // ❌ Check-then-act 在 async 环境中不安全
 if (!fileExists(path)) {
-  await writeFile(path, content);
+    await writeFile(path, content);
 }
 
 // ✅ 直接操作 + catch
 try {
-  await writeFile(path, content, { flag: "wx" });
+    await writeFile(path, content, { flag: "wx" });
 } catch (e) {
-  if (e.code === "EEXIST") { /* handle */ }
-  else throw e;
+    if (e.code === "EEXIST") {
+        /* handle */
+    } else throw e;
 }
 ```
 
 **审查要点：**
+
 - `if exists → operate` 模式是否可替换为 `try operate → catch`？
 - 多步状态变更是否在事务/锁内？
 - async 操作中 check 和 act 之间是否有 await？
@@ -403,12 +418,12 @@ with open("log.txt") as f:
 ```typescript
 // ❌ 加载所有 items 再过滤
 const allItems = await db.query("SELECT * FROM orders");
-const pending = allItems.filter(o => o.status === "pending");
+const pending = allItems.filter((o) => o.status === "pending");
 
 // ✅ 数据库层过滤
-const pending = await db.query(
-  "SELECT * FROM orders WHERE status = ?", ["pending"]
-);
+const pending = await db.query("SELECT * FROM orders WHERE status = ?", [
+    "pending",
+]);
 ```
 
 ```python
@@ -421,6 +436,7 @@ user = User.objects.get(id=user_id)
 ```
 
 **审查要点：**
+
 - 是否读取了整个集合/文件再只用一小部分？
 - 能否将过滤推到数据库/存储层？
 - API 调用是否支持 pagination/limit 参数？
@@ -434,15 +450,15 @@ user = User.objects.get(id=user_id)
 ```typescript
 // ❌ 同时存储 fullName 和 firstName + lastName
 interface User {
-  firstName: string;
-  lastName: string;
-  fullName: string;  // redundant
+    firstName: string;
+    lastName: string;
+    fullName: string; // redundant
 }
 
 // ✅ fullName 是推导值
 interface User {
-  firstName: string;
-  lastName: string;
+    firstName: string;
+    lastName: string;
 }
 const fullName = `${user.firstName} ${user.lastName}`;
 ```
@@ -468,6 +484,7 @@ class Order:
 ```
 
 **审查要点：**
+
 - 是否有字段可以从其他字段推导？
 - 缓存值是否有 invalidation 机制？
 - observer/effect 是否可以替换为直接调用？
